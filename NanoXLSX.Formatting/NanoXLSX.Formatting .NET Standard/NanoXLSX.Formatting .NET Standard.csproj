@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+	  <Authors>Raphael Stoeckli</Authors>
+	  <Product>NanoXLSX</Product>
+	  <Description>Extension for NanoXLSX and PicoXLSX to manage advance cell formatting</Description>
+	  <Copyright>Copyright Raphael Stoeckli © 2022</Copyright>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageProjectUrl>https://github.com/rabanti-github/NanoXLSX.Formatting</PackageProjectUrl>
+	  <PackageIcon>NanoXLSX.png</PackageIcon>
+	  <PackageIconUrl />
+	  <RepositoryUrl>https://github.com/rabanti-github/NanoXLSX.Formatting.git</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageTags>Excel Office XLSX Formatting</PackageTags>
+	  <PackageReleaseNotes>Please see https://github.com/rabanti-github/NanoXLSX.Formatting/blob/master/Changelog.md for the release notes</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\NanoXLSX.Formatting.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="NanoXLSX.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
