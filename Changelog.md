@@ -1,6 +1,8 @@
-# Change Log
+# Change Log - NanoXLSX.Formatting
 
-## v1.0.0
+## v3.0.0
 
 ---
-Release Date: **xx.xx.2022**
+Release Date: **25.11.2025**
+
+- Initial release of the formatting library
