@@ -4,7 +4,6 @@ using System.Text;
 
 namespace NanoXLSX.Extensions
 {
-
     #region Enums
 
     public enum PhoneticType
@@ -95,9 +94,18 @@ namespace NanoXLSX.Extensions
     /// </summary>
     public class InlineStyle
     {
+
+        #region Constants
+        /// <summary>
+        /// Default font size if not specified
+        /// </summary>
+        public const float DefaultFontSize = 11f;
+        public const FontFamily DefaultFontFamily = FontFamily.Swiss;
+         #endregion
+
         public string FontName { get; set; }
         public FontCharset? Charset { get; set; }
-        public FontFamily? Family { get; set; } = FontFamily.Swiss; // Default to Swiss
+        public FontFamily? Family { get; set; } = DefaultFontFamily;
         public bool? Bold { get; set; }
         public bool? Italic { get; set; }
         public bool? Strikethrough { get; set; }
@@ -106,7 +114,7 @@ namespace NanoXLSX.Extensions
         public bool? Condense { get; set; }
         public bool? Extend { get; set; }
         public Color Color { get; set; }
-        public double? FontSize { get; set; }
+        public float? FontSize { get; set; }  = DefaultFontSize;
         public UnderlineStyle? Underline { get; set; }
         public VerticalAlignment? VerticalAlign { get; set; }
         public FontScheme? Scheme { get; set; }
@@ -132,5 +140,25 @@ namespace NanoXLSX.Extensions
                 Scheme = Scheme
             };
         }
+
+        public void Reset()
+        {
+            FontName = null;
+            Charset = null;
+            Family = DefaultFontFamily;
+            Bold = null;
+            Italic = null;
+            Strikethrough = null;
+            Outline = null;
+            Shadow = null;
+            Condense = null;
+            Extend = null;
+            Color = null;
+            FontSize = DefaultFontSize;
+            Underline = null;
+            VerticalAlign = null;
+            Scheme = null;
+        }
+
     }
 }

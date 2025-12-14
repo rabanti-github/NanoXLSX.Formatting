@@ -10,131 +10,136 @@ namespace NanoXLSX.Extensions
     /// </summary>
     public class InlineStyleBuilder
     {
-        private readonly InlineStyle _style = new InlineStyle();
+        private readonly InlineStyle style = new InlineStyle();
 
         public InlineStyleBuilder Font(string fontName)
         {
-            _style.FontName = fontName;
+            style.FontName = fontName;
             return this;
         }
 
-        public InlineStyleBuilder Size(double size)
+        public InlineStyleBuilder Size(float size)
         {
-            _style.FontSize = size;
+            style.FontSize = size;
             return this;
         }
 
         public InlineStyleBuilder Bold(bool bold = true)
         {
-            _style.Bold = bold;
+            style.Bold = bold;
             return this;
         }
 
         public InlineStyleBuilder Italic(bool italic = true)
         {
-            _style.Italic = italic;
+            style.Italic = italic;
             return this;
         }
 
         public InlineStyleBuilder Strikethrough(bool strikethrough = true)
         {
-            _style.Strikethrough = strikethrough;
+            style.Strikethrough = strikethrough;
             return this;
         }
 
         public InlineStyleBuilder Underline(UnderlineStyle style = UnderlineStyle.Single)
         {
-            _style.Underline = style;
+            this.style.Underline = style;
             return this;
         }
 
         public InlineStyleBuilder Color(Color color)
         {
-            _style.Color = color;
+            style.Color = color;
             return this;
         }
 
         public InlineStyleBuilder ColorRgb(string rgb)
         {
-            _style.Color = NanoXLSX.Extensions.Color.FromRgb(rgb);
+            style.Color = Extensions.Color.FromRgb(rgb);
             return this;
         }
 
         public InlineStyleBuilder ColorTheme(uint theme, double tint = 0.0)
         {
-            _style.Color = NanoXLSX.Extensions.Color.FromTheme(theme, tint);
+            style.Color = Extensions.Color.FromTheme(theme, tint);
             return this;
         }
 
         public InlineStyleBuilder ColorIndexed(uint indexed)
         {
-            _style.Color = NanoXLSX.Extensions.Color.FromIndexed(indexed);
+            style.Color = Extensions.Color.FromIndexed(indexed);
             return this;
         }
 
         public InlineStyleBuilder VerticalAlign(VerticalAlignment alignment)
         {
-            _style.VerticalAlign = alignment;
+            style.VerticalAlign = alignment;
             return this;
         }
 
         public InlineStyleBuilder Superscript()
         {
-            _style.VerticalAlign = VerticalAlignment.Superscript;
+            style.VerticalAlign = VerticalAlignment.Superscript;
             return this;
         }
 
         public InlineStyleBuilder Subscript()
         {
-            _style.VerticalAlign = VerticalAlignment.Subscript;
+            style.VerticalAlign = VerticalAlignment.Subscript;
             return this;
         }
 
         public InlineStyleBuilder Outline(bool outline = true)
         {
-            _style.Outline = outline;
+            style.Outline = outline;
             return this;
         }
 
         public InlineStyleBuilder Shadow(bool shadow = true)
         {
-            _style.Shadow = shadow;
+            style.Shadow = shadow;
             return this;
         }
 
         public InlineStyleBuilder Condense(bool condense = true)
         {
-            _style.Condense = condense;
+            style.Condense = condense;
             return this;
         }
 
         public InlineStyleBuilder Extend(bool extend = true)
         {
-            _style.Extend = extend;
+            style.Extend = extend;
             return this;
         }
 
         public InlineStyleBuilder Charset(FontCharset charset)
         {
-            _style.Charset = charset;
+            style.Charset = charset;
             return this;
         }
 
         public InlineStyleBuilder Family(FontFamily family)
         {
-            _style.Family = family;
+            style.Family = family;
             return this;
         }
 
         public InlineStyleBuilder Scheme(FontScheme scheme)
         {
-            _style.Scheme = scheme;
+            style.Scheme = scheme;
             return this;
         }
 
-        public InlineStyle Build()
+        public InlineStyle Build(bool reset = true)
         {
-            return _style;
+            InlineStyle instance = style.Copy();
+            if (reset)
+            {
+                style.Reset();
+            }
+            return instance;
         }
     }
 }

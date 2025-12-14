@@ -44,7 +44,9 @@ namespace NanoXLSX
         public FormattedText AddRun(string text, InlineStyle style = null)
         {
             if (string.IsNullOrEmpty(text))
+            {
                 throw new ArgumentException("Text cannot be null or empty.", nameof(text));
+            }
 
             runs.Add(new TextRun(text, style));
             return this;
@@ -62,6 +64,22 @@ namespace NanoXLSX
             styleBuilder?.Invoke(builder);
             runs.Add(new TextRun(text, builder.Build()));
             return this;
+        }
+
+        /// <summary>
+        /// Adds a line break to the formatted text. By default, the last run's style is used.
+        /// </summary>
+        /// <param name="useStyleFromLastRun">If set to false, a new run without style will be created for the line break</param>
+        public void AddLineBreak(bool useStyleFromLastRun = true)
+        {
+            if (runs.Count == 0 || !useStyleFromLastRun)
+            {
+                runs.Add(new TextRun(Environment.NewLine, null));
+            }
+            else
+            {
+                runs[runs.Count - 1].Text += Environment.NewLine;
+            }
         }
 
         /// <summary>

@@ -17,10 +17,13 @@ namespace NanoXLSX.Formatting.Test.Worksheets
             FormattedText formattedText = new FormattedText();
             InlineStyleBuilder builder = new InlineStyleBuilder();
             InlineStyle style1 = builder.Font("Arial").Bold().ColorRgb("CC00FF").Build();
-            InlineStyle style2 = builder.Font("Calibri").Italic().ColorRgb("00FFFF").Build();
+            InlineStyle style2 = builder.Font("Calibri").Italic().ColorRgb("00FFFF").Shadow().Build();
             formattedText.AddRun("Line1", style1);
+            formattedText.AddLineBreak();
             formattedText.AddRun(" Line2", style2);
             workbook.CurrentWorksheet.AddCell(formattedText, 0, 0);
+            workbook.CurrentWorksheet.SetRowHeight(0, 30);
+            workbook.SaveAs(@"C:\purge-temp\formattedTextTest.xlsx");
         }
     }
 }
