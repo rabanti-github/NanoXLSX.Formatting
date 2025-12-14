@@ -2,11 +2,11 @@
 
   <PropertyGroup>
 	  <RootNamespace>NanoXLSX</RootNamespace>
-	  <AssemblyName>NanoXLSX.Reader</AssemblyName>
-	  <PackageId>NanoXLSX.Reader</PackageId>
+	  <AssemblyName>NanoXLSX.Formatting</AssemblyName>
+	  <PackageId>NanoXLSX.Formatting</PackageId>
 	  <OutputType>Library</OutputType>
 	  <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-	  <Title>NanoXLSX.Writer</Title>
+	  <Title>NanoXLSX.Formatting</Title>
 	  <Product>NanoXLSX</Product>
 	  <Company>Raphael Stoeckli</Company>
 	  <Authors>Raphael Stoeckli</Authors>
@@ -33,14 +33,6 @@
       <EnableNETAnalyzers>True</EnableNETAnalyzers>
       <AnalysisLevel>latest-recommended</AnalysisLevel>
   </PropertyGroup>
-
-    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-        <PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.2" />
-    </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)' == 'Release'">
-        <!--<PackageReference Include="NanoXLSX.Core" Version="3.0.*" /> -->
-        <PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.2" />
-    </ItemGroup>
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <Exec Command="@echo off&#xD;&#xA;echo PROJECT_NUMBER = $(Version) &gt; &quot;$(ProjectDir)Documentation\projectNumber.doxygen&quot;&#xD;&#xA;echo PROJECT_NAME = $(ProjectName) &gt; &quot;$(ProjectDir)Documentation\projectName.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ../../docs/$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\outputDirectory.doxygen&quot;&#xD;&#xA;echo HTML_OUTPUT = ../../docs/$(ProjectName) &gt; &quot;$(ProjectDir)Documentation\htmlOutput.doxygen&quot;" />
     </Target>
@@ -50,5 +42,12 @@
             <PackagePath></PackagePath>
         </None>
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.3" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Internal\" />
+    </ItemGroup>
+
 
 </Project>

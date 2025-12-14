@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.ComponentModel;
-using System.Text;
-using NanoXLSX.Extensions;
+using NanoXLSX.Exceptions;
+
 
 namespace NanoXLSX
 {
@@ -14,7 +13,12 @@ namespace NanoXLSX
     {
         public static void AddCell(this Worksheet worksheet, FormattedText formattedText, int columnNumber, int rowNumber)
         {
-
+            //AddAuxiliaryData(worksheet, formattedText, columnNumber, rowNumber);
+            if (formattedText == null)
+            {
+                throw new WorksheetException("A formatted text to add cannot be null");
+            }
+            worksheet.AddCell(formattedText, columnNumber, rowNumber);
         }
     }
 }
