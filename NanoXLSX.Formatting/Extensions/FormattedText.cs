@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NanoXLSX.Extensions;
 using NanoXLSX.Interfaces;
+using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
 
@@ -23,11 +24,29 @@ namespace NanoXLSX
         private const string PRESERVE_ATTRIBUTE_PREFIX = "xml";
         private const string PRESERVE_ATTRIBUTE_VALUE = "preserve";
 
-        public int FontId { get; set; }
+        /// <summary>
+        /// Style to be used for line breaks in formatted text.
+        /// </summary>
+        public static readonly Style LineBreakStyle;
 
+        static FormattedText()
+        {
+            LineBreakStyle = new Style();
+            LineBreakStyle.CurrentCellXf.Alignment = CellXf.TextBreakValue.WrapText;
+        }
 
         private readonly List<TextRun> runs = new List<TextRun>();
         private readonly List<PhoneticRun> phoeticRuns = new List<PhoneticRun>();
+
+        /// <summary>
+        /// Internal Id of the font used for phonetic text
+        /// </summary>
+        /// \remark <remarks>This ID will be resolved automatically, when the workbook is saved, according to <see cref="PhoneticProperties.FontReference"/></remarks>
+        public int FontId { get; set; }
+        /// <summary>
+        /// Gets or sets whether the runs should be rendered with text wrapping, if there are line breaks present.
+        /// </summary>
+        public bool WrapText { get; set; }
 
         public IReadOnlyList<TextRun> Runs => runs.AsReadOnly();
         public IReadOnlyList<PhoneticRun> PhoneticRuns => phoeticRuns.AsReadOnly();
@@ -41,13 +60,16 @@ namespace NanoXLSX
         /// <summary>
         /// Adds a text run with the specified style.
         /// </summary>
+        /// <param name="text">The text content of the run</param>
+        /// <param name="style">The inline style to apply to the run (optional)</param>
+        /// <returns>The current FormattedText instance for method chaining</returns>
         public FormattedText AddRun(string text, InlineStyle style = null)
         {
             if (string.IsNullOrEmpty(text))
             {
-                throw new ArgumentException("Text cannot be null or empty.", nameof(text));
+                throw new FormatException("Text cannot be null or empty");
             }
-
+            CheckWrapText(text);
             runs.Add(new TextRun(text, style));
             return this;
         }
@@ -55,11 +77,16 @@ namespace NanoXLSX
         /// <summary>
         /// Adds a text run using a style builder for inline configuration.
         /// </summary>
+        /// <param name="text">The text content of the run</param>
+        /// <param name="styleBuilder">An action to configure the inline style using an InlineStyleBuilder</param>
+        /// <returns>The current FormattedText instance for method chaining</returns>
         public FormattedText AddRun(string text, Action<InlineStyleBuilder> styleBuilder)
         {
             if (string.IsNullOrEmpty(text))
-                throw new ArgumentException("Text cannot be null or empty.", nameof(text));
-
+            {
+                throw new FormatException("Text cannot be null or empty");
+            }
+            CheckWrapText(text);
             var builder = new InlineStyleBuilder();
             styleBuilder?.Invoke(builder);
             runs.Add(new TextRun(text, builder.Build()));
@@ -80,11 +107,16 @@ namespace NanoXLSX
             {
                 runs[runs.Count - 1].Text += Environment.NewLine;
             }
+            WrapText = true;
         }
 
         /// <summary>
-        /// Adds a phonetic run for pronunciation guidance.
+        /// Adds a phonetic run for pronunciation guidance (Ruby text, like Furigana, Pinyin or Zhuyin).
         /// </summary>
+        /// <param name="text">The phonetic text (Ruby text)</param>
+        /// <param name="startBase">The start index of the base text (character where the Ruby text starts) </param>
+        /// <param name="endBase">The end index of the base text (character where the Ruby text ends)</param>
+        /// <returns>The current FormattedText instance for method chaining</returns>
         public FormattedText AddPhoneticRun(string text, uint startBase, uint endBase)
         {
             phoeticRuns.Add(new PhoneticRun(text, startBase, endBase));
@@ -92,9 +124,13 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Sets the phonetic properties for this formatted text.
+        /// Sets the phonetic properties for this formatted text, applied to the phonetic run (Ruby text).
         /// </summary>
-        public FormattedText SetPhoneticProperties(object fontReference, PhoneticType type = PhoneticType.FullwidthKatakana, PhoneticAlignment alignment = PhoneticAlignment.Left)
+        /// <param name="fontReference">The font reference that is used to render the phonetic run (Ruby text)</param>
+        /// <param name="type">The phonetic type</param>
+        /// <param name="alignment">The phonetic alignment</param>
+        /// <returns>The current FormattedText instance for method chaining</returns>
+        public FormattedText SetPhoneticProperties(Font fontReference, PhoneticType type = PhoneticType.FullwidthKatakana, PhoneticAlignment alignment = PhoneticAlignment.Left)
         {
             PhoneticProperties = new PhoneticProperties(fontReference)
             {
@@ -114,6 +150,10 @@ namespace NanoXLSX
             PhoneticProperties = null;
         }
 
+        /// <summary>
+        /// Creates a deep copy of this FormattedText instance.
+        /// </summary>
+        /// <returns>The copied FormattedText instance</returns>
         public FormattedText Copy()
         {
             FormattedText copy = new FormattedText();
@@ -172,38 +212,6 @@ namespace NanoXLSX
             }
 
             return siElement;
-        }
-
-        /// <summary>
-        /// Creates a text element (&lt;t&gt;) with proper whitespace preservation
-        /// </summary>
-        private XmlElement CreateTextElement(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-            {
-                return XmlElement.CreateElement(T_TAG);
-            }
-
-            string value = XmlUtils.SanitizeXmlValue(text);
-            value = ParserUtils.NormalizeNewLines(value);
-
-            XmlElement element;
-            if (char.IsWhiteSpace(value, 0) || char.IsWhiteSpace(value, value.Length - 1))
-            {
-                element = XmlElement.CreateElementWithAttribute(
-                    T_TAG,
-                    PRESERVE_ATTRIBUTE_NAME,
-                    PRESERVE_ATTRIBUTE_VALUE,
-                    "",
-                    PRESERVE_ATTRIBUTE_PREFIX);
-            }
-            else
-            {
-                element = XmlElement.CreateElement(T_TAG);
-            }
-
-            element.InnerValue = value;
-            return element;
         }
 
         /// <summary>
@@ -303,56 +311,6 @@ namespace NanoXLSX
         }
 
         /// <summary>
-        /// Creates a color element (&lt;color&gt;) from a Color instance
-        /// </summary>
-        private XmlElement CreateColorElement(Extensions.Color color)
-        {
-            XmlElement colorElement = XmlElement.CreateElement("color");
-
-            if (color.Auto.HasValue && color.Auto.Value)
-            {
-                colorElement.AddAttribute("auto", "1");
-            }
-
-            if (color.Indexed.HasValue)
-            {
-                colorElement.AddAttribute("indexed", ParserUtils.ToString(color.Indexed.Value));
-            }
-
-            if (!string.IsNullOrEmpty(color.Rgb))
-            {
-                colorElement.AddAttribute("rgb", color.Rgb);
-            }
-
-            if (color.Theme.HasValue)
-            {
-                colorElement.AddAttribute("theme", color.Theme.Value.ToString());
-            }
-
-            if (color.Tint != 0.0)
-            {
-                colorElement.AddAttribute("tint", color.Tint.ToString(System.Globalization.CultureInfo.InvariantCulture));
-            }
-
-            return colorElement;
-        }
-
-        /// <summary>
-        /// Creates a phonetic run element (&lt;rPh&gt;)
-        /// </summary>
-        private XmlElement CreatePhoneticRunElement(PhoneticRun phoneticRun)
-        {
-            XmlElement rPhElement = XmlElement.CreateElement(RPH_TAG);
-            rPhElement.AddAttribute("sb", phoneticRun.StartBase.ToString());
-            rPhElement.AddAttribute("eb", phoneticRun.EndBase.ToString());
-
-            XmlElement tElement = CreateTextElement(phoneticRun.Text);
-            rPhElement.AddChildElement(tElement);
-
-            return rPhElement;
-        }
-
-        /// <summary>
         /// Creates a phonetic properties element (&lt;phoneticPr&gt;)
         /// </summary>
         private XmlElement CreatePhoneticPropertiesElement(PhoneticProperties properties)
@@ -375,10 +333,105 @@ namespace NanoXLSX
             return phoneticPrElement;
         }
 
+        private void CheckWrapText(string text)
+        {
+            if (text.Contains("\n"))
+            {
+                WrapText = true;
+            }
+        }
+
+        XmlElement IFormattableText.GetXmlElement()
+        {
+            return GetXmlElement();
+        }
+
+        /// <summary>
+        /// Creates a text element (&lt;t&gt;) with proper whitespace preservation
+        /// </summary>
+        private static XmlElement CreateTextElement(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+            {
+                return XmlElement.CreateElement(T_TAG);
+            }
+
+            string value = XmlUtils.SanitizeXmlValue(text);
+            value = ParserUtils.NormalizeNewLines(value);
+
+            XmlElement element;
+            if (char.IsWhiteSpace(value, 0) || char.IsWhiteSpace(value, value.Length - 1))
+            {
+                element = XmlElement.CreateElementWithAttribute(
+                    T_TAG,
+                    PRESERVE_ATTRIBUTE_NAME,
+                    PRESERVE_ATTRIBUTE_VALUE,
+                    "",
+                    PRESERVE_ATTRIBUTE_PREFIX);
+            }
+            else
+            {
+                element = XmlElement.CreateElement(T_TAG);
+            }
+
+            element.InnerValue = value;
+            return element;
+        }
+
+        /// <summary>
+        /// Creates a color element (&lt;color&gt;) from a Color instance
+        /// </summary>
+        private static XmlElement CreateColorElement(Extensions.Color color)
+        {
+            XmlElement colorElement = XmlElement.CreateElement("color");
+
+            if (color.Auto.HasValue && color.Auto.Value)
+            {
+                colorElement.AddAttribute("auto", "1");
+            }
+
+            if (color.Indexed.HasValue)
+            {
+                colorElement.AddAttribute("indexed", ParserUtils.ToString(color.Indexed.Value));
+            }
+
+            if (!string.IsNullOrEmpty(color.Rgb))
+            {
+                colorElement.AddAttribute("rgb", color.Rgb);
+            }
+
+            if (color.Theme.HasValue)
+            {
+                colorElement.AddAttribute("theme", ParserUtils.ToString(color.Theme.Value));
+            }
+
+            if (color.Tint != 0.0)
+            {
+                colorElement.AddAttribute("tint", ParserUtils.ToString(color.Tint));
+            }
+
+            return colorElement;
+        }
+
+        /// <summary>
+        /// Creates a phonetic run element (&lt;rPh&gt;)
+        /// </summary>
+        private static XmlElement CreatePhoneticRunElement(PhoneticRun phoneticRun)
+        {
+            XmlElement rPhElement = XmlElement.CreateElement(RPH_TAG);
+            rPhElement.AddAttribute("sb", ParserUtils.ToString(phoneticRun.StartBase));
+            rPhElement.AddAttribute("eb", ParserUtils.ToString(phoneticRun.EndBase));
+
+            XmlElement tElement = CreateTextElement(phoneticRun.Text);
+            rPhElement.AddChildElement(tElement);
+
+            return rPhElement;
+        }
+
         /// <summary>
         /// Converts UnderlineStyle enum to OOXML string value
         /// </summary>
-        private string GetUnderlineValue(UnderlineStyle style)
+        private static string GetUnderlineValue(UnderlineStyle style)
         {
             switch (style)
             {
@@ -400,7 +453,7 @@ namespace NanoXLSX
         /// <summary>
         /// Converts VerticalAlignment enum to OOXML string value
         /// </summary>
-        private string GetVerticalAlignmentValue(VerticalAlignment alignment)
+        private static string GetVerticalAlignmentValue(VerticalAlignment alignment)
         {
             switch (alignment)
             {
@@ -418,7 +471,7 @@ namespace NanoXLSX
         /// <summary>
         /// Converts FontScheme enum to OOXML string value
         /// </summary>
-        private string GetFontSchemeValue(FontScheme scheme)
+        private static string GetFontSchemeValue(FontScheme scheme)
         {
             switch (scheme)
             {
@@ -436,7 +489,7 @@ namespace NanoXLSX
         /// <summary>
         /// Converts PhoneticType enum to OOXML string value
         /// </summary>
-        private string GetPhoneticTypeValue(PhoneticType type)
+        private static string GetPhoneticTypeValue(PhoneticType type)
         {
             switch (type)
             {
@@ -456,7 +509,7 @@ namespace NanoXLSX
         /// <summary>
         /// Converts PhoneticAlignment enum to OOXML string value
         /// </summary>
-        private string GetPhoneticAlignmentValue(PhoneticAlignment alignment)
+        private static string GetPhoneticAlignmentValue(PhoneticAlignment alignment)
         {
             switch (alignment)
             {
@@ -471,11 +524,6 @@ namespace NanoXLSX
                 default:
                     return "left";
             }
-        }
-
-        XmlElement IFormattableText.GetXmlElement()
-        {
-            return GetXmlElement();
         }
     }
 }

@@ -18,7 +18,14 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("A formatted text to add cannot be null");
             }
-            worksheet.AddCell(formattedText, columnNumber, rowNumber);
+            if (formattedText.WrapText)
+            {
+                worksheet.AddCell(formattedText, columnNumber, rowNumber, FormattedText.LineBreakStyle);
+            }
+            else
+            {
+                worksheet.AddCell(formattedText, columnNumber, rowNumber);
+            }
         }
     }
 }

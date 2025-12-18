@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using NanoXLSX.Styles;
 
 namespace NanoXLSX.Extensions
 {
@@ -9,11 +10,11 @@ namespace NanoXLSX.Extensions
     /// </summary>
     public class PhoneticProperties
     {
-        public object FontReference { get; set; }
+        public Font FontReference { get; set; }
         public PhoneticType Type { get; set; } = PhoneticType.FullwidthKatakana;
         public PhoneticAlignment Alignment { get; set; } = PhoneticAlignment.Left;
 
-        public PhoneticProperties(object fontReference)
+        public PhoneticProperties(Font fontReference)
         {
             FontReference = fontReference ?? throw new ArgumentNullException(nameof(fontReference));
         }

@@ -43,10 +43,10 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.3" />
+      <Folder Include="Internal\" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Internal\" />
+      <PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.3" />
     </ItemGroup>
 
 
