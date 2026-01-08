@@ -19,53 +19,29 @@ namespace NanoXLSX.Extensions
         /// </summary>
         public enum ColorScheme
         {
-            /// <summary>
-            /// Theme color that defines the dark1 (dk1) attribute of a theme 
-            /// </summary>
+            /// <summary>Theme color that defines the dark1 (dk1) attribute of a theme.</summary>
             Dark1 = 0,
-            /// <summary>
-            /// Theme color that defines the light1 (lt1) attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the light1 (lt1) attribute of a theme.</summary>
             Light1 = 1,
-            /// <summary>
-            /// Theme color that defines the dark2 (dk2) attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the dark2 (dk2) attribute of a theme.</summary>
             Dark2 = 2,
-            /// <summary>
-            /// Theme color that defines the light2 (lt2) attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the light2 (lt2) attribute of a theme.</summary>
             Light2 = 3,
-            /// <summary>
-            /// Theme color that defines the accent1 attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the accent1 attribute of a theme.</summary>
             Accent1 = 4,
-            /// <summary>
-            /// Theme color that defines the accent2 attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the accent2 attribute of a theme.</summary>
             Accent2 = 5,
-            /// <summary>
-            /// Theme color that defines the accent3 attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the accent3 attribute of a theme.</summary>
             Accent3 = 6,
-            /// <summary>
-            /// Theme color that defines the accent4 attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the accent4 attribute of a theme.</summary>
             Accent4 = 7,
-            /// <summary>
-            /// Theme color that defines the accent5 attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the accent5 attribute of a theme.</summary>
             Accent5 = 8,
-            /// <summary>
-            /// Theme color that defines the accent6 attribute of a theme
-            /// </summary>
+            /// <summary>Theme color that defines the accent6 attribute of a theme.</summary>
             Accent6 = 9,
-            /// <summary>
-            /// Theme color that defines the hyperlink (hlink) attribute of a theme 
-            /// </summary>
+            /// <summary>Theme color that defines the hyperlink (hlink) attribute of a theme.</summary>
             Hyperlink = 10,
-            /// <summary>
-            /// Theme color that defines the followedHyperlink (folHlink) attribute of a theme 
-            /// </summary>
+            /// <summary>Theme color that defines the followedHyperlink (folHlink) attribute of a theme.</summary>
             FollowedHyperlink = 11
         }
 

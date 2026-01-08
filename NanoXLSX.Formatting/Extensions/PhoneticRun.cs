@@ -6,6 +6,7 @@
  */
 
 using System;
+using NanoXLSX.Utils.Xml;
 
 namespace NanoXLSX.Extensions
 {
@@ -40,7 +41,7 @@ namespace NanoXLSX.Extensions
             {
                 throw new FormatException("The text of the phonetic run cannot be null or empty");
             }
-            Text = text;
+            Text = XmlUtils.SanitizeXmlValue(text);
             StartBase = startBase;
             EndBase = endBase;
         }

@@ -7,6 +7,7 @@
 
 using System.ComponentModel;
 using NanoXLSX.Exceptions;
+using NanoXLSX.Styles;
 
 namespace NanoXLSX
 {
@@ -27,6 +28,29 @@ namespace NanoXLSX
         /// <exception cref="RangeException">Throws a RangeException if the passed cell address is out of range</exception>
         public static void AddCell(this Worksheet worksheet, FormattedText formattedText, int columnNumber, int rowNumber)
         {
+            AddFormattedText(worksheet, formattedText, columnNumber, rowNumber);
+        }
+
+        public static void Addcell(this Worksheet worksheet, FormattedText formattedText, string address)
+        {
+            int column;
+            int row;
+            Cell.ResolveCellCoordinate(address, out column, out row);
+            AddFormattedText(worksheet, formattedText, column, row);
+        }
+
+        public static void AddNextCell(this Worksheet worksheet, FormattedText formattedText)
+        {
+            worksheet.AddFormattedText(formattedText);
+        }
+
+        public static void AddNextCell(this Worksheet worksheet, bool incremental, FormattedText formattedText)
+        {
+            worksheet.AddFormattedText(formattedText, incremental);
+        }
+
+        private static void AddFormattedText(Worksheet worksheet, FormattedText formattedText, int columnNumber, int rowNumber)
+        {
             if (formattedText == null)
             {
                 throw new WorksheetException("A formatted text to add cannot be null");
@@ -40,5 +64,23 @@ namespace NanoXLSX
                 worksheet.AddCell(formattedText, columnNumber, rowNumber);
             }
         }
+
+        private static void AddFormattedText(this Worksheet worksheet, FormattedText formattedText, bool incemental = false)
+        {
+            if (formattedText == null)
+            {
+                throw new WorksheetException("A formatted text to add cannot be null");
+            }
+            if (formattedText.WrapText)
+            {
+                Cell cell = new Cell(formattedText, Cell.CellType.Default);
+                worksheet.AddNextCell(cell, incemental, new Style());
+            }
+            else
+            {
+                worksheet.AddNextCell(formattedText);
+            }
+        }
+
     }
 }

@@ -6,6 +6,8 @@
  */
 
 using System;
+using NanoXLSX.Utils.Xml;
+using static NanoXLSX.Themes.SystemColor;
 
 namespace NanoXLSX.Extensions
 {
@@ -31,7 +33,11 @@ namespace NanoXLSX.Extensions
         /// <exception cref="Exceptions.FormatException">Thrown when the text is null</exception>
         public TextRun(string text, InlineStyle style = null)
         {
-            Text = text ?? throw new Exceptions.FormatException("The text of a text run cannot be null");
+            if (text == null)
+            {
+                throw new Exceptions.FormatException("The text of a text run cannot be null");
+            }
+            Text = XmlUtils.SanitizeXmlValue(text);
             Style = style;
         }
 
