@@ -15,6 +15,40 @@ namespace NanoXLSX.Extensions
     /// </summary>
     public class PhoneticRun
     {
+
+        #region enums
+        /// <summary>
+        /// Enumeration for phonetic text types.
+        /// </summary>
+        public enum PhoneticType
+        {
+            /// <summary> Half-width Katakana characters for phonetic text.</summary>
+            HalfwidthKatakana,
+            /// <summary>Full-width Katakana characters for phonetic text.</summary>
+            FullwidthKatakana,
+            /// <summary>Hiragana characters for phonetic text.</summary>
+            Hiragana,
+            /// <summary>No conversion for phonetic text.</summary>
+            NoConversion
+        }
+
+        /// <summary>
+        /// Enumeration for phonetic text alignment.
+        /// </summary>
+        public enum PhoneticAlignment
+        {
+            /// <summary>
+            /// Each phonetic character is left justified without respect to the base text (so it is not per word).</summary>
+            NoControl,
+            /// <summary>Each phonetic character is left justified with respect to the base text., per word.</summary>
+            Left,
+            /// <summary> Center the phonetic characters over the base word, per word. </summary>
+            Center,
+            /// <summary> Each phonetic character is distributed above each base word character, per word.</summary>
+            Distributed
+        }
+        #endregion
+
         /// <summary>
         /// The phonetic text to be displayed (Ruby text,like Furigana, Pinyin or Zhuyin).
         /// </summary>

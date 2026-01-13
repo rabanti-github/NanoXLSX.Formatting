@@ -22,11 +22,11 @@ namespace NanoXLSX.Extensions
         /// <summary>
         /// The type of phonetic text representation. Default is FullwidthKatakana.
         /// </summary>
-        public PhoneticType Type { get; set; } = PhoneticType.FullwidthKatakana;
+        public PhoneticRun.PhoneticType Type { get; set; } = PhoneticRun.PhoneticType.FullwidthKatakana;
         /// <summary>
         /// Alignment of the phonetic text relative to the base text. Default is Left.
         /// </summary>
-        public PhoneticAlignment Alignment { get; set; } = PhoneticAlignment.Left;
+        public PhoneticRun.PhoneticAlignment Alignment { get; set; } = PhoneticRun.PhoneticAlignment.Left;
 
         /// <summary>
         /// Default constructor to create phonetic properties, using the specified font reference.

@@ -21,11 +21,11 @@ namespace NanoXLSX.Extensions
         /// Adds a text run with an optional style to the formatted text.
         /// </summary>
         /// <param name="text">Plain text of the run</param>
-        /// <param name="style">Inline style</param>
+        /// <param name="font">Font style</param>
         /// <returns>The current builder instance</returns>
-        public FormattedTextBuilder AddRun(string text, InlineStyle style = null)
+        public FormattedTextBuilder AddRun(string text, Font font = null)
         {
-            formattedText.AddRun(text, style);
+            formattedText.AddRun(text, font);
             return this;
         }
 
@@ -61,7 +61,7 @@ namespace NanoXLSX.Extensions
         /// <param name="type">Phonetic type</param>
         /// <param name="alignment">Phonetic alignment</param>
         /// <returns>The current builder instance</returns>
-        public FormattedTextBuilder SetPhoneticProperties(Font fontReference, PhoneticType type = PhoneticType.FullwidthKatakana, PhoneticAlignment alignment = PhoneticAlignment.Left)
+        public FormattedTextBuilder SetPhoneticProperties(Font fontReference, PhoneticRun.PhoneticType type = PhoneticRun.PhoneticType.FullwidthKatakana, PhoneticRun.PhoneticAlignment alignment = PhoneticRun.PhoneticAlignment.Left)
         {
             formattedText.SetPhoneticProperties(fontReference, type, alignment);
             return this;

@@ -5,9 +5,8 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
+using NanoXLSX.Styles;
 using NanoXLSX.Utils.Xml;
-using static NanoXLSX.Themes.SystemColor;
 
 namespace NanoXLSX.Extensions
 {
@@ -21,24 +20,24 @@ namespace NanoXLSX.Extensions
         /// </summary>
         public string Text { get; set; }
         /// <summary>
-        /// Inline style applied to the text run.
+        /// Font style applied to the text run.
         /// </summary>
-        public InlineStyle Style { get; set; }
+        public Font FontStyle { get; set; }
 
         /// <summary>
         /// Constructor to create a text run with optional inline style.
         /// </summary>
         /// <param name="text">Plain text</param>
-        /// <param name="style">Optional inline style</param>
+        /// <param name="fontStyle">Optional font style</param>
         /// <exception cref="Exceptions.FormatException">Thrown when the text is null</exception>
-        public TextRun(string text, InlineStyle style = null)
+        public TextRun(string text, Font fontStyle = null)
         {
             if (text == null)
             {
                 throw new Exceptions.FormatException("The text of a text run cannot be null");
             }
             Text = XmlUtils.SanitizeXmlValue(text);
-            Style = style;
+            FontStyle = fontStyle;
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace NanoXLSX.Extensions
         /// <returns>Copy of the text run</returns>
         public TextRun Copy()
         {
-            return new TextRun(this.Text, this.Style?.Copy());
+            return new TextRun(this.Text, this.FontStyle?.CopyFont());
         }
 
     }

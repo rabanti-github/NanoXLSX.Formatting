@@ -8,11 +8,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NanoXLSX.Colors;
 using NanoXLSX.Extensions;
 using NanoXLSX.Interfaces;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
+using static NanoXLSX.Styles.Font;
 
 namespace NanoXLSX
 {
@@ -30,6 +32,8 @@ namespace NanoXLSX
         private const string PRESERVE_ATTRIBUTE_NAME = "space";
         private const string PRESERVE_ATTRIBUTE_PREFIX = "xml";
         private const string PRESERVE_ATTRIBUTE_VALUE = "preserve";
+        private static readonly Color NONE_COLOR = Color.CreateNone();
+
 
         /// <summary>
         /// Style to be used for line breaks in formatted text.
@@ -77,16 +81,16 @@ namespace NanoXLSX
         /// Adds a text run with the specified style.
         /// </summary>
         /// <param name="text">The text content of the run</param>
-        /// <param name="style">The inline style to apply to the run (optional)</param>
+        /// <param name="fontStyle">The font style to apply to the run (optional)</param>
         /// <returns>The current FormattedText instance for method chaining</returns>
-        public FormattedText AddRun(string text, InlineStyle style = null)
+        public FormattedText AddRun(string text, Font fontStyle = null)
         {
             if (string.IsNullOrEmpty(text))
             {
                 throw new FormatException("Text cannot be null or empty");
             }
             CheckWrapText(text);
-            runs.Add(new TextRun(text, style));
+            runs.Add(new TextRun(text, fontStyle));
             return this;
         }
 
@@ -146,7 +150,7 @@ namespace NanoXLSX
         /// <param name="type">The phonetic type</param>
         /// <param name="alignment">The phonetic alignment</param>
         /// <returns>The current FormattedText instance for method chaining</returns>
-        public FormattedText SetPhoneticProperties(Font fontReference, PhoneticType type = PhoneticType.FullwidthKatakana, PhoneticAlignment alignment = PhoneticAlignment.Left)
+        public FormattedText SetPhoneticProperties(Font fontReference, PhoneticRun.PhoneticType type = PhoneticRun.PhoneticType.FullwidthKatakana, PhoneticRun.PhoneticAlignment alignment = PhoneticRun.PhoneticAlignment.Left)
         {
             PhoneticProperties = new PhoneticProperties(fontReference)
             {
@@ -205,9 +209,9 @@ namespace NanoXLSX
             {
                 XmlElement rElement = siElement.AddChildElement(R_TAG);
 
-                if (run.Style != null)
+                if (run.FontStyle != null)
                 {
-                    XmlElement rPrElement = CreateRunPropertiesElement(run.Style);
+                    XmlElement rPrElement = CreateRunPropertiesElement(run.FontStyle);
                     rElement.AddChildElement(rPrElement);
                 }
 
@@ -239,13 +243,13 @@ namespace NanoXLSX
             XmlElement phoneticPrElement = XmlElement.CreateElement(PHONETIC_PR_TAG);
             phoneticPrElement.AddAttribute("fontId", ParserUtils.ToString(FontId));
 
-            if (properties.Type != PhoneticType.FullwidthKatakana)
+            if (properties.Type != PhoneticRun.PhoneticType.FullwidthKatakana)
             {
                 string typeValue = GetPhoneticTypeValue(properties.Type);
                 phoneticPrElement.AddAttribute("type", typeValue);
             }
 
-            if (properties.Alignment != PhoneticAlignment.Left)
+            if (properties.Alignment != PhoneticRun.PhoneticAlignment.Left)
             {
                 string alignmentValue = GetPhoneticAlignmentValue(properties.Alignment);
                 phoneticPrElement.AddAttribute("alignment", alignmentValue);
@@ -277,64 +281,64 @@ namespace NanoXLSX
         /// <summary>
         /// Creates a run properties element (&lt;rPr&gt;) from an InlineStyle
         /// </summary>
-        /// <param name="style">InlineStyle instance</param>
+        /// <param name="fontStyle">Font style instance</param>
         /// <returns>XmlElement instance</returns>
-        private static XmlElement CreateRunPropertiesElement(InlineStyle style)
+        private static XmlElement CreateRunPropertiesElement(Font fontStyle)
         {
             XmlElement rPrElement = XmlElement.CreateElement(RPR_TAG);
-            if (!string.IsNullOrEmpty(style.FontName))
+            if (!string.IsNullOrEmpty(fontStyle.Name))
             {
-                rPrElement.AddChildElementWithAttribute("rFont", "val", style.FontName);
+                rPrElement.AddChildElementWithAttribute("rFont", "val", fontStyle.Name);
             }
-            if (style.Charset.HasValue)
+            if (fontStyle.Charset != Font.CharsetValue.Default)
             {
-                rPrElement.AddChildElementWithAttribute("charset", "val", ParserUtils.ToString((int)style.Charset.Value));
+                rPrElement.AddChildElementWithAttribute("charset", "val", ParserUtils.ToString((int)fontStyle.Charset));
             }
-            if (style.Family.HasValue)
+            if (fontStyle.Family != Font.DefaultFontFamily)
             {
-                rPrElement.AddChildElementWithAttribute("family", "val", ParserUtils.ToString((int)style.Family.Value));
+                rPrElement.AddChildElementWithAttribute("family", "val", ParserUtils.ToString((int)fontStyle.Family));
             }
-            if (style.Bold.HasValue && style.Bold.Value)
+            if (fontStyle.Bold)
             {
                 rPrElement.AddChildElement("b");
             }
-            if (style.Italic.HasValue && style.Italic.Value)
+            if (fontStyle.Italic)
             {
                 rPrElement.AddChildElement("i");
             }
-            if (style.Strikethrough.HasValue && style.Strikethrough.Value)
+            if (fontStyle.Strike)
             {
                 rPrElement.AddChildElement("strike");
             }
-            if (style.Outline.HasValue && style.Outline.Value)
+            if (fontStyle.Outline)
             {
                 rPrElement.AddChildElement("outline");
             }
-            if (style.Shadow.HasValue && style.Shadow.Value)
+            if (fontStyle.Shadow)
             {
                 rPrElement.AddChildElement("shadow");
             }
-            if (style.Condense.HasValue && style.Condense.Value)
+            if (fontStyle.Condense)
             {
                 rPrElement.AddChildElement("condense");
             }
-            if (style.Extend.HasValue && style.Extend.Value)
+            if (fontStyle.Extend)
             {
                 rPrElement.AddChildElement("extend");
             }
-            if (style.Color != null)
+            if (fontStyle.ColorValue != null && fontStyle.ColorValue.IsDefined)
             {
-                XmlElement colorElement = CreateColorElement(style.Color);
+                XmlElement colorElement = CreateColorElement(fontStyle.ColorValue);
                 rPrElement.AddChildElement(colorElement);
             }
-            if (style.FontSize.HasValue)
+            if (fontStyle.Size != Font.DefaultFontSize)
             {
-                rPrElement.AddChildElementWithAttribute("sz", "val", ParserUtils.ToString(style.FontSize.Value));
+                rPrElement.AddChildElementWithAttribute("sz", "val", ParserUtils.ToString(fontStyle.Size));
             }
-            if (style.Underline.HasValue)
+            if (fontStyle.Underline != Font.UnderlineValue.None)
             {
-                string underlineValue = GetUnderlineValue(style.Underline.Value);
-                if (underlineValue != "single")
+                string underlineValue = Font.GetUnderlineName(fontStyle.Underline);
+                if (fontStyle.Underline != Font.UnderlineValue.None)
                 {
                     rPrElement.AddChildElementWithAttribute("u", "val", underlineValue);
                 }
@@ -343,15 +347,19 @@ namespace NanoXLSX
                     rPrElement.AddChildElement("u");
                 }
             }
-            if (style.VerticalAlign.HasValue)
+            if (fontStyle.VerticalAlign != Font.VerticalTextAlignValue.None)
             {
-                string vertAlignValue = GetVerticalAlignmentValue(style.VerticalAlign.Value);
+                string vertAlignValue = Font.GetVerticalTextAlignName(fontStyle.VerticalAlign);
                 rPrElement.AddChildElementWithAttribute("vertAlign", "val", vertAlignValue);
             }
-            if (style.Scheme.HasValue)
+            if (fontStyle.Scheme != Font.SchemeValue.None)
             {
-                string schemeValue = GetFontSchemeValue(style.Scheme.Value);
-                rPrElement.AddChildElementWithAttribute("scheme", "val", schemeValue);
+                if (fontStyle.Scheme == SchemeValue.Major)
+                { 
+                    rPrElement.AddChildElementWithAttribute("scheme", "val", "major");
+                }
+                else if (fontStyle.Scheme == SchemeValue.Minor)
+                { rPrElement.AddChildElementWithAttribute("scheme", "val", "minor"); }  
             }
             return rPrElement;
         }
@@ -392,28 +400,32 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="color">Color instance</param>
         /// <returns>XmlElement instance</returns>
-        private static XmlElement CreateColorElement(Extensions.Color color)
+        private static XmlElement CreateColorElement(Color color)
         {
             XmlElement colorElement = XmlElement.CreateElement("color");
-            if (color.Auto.HasValue && color.Auto.Value)
+            if (color.Value is AutoColor)
             {
                 colorElement.AddAttribute("auto", "1");
             }
-            if (color.Indexed.HasValue)
+            else if (color.Value is IndexedColor)
             {
-                colorElement.AddAttribute("indexed", ParserUtils.ToString((int)color.Indexed.Value));
+                colorElement.AddAttribute("indexed", color.Value.StringValue);
             }
-            if (!string.IsNullOrEmpty(color.Rgb))
+            else if (color.Value is SrgbColor)
             {
-                colorElement.AddAttribute("rgb", color.Rgb);
+                colorElement.AddAttribute("rgb", color.Value.StringValue);
             }
-            if (color.Theme.HasValue)
+            else if (color.Value is ThemeColor)
             {
-                colorElement.AddAttribute("theme", ParserUtils.ToString((int)color.Theme.Value));
+                colorElement.AddAttribute("theme", color.Value.StringValue);
             }
-            if (color.Tint != 0.0)
+            else if (color.Value is SystemColor)
             {
-                colorElement.AddAttribute("tint", ParserUtils.ToString(color.Tint));
+                colorElement.AddAttribute("theme", color.Value.StringValue);
+            }
+            if (color.Tint.HasValue)
+            {
+                colorElement.AddAttribute("tint", ParserUtils.ToString(color.Tint.Value));
             }
             return colorElement;
         }
@@ -433,86 +445,23 @@ namespace NanoXLSX
             return rPhElement;
         }
 
-        /// <summary>
-        /// Converts UnderlineStyle enum to OOXML string value
-        /// </summary>
-        /// <param name="style">UnderlineStyle enum value</param>
-        /// <returns>OOXML string value</returns>
-        private static string GetUnderlineValue(UnderlineStyle style)
-        {
-            switch (style)
-            {
-                case UnderlineStyle.Single:
-                    return "single";
-                case UnderlineStyle.Double:
-                    return "double";
-                case UnderlineStyle.SingleAccounting:
-                    return "singleAccounting";
-                case UnderlineStyle.DoubleAccounting:
-                    return "doubleAccounting";
-                case UnderlineStyle.None:
-                    return "none";
-                default:
-                    return "single";
-            }
-        }
-
-        /// <summary>
-        /// Converts VerticalAlignment enum to OOXML string value
-        /// </summary>
-        /// <param name="alignment">VerticalAlignment enum value</param>
-        /// <returns>OOXML string value</returns>
-        private static string GetVerticalAlignmentValue(VerticalAlignment alignment)
-        {
-            switch (alignment)
-            {
-                case VerticalAlignment.Baseline:
-                    return "baseline";
-                case VerticalAlignment.Superscript:
-                    return "superscript";
-                case VerticalAlignment.Subscript:
-                    return "subscript";
-                default:
-                    return "baseline";
-            }
-        }
-
-        /// <summary>
-        /// Converts FontScheme enum to OOXML string value
-        /// </summary>
-        /// <param name="scheme">FontScheme enum value</param>
-        /// <returns>OOXML string value</returns>
-        private static string GetFontSchemeValue(FontScheme scheme)
-        {
-            switch (scheme)
-            {
-                case FontScheme.None:
-                    return "none";
-                case FontScheme.Major:
-                    return "major";
-                case FontScheme.Minor:
-                    return "minor";
-                default:
-                    return "none";
-            }
-        }
 
         /// <summary>
         /// Converts PhoneticType enum to OOXML string value
         /// </summary>
         /// <param name="type">PhoneticType enum value</param>
         /// <returns>OOXML string value</returns>
-        private static string GetPhoneticTypeValue(PhoneticType type)
+        private static string GetPhoneticTypeValue(PhoneticRun.PhoneticType type)
         {
             switch (type)
             {
-                case PhoneticType.HalfwidthKatakana:
+                case PhoneticRun.PhoneticType.HalfwidthKatakana:
                     return "halfwidthKatakana";
-                case PhoneticType.FullwidthKatakana:
+                case PhoneticRun.PhoneticType.FullwidthKatakana:
                     return "fullwidthKatakana";
-                case PhoneticType.Hiragana:
+                case PhoneticRun.PhoneticType.Hiragana:
                     return "Hiragana";
-                case PhoneticType.NoConversion:
+                case PhoneticRun.PhoneticType.NoConversion:
                     return "noConversion";
                 default:
                     return "fullwidthKatakana";
@@ -524,17 +473,17 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="alignment">PhoneticAlignment enum value</param>
         /// <returns>OOXML string value</returns>   
-        private static string GetPhoneticAlignmentValue(PhoneticAlignment alignment)
+        private static string GetPhoneticAlignmentValue(PhoneticRun.PhoneticAlignment alignment)
         {
             switch (alignment)
             {
-                case PhoneticAlignment.NoControl:
+                case PhoneticRun.PhoneticAlignment.NoControl:
                     return "noControl";
-                case PhoneticAlignment.Left:
+                case PhoneticRun.PhoneticAlignment.Left:
                     return "left";
-                case PhoneticAlignment.Center:
+                case PhoneticRun.PhoneticAlignment.Center:
                     return "center";
-                case PhoneticAlignment.Distributed:
+                case PhoneticRun.PhoneticAlignment.Distributed:
                     return "distributed";
                 default:
                     return "left";

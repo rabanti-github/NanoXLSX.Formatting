@@ -5,25 +5,27 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using static NanoXLSX.Extensions.Color;
+using NanoXLSX.Colors;
+using NanoXLSX.Styles;
+using NanoXLSX.Themes;
 
 namespace NanoXLSX.Extensions
 {
     /// <summary>
-    /// Builder for creating inline text styles with a fluent API.
+    /// Builder for creating inline <see cref="Styles.Font"/> styles with a fluent API.
     /// </summary>
     public class InlineStyleBuilder
     {
-        private readonly InlineStyle style = new InlineStyle();
+        private Font style = new Font();
 
         /// <summary>
         /// Sets the font name for the inline style.
         /// </summary>
         /// <param name="fontName">Font name</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder Font(string fontName)
+        public InlineStyleBuilder FontName(string fontName)
         {
-            style.FontName = fontName;
+            style.Name = fontName;
             return this;
         }
 
@@ -34,7 +36,7 @@ namespace NanoXLSX.Extensions
         /// <returns>The current builder instance</returns>
         public InlineStyleBuilder Size(float size)
         {
-            style.FontSize = size;
+            style.Size = size;
             return this;
         }
 
@@ -67,7 +69,7 @@ namespace NanoXLSX.Extensions
         /// <returns>The current builder instance</returns>
         public InlineStyleBuilder Strikethrough(bool strikethrough = true)
         {
-            style.Strikethrough = strikethrough;
+            style.Strike = strikethrough;
             return this;
         }
 
@@ -76,7 +78,7 @@ namespace NanoXLSX.Extensions
         /// </summary>
         /// <param name="style">Underline style</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder Underline(UnderlineStyle style = UnderlineStyle.Single)
+        public InlineStyleBuilder Underline(Font.UnderlineValue style = Styles.Font.UnderlineValue.Single)
         {
             this.style.Underline = style;
             return this;
@@ -89,41 +91,31 @@ namespace NanoXLSX.Extensions
         /// <returns>The current builder instance</returns>
         public InlineStyleBuilder Color(Color color)
         {
-            style.Color = color;
+            style.ColorValue = color;
             return this;
         }
 
         /// <summary>
-        /// Sets the font color from an RGB hex string.
+        /// Sets the font color from an RGB or ARGB hex string.
         /// </summary>
-        /// <param name="rgb">RGB value (6 characters with optional, leading #)</param>
+        /// <param name="argb">RGB value (6 characters) or ARGB (8 characters) with optional, leading #</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder ColorRgb(string rgb)
-        {
-            style.Color = Extensions.Color.FromRgb(rgb);
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the font color from an ARGB hex string.
-        /// </summary>
-        /// <param name="argb">ARGB value (8 characters with optional, leading #)</param>
-        /// <returns>The current builder instance</returns>
+        /// \remark <remarks>In case of a 6 character RGB value, 'FF' will be automatically prepended to this value</remarks>
         public InlineStyleBuilder ColorArgb(string argb)
         {
-            style.Color = Extensions.Color.FromArgb(argb);
+            style.ColorValue = Colors.Color.CreateRgb(argb);
             return this;
         }
 
         /// <summary>
         /// Sets the font color from a theme color.
         /// </summary>
-        /// <param name="theme">Color scheme</param>
+        /// <param name="theme">Color scheme element</param>
         /// <param name="tint">Optional tint value (-1.0 to 1.0, default = 0.0)</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder ColorTheme(ColorScheme theme, double tint = 0.0)
+        public InlineStyleBuilder ColorTheme(Theme.ColorSchemeElement theme, double tint = 0.0)
         {
-            style.Color = Extensions.Color.FromTheme(theme, tint);
+            style.ColorValue = Colors.Color.CreateTheme(theme, tint);
             return this;
         }
 
@@ -132,9 +124,20 @@ namespace NanoXLSX.Extensions
         /// </summary>
         /// <param name="indexed">Indexed color value</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder ColorIndexed(IndexedColor indexed)
+        public InlineStyleBuilder ColorIndexed(IndexedColor.Value indexed)
         {
-            style.Color = Extensions.Color.FromIndexed(indexed);
+            style.ColorValue = Colors.Color.CreateIndexed(indexed);
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the font color from an indexed color value, using the index number (0-65).
+        /// </summary>
+        /// <param name="colorIndex">Indexed color value</param>
+        /// <returns>The current builder instance</returns>
+        public InlineStyleBuilder ColorIndexed(int colorIndex)
+        {
+            style.ColorValue = Colors.Color.CreateIndexed(colorIndex);
             return this;
         }
 
@@ -143,7 +146,7 @@ namespace NanoXLSX.Extensions
         /// </summary>
         /// <param name="alignment">Alignment value</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder VerticalAlign(VerticalAlignment alignment)
+        public InlineStyleBuilder VerticalAlign(Font.VerticalTextAlignValue alignment)
         {
             style.VerticalAlign = alignment;
             return this;
@@ -155,7 +158,7 @@ namespace NanoXLSX.Extensions
         /// <returns>The current builder instance</returns>
         public InlineStyleBuilder Superscript()
         {
-            style.VerticalAlign = VerticalAlignment.Superscript;
+            style.VerticalAlign = Font.VerticalTextAlignValue.Superscript;
             return this;
         }
 
@@ -165,7 +168,7 @@ namespace NanoXLSX.Extensions
         /// <returns>The current builder instance</returns>
         public InlineStyleBuilder Subscript()
         {
-            style.VerticalAlign = VerticalAlignment.Subscript;
+            style.VerticalAlign = Font.VerticalTextAlignValue.Subscript;
             return this;
         }
 
@@ -216,9 +219,9 @@ namespace NanoXLSX.Extensions
         /// <summary>
         /// Sets the font charset.
         /// </summary>
-        /// <param name="charset">Font charset</param>
+        /// <param name="charset">Font charset value</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder Charset(FontCharset charset)
+        public InlineStyleBuilder Charset(Font.CharsetValue charset)
         {
             style.Charset = charset;
             return this;
@@ -227,9 +230,9 @@ namespace NanoXLSX.Extensions
         /// <summary>
         /// Sets the font family.
         /// </summary>
-        /// <param name="family">Font family</param>
+        /// <param name="family">Font family value</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder Family(FontFamily family)
+        public InlineStyleBuilder Family(Font.FontFamilyValue family)
         {
             style.Family = family;
             return this;
@@ -238,9 +241,9 @@ namespace NanoXLSX.Extensions
         /// <summary>
         /// Sets the font scheme.
         /// </summary>
-        /// <param name="scheme">Font scheme</param>
+        /// <param name="scheme">Font scheme value</param>
         /// <returns>The current builder instance</returns>
-        public InlineStyleBuilder Scheme(FontScheme scheme)
+        public InlineStyleBuilder Scheme(Font.SchemeValue scheme)
         {
             style.Scheme = scheme;
             return this;
@@ -251,12 +254,12 @@ namespace NanoXLSX.Extensions
         /// </summary>
         /// <param name="reset">If true, resets the builder after building (default = true)</param>
         /// <returns>The built inline style</returns>
-        public InlineStyle Build(bool reset = true)
+        public Font Build(bool reset = true)
         {
-            InlineStyle instance = style.Copy();
+            Font instance = style.CopyFont();
             if (reset)
             {
-                style.Reset();
+                style = new Font();
             }
             return instance;
         }
