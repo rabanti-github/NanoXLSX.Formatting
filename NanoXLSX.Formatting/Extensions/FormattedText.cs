@@ -196,6 +196,15 @@ namespace NanoXLSX
             return copy;
         }
 
+        /// <summary>
+        /// Gets the string representation of the formatted text without formatting (plain text). The method is synonymous to the <see cref="PlainText"/> property.
+        /// </summary>
+        /// <returns>Plain text of the formatted text</returns>
+        override public string ToString()
+        {
+            return PlainText;
+        }
+
         #endregion
 
         #region privateMethods

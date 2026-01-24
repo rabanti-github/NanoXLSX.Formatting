@@ -88,7 +88,7 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="stream">MemoryStream to be read</param>
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
-        /// <param name="inlinePluginHandler"></param>
+        /// <param name="inlinePluginHandler">Inline plug-in handler</param>
         public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;

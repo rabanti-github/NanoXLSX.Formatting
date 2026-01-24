@@ -18,6 +18,7 @@ namespace NanoXLSX.Internal.Readers
     [NanoXlsxQueuePlugIn(PlugInUUID = "FORMATTED_TEXT_SHARED_STRINGS_REPLACER", QueueUUID = PlugInUUID.ReaderAppendingQueue)]
     internal class SharedStringsReplacer : IPluginQueueReader
     {
+        #region properties
         /// <summary>
         /// Reader options
         /// </summary>
@@ -26,13 +27,25 @@ namespace NanoXLSX.Internal.Readers
         /// Current workbook
         /// </summary>
         public Workbook Workbook { get; set; }
+        #endregion
 
+        #region methods
+        /// <summary>
+        /// Initialization method (interface implementation)
+        /// </summary>
+        /// <param name="stream">MemoryStream to be read</param>
+        /// <param name="workbook">Workbook reference</param>
+        /// <param name="readerOptions">Reader options</param>
+        /// <param name="inlinePluginHandler">Inline plug-in handler</param>
         public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.Workbook = workbook;
             this.Options = readerOptions;
         }
 
+        /// <summary>
+        /// Execution method (interface implementation)
+        /// </summary>
         public void Execute()
         {
             Dictionary<string, FormattedText> formattedTexts = Workbook.AuxiliaryData.GetData<Dictionary<string, FormattedText>>(PlugInUUID.SharedStringsReader, FormattedSharedStringsReader.AUXILIARY_DATA_ID);
@@ -56,5 +69,6 @@ namespace NanoXLSX.Internal.Readers
                 }
             }
         }
+        #endregion
     }
 }

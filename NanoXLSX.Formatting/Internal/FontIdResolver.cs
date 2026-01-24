@@ -21,12 +21,27 @@ namespace NanoXLSX.Internal
     [NanoXlsxQueuePlugIn(PlugInUUID = "FORMATTED_TEXT_FONT_ID_RESOLVER", QueueUUID = PlugInUUID.WriterPrependingQueue)]
     internal class FontIdResolver : IPluginWriter
     {
+        #region privateFields
         private Workbook workbook;
         private StyleManager styleManager;
+        #endregion
+
+        #region properties
+        /// <summary>
+        /// Current workbook
+        /// </summary>
         public Workbook Workbook { get => workbook; set => workbook = value; }
 
+        /// <summary>
+        /// XML element representation (interface implementation). Not used in this class.
+        /// </summary>
         public XmlElement XmlElement { get { return null; } } // NoOp
+        #endregion
 
+        #region methods
+        /// <summary>
+        /// Execute method (interface implementation).
+        /// </summary>
         public void Execute()
         {
             Font[] fonts = styleManager.GetFonts();
@@ -61,10 +76,15 @@ namespace NanoXLSX.Internal
             }
         }
 
+        /// <summary>
+        /// Initialization method (interface implementation).
+        /// </summary>
+        /// <param name="baseWriter">Underlaying base writer instance</param>
         public void Init(IBaseWriter baseWriter)
         {
             this.workbook = baseWriter.Workbook;
             this.styleManager = baseWriter.Styles;
         }
+        #endregion
     }
 }
