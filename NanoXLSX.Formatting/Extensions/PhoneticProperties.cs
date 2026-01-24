@@ -5,7 +5,6 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
 using NanoXLSX.Styles;
 
 namespace NanoXLSX.Extensions
@@ -19,6 +18,11 @@ namespace NanoXLSX.Extensions
         /// Font reference that is used to render the Ruby text
         /// </summary>
         public Font FontReference { get; set; }
+        /// <summary>
+        /// Internal Id of the font used for phonetic text
+        /// </summary>
+        /// \remark <remarks>This ID will be resolved automatically, when the workbook is saved, according to <see cref="PhoneticProperties.FontReference"/></remarks>
+        public int FontId { get; set; }
         /// <summary>
         /// The type of phonetic text representation. Default is FullwidthKatakana.
         /// </summary>
