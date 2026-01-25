@@ -5,7 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
-using System;
+using NanoXLSX.Exceptions;
 using NanoXLSX.Utils.Xml;
 
 namespace NanoXLSX.Extensions
@@ -49,10 +49,24 @@ namespace NanoXLSX.Extensions
         }
         #endregion
 
+        private string text;
+
         /// <summary>
         /// The phonetic text to be displayed (Ruby text,like Furigana, Pinyin or Zhuyin).
         /// </summary>
-        public string Text { get; set; }
+        /// <exception cref="FormatException">Thrown when the text is null or empty</exception>
+        public string Text 
+        { 
+            get { return text; }
+            set 
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new FormatException("The text of the phonetic run cannot be null or empty");
+                }
+                text = XmlUtils.SanitizeXmlValue(value);
+            } 
+        }
         /// <summary>
         /// The start index of the base text (character where the Ruby text starts)
         /// </summary>
@@ -71,11 +85,7 @@ namespace NanoXLSX.Extensions
         /// <exception cref="FormatException">Thrown when the text is null or empty</exception>
         public PhoneticRun(string text, uint startBase, uint endBase)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                throw new FormatException("The text of the phonetic run cannot be null or empty");
-            }
-            Text = XmlUtils.SanitizeXmlValue(text);
+            Text = text;
             StartBase = startBase;
             EndBase = endBase;
         }

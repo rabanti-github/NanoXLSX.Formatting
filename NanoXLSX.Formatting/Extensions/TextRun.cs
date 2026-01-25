@@ -15,10 +15,24 @@ namespace NanoXLSX.Extensions
     /// </summary>
     public class TextRun
     {
+        private string text;
+
         /// <summary>
         /// Plain text of the run.
         /// </summary>
-        public string Text { get; set; }
+        /// <exception cref="Exceptions.FormatException">Thrown when the text is null</exception>
+        public string Text 
+        {
+            get { return text; }
+            set
+            {
+                if (value == null)
+                {
+                    throw new Exceptions.FormatException("The text of a text run cannot be null");
+                }
+                text = XmlUtils.SanitizeXmlValue(value); ;
+            }
+        }
         /// <summary>
         /// Font style applied to the text run.
         /// </summary>
@@ -32,11 +46,7 @@ namespace NanoXLSX.Extensions
         /// <exception cref="Exceptions.FormatException">Thrown when the text is null</exception>
         public TextRun(string text, Font fontStyle = null)
         {
-            if (text == null)
-            {
-                throw new Exceptions.FormatException("The text of a text run cannot be null");
-            }
-            Text = XmlUtils.SanitizeXmlValue(text);
+            Text = text;
             FontStyle = fontStyle;
         }
 

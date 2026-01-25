@@ -15,6 +15,7 @@ using NanoXLSX.Styles;
 using NanoXLSX.Utils;
 using NanoXLSX.Utils.Xml;
 using static NanoXLSX.Styles.Font;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX
 {

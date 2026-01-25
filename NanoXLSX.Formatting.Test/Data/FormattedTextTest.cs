@@ -1,8 +1,9 @@
-﻿using System;
-using Xunit;
-using NanoXLSX;
+﻿using Xunit;
 using NanoXLSX.Extensions;
 using NanoXLSX.Styles;
+using NanoXLSX.Exceptions;
+using System;
+using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Tests
 {
@@ -146,6 +147,86 @@ namespace NanoXLSX.Tests
             Assert.Same(text, result);
             Assert.Single(text.Runs);
             Assert.Equal(runText, text.PlainText);
+        }
+
+        [Fact(DisplayName = "Test of the AddRun method with style builder")]
+        public void AddRunWithStyleBuilderTest()
+        {
+            FormattedText text = new FormattedText();
+            FormattedText result = text.AddRun("Test", builder => builder.Bold());
+
+            Assert.Same(text, result);
+            Assert.Single(text.Runs);
+            Assert.Equal("Test", text.PlainText);
+            Assert.NotNull(text.Runs[0].FontStyle);
+            Assert.True(text.Runs[0].FontStyle.Bold);
+        }
+
+        [Fact(DisplayName = "Test of the AddRun method with style builder and null action")]
+        public void AddRunWithNullStyleBuilderActionTest()
+        {
+            FormattedText text = new FormattedText();
+            FormattedText result = text.AddRun("Test", (Action<InlineStyleBuilder>)null);
+
+            Assert.Same(text, result);
+            Assert.Single(text.Runs);
+            Assert.Equal("Test", text.PlainText);
+        }
+
+        [Fact(DisplayName = "Test of the AddRun method with style builder and multiple style operations")]
+        public void AddRunWithStyleBuilderMultipleOperationsTest()
+        {
+            FormattedText text = new FormattedText();
+            FormattedText result = text.AddRun("Test", builder =>
+            {
+                builder.Bold();
+                builder.Italic();
+                builder.Size(14);
+            });
+
+            Assert.Same(text, result);
+            Assert.Single(text.Runs);
+            Assert.NotNull(text.Runs[0].FontStyle);
+            Assert.True(text.Runs[0].FontStyle.Bold);
+            Assert.True(text.Runs[0].FontStyle.Italic);
+            Assert.Equal(14, text.Runs[0].FontStyle.Size);
+        }
+
+        [Fact(DisplayName = "Test of the AddRun method with style builder and null text - should throw FormatException")]
+        public void AddRunWithStyleBuilderAndNullTextTest()
+        {
+            FormattedText text = new FormattedText();
+            Assert.Throws<FormatException>(() => text.AddRun(null, builder => builder.Bold()));
+        }
+
+        [Fact(DisplayName = "Test of the AddRun method with style builder and empty text - should throw FormatException")]
+        public void AddRunWithStyleBuilderAndEmptyTextTest()
+        {
+            FormattedText text = new FormattedText();
+            Assert.Throws<FormatException>(() => text.AddRun("", builder => builder.Bold()));
+        }
+
+        [Fact(DisplayName = "Test of the AddRun method with style builder chaining")]
+        public void AddRunWithStyleBuilderChainingTest()
+        {
+            FormattedText text = new FormattedText();
+            FormattedText result = text
+                .AddRun("Bold", builder => builder.Bold())
+                .AddRun(" ")
+                .AddRun("Italic", builder => builder.Italic());
+
+            Assert.Same(text, result);
+            Assert.Equal(3, text.Runs.Count);
+            Assert.Equal("Bold Italic", text.PlainText);
+        }
+
+        [Fact(DisplayName = "Test of the AddRun method with style builder containing line breaks sets WrapText")]
+        public void AddRunWithStyleBuilderAndLineBreakSetsWrapTextTest()
+        {
+            FormattedText text = new FormattedText();
+            text.AddRun("Line1\nLine2", builder => builder.Bold());
+
+            Assert.True(text.WrapText);
         }
 
         [Fact(DisplayName = "Test of the AddRun method with text and font style")]
@@ -562,7 +643,6 @@ namespace NanoXLSX.Tests
         {
             Style style1 = FormattedText.LineBreakStyle;
             Style style2 = FormattedText.LineBreakStyle;
-
             Assert.Same(style1, style2);
         }
     }
