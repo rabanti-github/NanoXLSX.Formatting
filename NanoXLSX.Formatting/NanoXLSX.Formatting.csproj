@@ -43,7 +43,8 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.5" />
+      <!--<PackageReference Include="NanoXLSX.Core" Version="3.0.*" /> -->
+      <PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.6" />
     </ItemGroup>
 
 

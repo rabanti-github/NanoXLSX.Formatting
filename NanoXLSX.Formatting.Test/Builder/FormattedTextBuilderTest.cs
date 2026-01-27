@@ -6,7 +6,7 @@ using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Formatting.Test.Builder
 {
-    public  class FormattedTextBuilderTest
+    public class FormattedTextBuilderTest
     {
         [Fact(DisplayName = "Test of the default constructor")]
         public void ConstructorTest()

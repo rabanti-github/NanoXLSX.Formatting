@@ -1,7 +1,6 @@
 ﻿using NanoXLSX.Exceptions;
 using NanoXLSX.Extensions;
 using Xunit;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace NanoXLSX.Formatting.Test.Data
 {
@@ -75,7 +74,7 @@ namespace NanoXLSX.Formatting.Test.Data
         [Theory(DisplayName = "Test of the Text property setter with null or empty - should throw FormatException")]
         [InlineData("")]
         [InlineData(null)]
-        public void TextPropertySetterWithNullFailingTest(string givebValue )
+        public void TextPropertySetterWithNullFailingTest(string givebValue)
         {
             PhoneticRun run = new PhoneticRun("Initial", 0, 5);
             Assert.Throws<FormatException>(() => run.Text = givebValue);
@@ -138,7 +137,7 @@ namespace NanoXLSX.Formatting.Test.Data
         [InlineData("　　", 1u, 3u)]
         [InlineData("0123", 4u, 7u)]
         [InlineData("\t", 100u, 200u)]
-        [InlineData("\n\n",0u, 1u)]
+        [InlineData("\n\n", 0u, 1u)]
         public void CopyWithVariousValuesTest(string text, uint startBase, uint endBase)
         {
             PhoneticRun original = new PhoneticRun(text, startBase, endBase);

@@ -21,7 +21,7 @@ namespace NanoXLSX.Extensions
         /// Plain text of the run.
         /// </summary>
         /// <exception cref="Exceptions.FormatException">Thrown when the text is null</exception>
-        public string Text 
+        public string Text
         {
             get { return text; }
             set

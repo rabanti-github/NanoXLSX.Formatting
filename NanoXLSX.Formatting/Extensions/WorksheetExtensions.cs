@@ -13,7 +13,7 @@ using NanoXLSX.Styles;
 namespace NanoXLSX
 {
     /// <summary>
-    /// Writer extension methods for the <see cref="NanoXLSX.Worksheet">Workbook</see> class
+    /// Writer extension methods for the <see cref="NanoXLSX.Worksheet">Worksheet</see> class
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class WorksheetExtensions
@@ -116,13 +116,14 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="worksheet">Worksheet reference</param>
         /// <param name="values">List of formatted text objects to insert. Null values are treated as empty cells</param>
-        /// <param name="startAddress">Start address of the range</param>
-        /// <param name="endAddress">End address of the range</param>
+        /// <param name="startAddress">Start address of the range as string</param>
+        /// <param name="endAddress">End address of the range as string</param>
+        /// <param name="style">Optional style to apply to all cells in the range. Will be merged with <see cref="FormattedText.LineBreakStyle"/> for cells where <see cref="FormattedText.WrapText"/> is true</param>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the list of formatted texts is null or empty</exception>
         /// <exception cref="RangeException">Throws a RangeException if the number of values does not match the number of cells in the range, or if any address is out of range</exception>
-        public static void AddFormattedTextCellRange(this Worksheet worksheet, IReadOnlyList<FormattedText> values, Address startAddress, Address endAddress)
+        public static void AddFormattedTextCellRange(this Worksheet worksheet, IReadOnlyList<FormattedText> values, string startAddress, string endAddress, Style style = null)
         {
-            worksheet.AddCellRange(values, startAddress, endAddress);
+            AddFormattedTextRange(worksheet, values, (Address)startAddress, (Address)endAddress, style);
         }
 
         /// <summary>
@@ -133,10 +134,10 @@ namespace NanoXLSX
         /// <param name="values">List of formatted text objects to insert. Null values are treated as empty cells</param>
         /// <param name="startAddress">Start address of the range</param>
         /// <param name="endAddress">End address of the range</param>
-        /// <param name="style">Style to apply to all cells in the range. Will be merged with <see cref="FormattedText.LineBreakStyle"/> for cells where <see cref="FormattedText.WrapText"/> is true</param>
+        /// <param name="style">Optional style to apply to all cells in the range. Will be merged with <see cref="FormattedText.LineBreakStyle"/> for cells where <see cref="FormattedText.WrapText"/> is true</param>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the list of formatted texts is null or empty</exception>
         /// <exception cref="RangeException">Throws a RangeException if the number of values does not match the number of cells in the range, or if any address is out of range</exception>
-        public static void AddFormattedTextCellRange(this Worksheet worksheet, IReadOnlyList<FormattedText> values, Address startAddress, Address endAddress, Style style)
+        public static void AddFormattedTextCellRange(this Worksheet worksheet, IReadOnlyList<FormattedText> values, Address startAddress, Address endAddress, Style style = null)
         {
             AddFormattedTextRange(worksheet, values, startAddress, endAddress, style);
         }
@@ -148,11 +149,11 @@ namespace NanoXLSX
         /// <param name="worksheet">Worksheet reference</param>
         /// <param name="values">List of formatted text objects to insert. Null values are treated as empty cells</param>
         /// <param name="cellRange">Cell range in the format A1:B10 (e.g., "A1:C5", "$A$1:$C$5", "a1:c5"). Case-insensitive, dollar signs are ignored</param>
-        /// <param name="style">Style to apply to all cells in the range. Will be merged with <see cref="FormattedText.LineBreakStyle"/> for cells where <see cref="FormattedText.WrapText"/> is true</param>
+        /// <param name="style">Optional style to apply to all cells in the range. Will be merged with <see cref="FormattedText.LineBreakStyle"/> for cells where <see cref="FormattedText.WrapText"/> is true</param>
         /// <exception cref="WorksheetException">Throws a WorksheetException if the list of formatted texts is null or empty</exception>
         /// <exception cref="FormatException">Throws a FormatException if the cell range format is malformed</exception>
         /// <exception cref="RangeException">Throws a RangeException if the number of values does not match the number of cells in the range, or if any address is out of range</exception>
-        public static void AddFormattedTextCellRange(this Worksheet worksheet, IReadOnlyList<FormattedText> values, string cellRange, Style style)
+        public static void AddFormattedTextCellRange(this Worksheet worksheet, IReadOnlyList<FormattedText> values, string cellRange, Style style = null)
         {
             Range range = new Range(cellRange);
             AddFormattedTextRange(worksheet, values, range.StartAddress, range.EndAddress, style);
@@ -238,7 +239,6 @@ namespace NanoXLSX
             {
                 throw new WorksheetException("A range of formatted texts to add cannot be null or empty");
             }
-
             List<Cell> cells = new List<Cell>(formattedTexts.Count);
             foreach (FormattedText text in formattedTexts)
             {
@@ -264,12 +264,17 @@ namespace NanoXLSX
                 }
                 else if (!text.WrapText && cellStyle != null)
                 {
-                    worksheet.AddCellRange(cells, startAddress, endAddress, cellStyle);
+                    cell.SetStyle(cellStyle);
                 }
-                else
-                {
-                    worksheet.AddCellRange(cells, startAddress, endAddress);
-                }
+                cells.Add(cell);
+            }
+            if (cellStyle != null)
+            {
+                worksheet.AddCellRange(cells, startAddress, endAddress, cellStyle);
+            }
+            else
+            {
+                worksheet.AddCellRange(cells, startAddress, endAddress);
             }
         }
 

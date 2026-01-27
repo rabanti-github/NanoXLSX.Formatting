@@ -59,6 +59,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets or sets whether the runs should be rendered with text wrapping, if there are line breaks present.
         /// </summary>
+        /// \remark <remarks>The actual style component, responsible for rendering wrapped texts within a cell, is only added when saving the workbook</remarks>
         public bool WrapText { get; set; }
 
         /// <summary>

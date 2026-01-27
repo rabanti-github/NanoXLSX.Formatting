@@ -55,17 +55,17 @@ namespace NanoXLSX.Extensions
         /// The phonetic text to be displayed (Ruby text,like Furigana, Pinyin or Zhuyin).
         /// </summary>
         /// <exception cref="FormatException">Thrown when the text is null or empty</exception>
-        public string Text 
-        { 
+        public string Text
+        {
             get { return text; }
-            set 
+            set
             {
                 if (string.IsNullOrEmpty(value))
                 {
                     throw new FormatException("The text of the phonetic run cannot be null or empty");
                 }
                 text = XmlUtils.SanitizeXmlValue(value);
-            } 
+            }
         }
         /// <summary>
         /// The start index of the base text (character where the Ruby text starts)

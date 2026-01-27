@@ -1,8 +1,7 @@
-﻿using Xunit;
-using NanoXLSX.Extensions;
+﻿using NanoXLSX.Extensions;
 using NanoXLSX.Styles;
-using NanoXLSX.Exceptions;
 using System;
+using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
 namespace NanoXLSX.Tests

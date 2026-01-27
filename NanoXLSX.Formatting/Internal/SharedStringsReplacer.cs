@@ -27,6 +27,10 @@ namespace NanoXLSX.Internal.Readers
         /// Current workbook
         /// </summary>
         public Workbook Workbook { get; set; }
+        /// <summary>
+        /// Reference to a ReaderPlugInHandler, to be used for post operations in the <see cref="Execute"/> method
+        /// </summary>
+        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region methods
@@ -41,6 +45,7 @@ namespace NanoXLSX.Internal.Readers
         {
             this.Workbook = workbook;
             this.Options = readerOptions;
+            this.InlinePluginHandler = inlinePluginHandler;
         }
 
         /// <summary>
