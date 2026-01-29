@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System.Collections.Generic;
 using NanoXLSX.Styles;
 
 namespace NanoXLSX.Extensions
@@ -54,5 +55,31 @@ namespace NanoXLSX.Extensions
             };
         }
 
+        /// <summary>
+        /// Equals override to compare phonetic properties.
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True, if the other object is equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is PhoneticProperties properties)) {  return false; }
+            return ((FontReference == null && properties.FontReference == null) ||
+                    (FontReference != null && FontReference.Equals(properties.FontReference))) &&
+                   Type == properties.Type &&
+                   Alignment == properties.Alignment;
+        }
+
+        /// <summary>
+        /// HashCode override for phonetic properties.
+        /// </summary>
+        /// <returns>Hash code of the current object</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = 136542229;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Font>.Default.GetHashCode(FontReference);
+            hashCode = hashCode * -1521134295 + Type.GetHashCode();
+            hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
+            return hashCode;
+        }
     }
 }

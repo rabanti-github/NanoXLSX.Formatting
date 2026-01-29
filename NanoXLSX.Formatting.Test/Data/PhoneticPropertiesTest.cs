@@ -267,5 +267,111 @@ namespace NanoXLSX.Formatting.Test.Data
             Assert.Equal(PhoneticRun.PhoneticAlignment.Center, properties.Alignment);
             Assert.Equal(7, properties.FontId);
         }
+
+        [Fact(DisplayName = "Test of the Equals method for equality")]
+        public void EqualsTestForEquality()
+        {
+            Font font1 = new Font();
+            font1.Bold = true;
+            font1.Size = 12;
+            font1.Name = "Arial";
+
+            Font font2 = new Font();
+            font2.Bold = true;
+            font2.Size = 12;
+            font2.Name = "Arial";
+
+            PhoneticProperties props1 = new PhoneticProperties(font1);
+            props1.Type = PhoneticRun.PhoneticType.Hiragana;
+            props1.Alignment = PhoneticRun.PhoneticAlignment.Center;
+
+            PhoneticProperties props2 = new PhoneticProperties(font2);
+            props2.Type = PhoneticRun.PhoneticType.Hiragana;
+            props2.Alignment = PhoneticRun.PhoneticAlignment.Center;
+
+            Assert.True(props1.Equals(props2));
+        }
+
+        [Fact(DisplayName = "Test of the Equals method for inequality")]
+        public void EqualsTestForInequality()
+        {
+            Font font1 = new Font();
+            font1.Bold = true;
+            font1.Size = 12;
+
+            Font font2 = new Font();
+            font2.Bold = false;
+            font2.Size = 12;
+
+            PhoneticProperties props1 = new PhoneticProperties(font1);
+            props1.Type = PhoneticRun.PhoneticType.Hiragana;
+            props1.Alignment = PhoneticRun.PhoneticAlignment.Center;
+
+            PhoneticProperties props2 = new PhoneticProperties(font2);
+            props2.Type = PhoneticRun.PhoneticType.Hiragana;
+            props2.Alignment = PhoneticRun.PhoneticAlignment.Center;
+
+            Assert.False(props1.Equals(props2));
+        }
+
+        [Fact(DisplayName = "Test of the Equals method for inequality on different object types")]
+        public void EqualsTestForInequality2()
+        {
+            Font font1 = new Font();
+            font1.Bold = true;
+            font1.Size = 12;
+
+            PhoneticProperties props1 = new PhoneticProperties(font1);
+            props1.Type = PhoneticRun.PhoneticType.Hiragana;
+            props1.Alignment = PhoneticRun.PhoneticAlignment.Center;
+
+            string obj2 = "This is a string object";
+
+            Assert.False(props1.Equals(obj2));
+        }
+
+        [Fact(DisplayName = "Test of the GetHashCode method for equality")]
+        public void GetHashCodeTestForEquality()
+        {
+            Font font1 = new Font();
+            font1.Bold = true;
+            font1.Size = 12;
+            font1.Name = "Arial";
+
+            Font font2 = new Font();
+            font2.Bold = true;
+            font2.Size = 12;
+            font2.Name = "Arial";
+
+            PhoneticProperties props1 = new PhoneticProperties(font1);
+            props1.Type = PhoneticRun.PhoneticType.Hiragana;
+            props1.Alignment = PhoneticRun.PhoneticAlignment.Center;
+
+            PhoneticProperties props2 = new PhoneticProperties(font2);
+            props2.Type = PhoneticRun.PhoneticType.Hiragana;
+            props2.Alignment = PhoneticRun.PhoneticAlignment.Center;
+
+            Assert.Equal(props1.GetHashCode(), props2.GetHashCode());
+        }
+
+        [Fact(DisplayName = "Test of the GetHashCode method for inequality")]
+        public void GetHashCodeTestForInequality()
+        {
+            Font font1 = new Font();
+            font1.Bold = true;
+
+            Font font2 = new Font();
+            font2.Bold = true;
+
+            PhoneticProperties props1 = new PhoneticProperties(font1);
+            props1.Type = PhoneticRun.PhoneticType.Hiragana;
+            props1.Alignment = PhoneticRun.PhoneticAlignment.Center;
+
+            PhoneticProperties props2 = new PhoneticProperties(font2);
+            props2.Type = PhoneticRun.PhoneticType.FullwidthKatakana;
+            props2.Alignment = PhoneticRun.PhoneticAlignment.Left;
+
+            Assert.NotEqual(props1.GetHashCode(), props2.GetHashCode());
+        }
     }
 }

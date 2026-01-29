@@ -576,7 +576,7 @@ namespace NanoXLSX.Formatting.Test.Worksheets
             Assert.Equal(Cell.CellType.Empty, cell2.DataType);
         }
 
-        //[Fact(DisplayName = "Test of AddFormattedTextCellRange with WrapText true and no style")]
+        [Fact(DisplayName = "Test of AddFormattedTextCellRange with WrapText true and no style")]
         public void AddFormattedTextCellRangeWithWrapTextAndNoStyleTest()
         {
             Workbook workbook = new Workbook("sheet1");

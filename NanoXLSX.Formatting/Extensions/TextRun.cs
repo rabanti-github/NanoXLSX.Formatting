@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System.Collections.Generic;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils.Xml;
 
@@ -59,5 +60,32 @@ namespace NanoXLSX.Extensions
             return new TextRun(this.Text, this.FontStyle?.CopyFont());
         }
 
+        /// <summary>
+        /// Equals override to compare text runs.
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True, if the other object is equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is TextRun run))
+                return false;
+
+            return text == run.text &&
+                   ((FontStyle == null && run.FontStyle == null) ||
+                    (FontStyle != null && FontStyle.Equals(run.FontStyle)));
+        }
+
+
+        /// <summary>
+        /// HashCode override for text runs.
+        /// </summary>
+        /// <returns>Hash code of the current object</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = 1049193379;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(text);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Font>.Default.GetHashCode(FontStyle);
+            return hashCode;
+        }
     }
 }

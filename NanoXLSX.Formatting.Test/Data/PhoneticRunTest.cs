@@ -191,5 +191,50 @@ namespace NanoXLSX.Formatting.Test.Data
             Assert.Equal(2, (int)PhoneticRun.PhoneticAlignment.Center);
             Assert.Equal(3, (int)PhoneticRun.PhoneticAlignment.Distributed);
         }
+
+        [Fact(DisplayName = "Test of the Equals method for equality")]
+        public void EqualsTestForEquality()
+        {
+            PhoneticRun run1 = new PhoneticRun("テスト", 0, 5);
+            PhoneticRun run2 = new PhoneticRun("テスト", 0, 5);
+
+            Assert.True(run1.Equals(run2));
+        }
+
+        [Fact(DisplayName = "Test of the Equals method for inequality")]
+        public void EqualsTestForInequality()
+        {
+            PhoneticRun run1 = new PhoneticRun("テスト", 0, 5);
+            PhoneticRun run2 = new PhoneticRun("テスト", 0, 10);
+
+            Assert.False(run1.Equals(run2));
+        }
+
+        [Fact(DisplayName = "Test of the Equals method for inequality on different object types")]
+        public void EqualsTestForInequality2()
+        {
+            PhoneticRun run1 = new PhoneticRun("テスト", 0, 5);
+            bool run2 = false;
+
+            Assert.False(run1.Equals(run2));
+        }
+
+        [Fact(DisplayName = "Test of the GetHashCode method for equality")]
+        public void GetHashCodeTestForEquality()
+        {
+            PhoneticRun run1 = new PhoneticRun("テスト", 0, 5);
+            PhoneticRun run2 = new PhoneticRun("テスト", 0, 5);
+
+            Assert.Equal(run1.GetHashCode(), run2.GetHashCode());
+        }
+
+        [Fact(DisplayName = "Test of the GetHashCode method for inequality")]
+        public void GetHashCodeTestForInequality()
+        {
+            PhoneticRun run1 = new PhoneticRun("テスト", 0, 5);
+            PhoneticRun run2 = new PhoneticRun("違う", 0, 5);
+
+            Assert.NotEqual(run1.GetHashCode(), run2.GetHashCode());
+        }
     }
 }

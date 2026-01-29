@@ -274,6 +274,8 @@ namespace NanoXLSX
             return GetXmlElement();
         }
 
+
+
         /// <summary>
         /// Creates a phonetic properties element (&lt;phoneticPr&gt;)
         /// </summary>
@@ -508,6 +510,44 @@ namespace NanoXLSX
                     return "left";
             }
         }
+
+        /// <summary>
+        /// Equals method override for comparing two FormattedText instances.
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True, if the other object is equal</returns>
+        public override bool Equals(object obj)
+        {
+            if (!(obj is FormattedText text))
+                return false;
+
+            return runs.SequenceEqual(text.runs) &&
+                   phoeticRuns.SequenceEqual(text.phoeticRuns) &&
+                   WrapText == text.WrapText &&
+                   EqualityComparer<PhoneticProperties>.Default.Equals(PhoneticProperties, text.PhoneticProperties);
+        }
+
+        /// <summary>
+        /// GetHashCode method override for FormattedText.
+        /// </summary>
+        /// <returns>Hash code of the current object</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = 703246462;
+            foreach (var run in runs)
+            {
+                hashCode = hashCode * -1521134295 + (run?.GetHashCode() ?? 0);
+            }
+            foreach (var phoneticRun in phoeticRuns)
+            {
+                hashCode = hashCode * -1521134295 + (phoneticRun?.GetHashCode() ?? 0);
+            }
+            hashCode = hashCode * -1521134295 + WrapText.GetHashCode();
+            hashCode = hashCode * -1521134295 + (PhoneticProperties?.GetHashCode() ?? 0);
+            return hashCode;
+        }
+
+
         #endregion
     }
 }

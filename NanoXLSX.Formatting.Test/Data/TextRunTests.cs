@@ -214,6 +214,83 @@
                 Assert.True(original.FontStyle.Bold);
                 Assert.False(copy.FontStyle.Bold);
             }
+
+            [Fact(DisplayName = "Test of the Equals method for equality")]
+            public void EqualsTestForEquality()
+            {
+                Font font1 = new Font();
+                font1.Bold = true;
+                font1.Size = 14;
+                font1.Name = "Calibri";
+
+                Font font2 = new Font();
+                font2.Bold = true;
+                font2.Size = 14;
+                font2.Name = "Calibri";
+
+                TextRun run1 = new TextRun("Hello World", font1);
+                TextRun run2 = new TextRun("Hello World", font2);
+
+                Assert.True(run1.Equals(run2));
+            }
+
+            [Fact(DisplayName = "Test of the Equals method for inequality")]
+            public void EqualsTestForInequality()
+            {
+                Font font1 = new Font();
+                font1.Bold = true;
+
+                Font font2 = new Font();
+                font2.Bold = true;
+
+                TextRun run1 = new TextRun("Hello World", font1);
+                TextRun run2 = new TextRun("Different Text", font2);
+
+                Assert.False(run1.Equals(run2));
+            }
+
+            [Fact(DisplayName = "Test of the Equals method for inequality with different type")]
+            public void EqualsTestForInequality2()
+            {
+                TextRun run1 = new TextRun("Hello World");
+                string differentType = "Hello World";
+
+                Assert.False(run1.Equals(differentType));
+            }
+
+            [Fact(DisplayName = "Test of the GetHashCode method for equality")]
+            public void GetHashCodeTestForEquality()
+            {
+                Font font1 = new Font();
+                font1.Bold = true;
+                font1.Size = 14;
+                font1.Name = "Calibri";
+
+                Font font2 = new Font();
+                font2.Bold = true;
+                font2.Size = 14;
+                font2.Name = "Calibri";
+
+                TextRun run1 = new TextRun("Hello World", font1);
+                TextRun run2 = new TextRun("Hello World", font2);
+
+                Assert.Equal(run1.GetHashCode(), run2.GetHashCode());
+            }
+
+            [Fact(DisplayName = "Test of the GetHashCode method for inequality")]
+            public void GetHashCodeTestForInequality()
+            {
+                Font font1 = new Font();
+                font1.Bold = true;
+
+                Font font2 = new Font();
+                font2.Italic = true;
+
+                TextRun run1 = new TextRun("Hello World", font1);
+                TextRun run2 = new TextRun("Hello World", font2);
+
+                Assert.NotEqual(run1.GetHashCode(), run2.GetHashCode());
+            }
         }
     }
 }

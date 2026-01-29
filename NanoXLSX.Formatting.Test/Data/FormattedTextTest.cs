@@ -644,5 +644,102 @@ namespace NanoXLSX.Tests
             Style style2 = FormattedText.LineBreakStyle;
             Assert.Same(style1, style2);
         }
+
+        [Fact(DisplayName = "Test of the Equals method for equality")]
+        public void EqualsTestForEquality()
+        {
+            FormattedText text1 = new FormattedText();
+            text1.AddRun("Hello");
+            text1.AddRun(" ");
+            text1.AddRun("World");
+            text1.AddPhoneticRun("テスト", 0, 2);
+            Font font = new Font();
+            font.Bold = true;
+            text1.SetPhoneticProperties(font);
+            text1.WrapText = true;
+            FormattedText text2 = new FormattedText();
+            text2.AddRun("Hello");
+            text2.AddRun(" ");
+            text2.AddRun("World");
+            text2.AddPhoneticRun("テスト", 0, 2);
+            Font font2 = new Font();
+            font2.Bold = true;
+            text2.SetPhoneticProperties(font2);
+            text2.WrapText = true;
+            Assert.True(text1.Equals(text2));
+        }
+
+        [Fact(DisplayName = "Test of the Equals method for inequality")]
+        public void EqualsTestForInequality()
+        {
+            FormattedText text1 = new FormattedText();
+            text1.AddRun("Hello");
+            text1.AddRun(" ");
+            text1.AddRun("World");
+
+            FormattedText text2 = new FormattedText();
+            text2.AddRun("Hello");
+            text2.AddRun(" ");
+            text2.AddRun("Different");
+
+            Assert.False(text1.Equals(text2));
+        }
+
+
+        [Fact(DisplayName = "Test of the Equals method for inequality on different object types")]
+        public void EqualsTestForInequality2()
+        {
+            FormattedText text1 = new FormattedText();
+            text1.AddRun("Hello");
+            text1.AddRun(" ");
+            text1.AddRun("World");
+
+            double differentObject = 42.0;
+
+            Assert.False(text1.Equals(differentObject));
+        }
+
+        [Fact(DisplayName = "Test of the GetHashCode method for equality")]
+        public void GetHashCodeTestForEquality()
+        {
+            FormattedText text1 = new FormattedText();
+            text1.AddRun("Hello");
+            text1.AddRun(" ");
+            text1.AddRun("World");
+            text1.AddPhoneticRun("テスト", 0, 2);
+            Font font = new Font();
+            font.Bold = true;
+            text1.SetPhoneticProperties(font);
+            text1.WrapText = true;
+
+            FormattedText text2 = new FormattedText();
+            text2.AddRun("Hello");
+            text2.AddRun(" ");
+            text2.AddRun("World");
+            text2.AddPhoneticRun("テスト", 0, 2);
+            Font font2 = new Font();
+            font2.Bold = true;
+            text2.SetPhoneticProperties(font2);
+            text2.WrapText = true;
+
+            Assert.Equal(text1.GetHashCode(), text2.GetHashCode());
+        }
+
+        [Fact(DisplayName = "Test of the GetHashCode method for inequality")]
+        public void GetHashCodeTestForInequality()
+        {
+            FormattedText text1 = new FormattedText();
+            text1.AddRun("Hello");
+            text1.AddRun(" ");
+            text1.AddRun("World");
+
+            FormattedText text2 = new FormattedText();
+            text2.AddRun("Hello");
+            text2.AddRun(" ");
+            text2.AddRun("Different");
+
+            Assert.NotEqual(text1.GetHashCode(), text2.GetHashCode());
+        }
+
     }
 }

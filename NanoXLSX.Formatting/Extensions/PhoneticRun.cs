@@ -5,6 +5,7 @@
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
  */
 
+using System.Collections.Generic;
 using NanoXLSX.Exceptions;
 using NanoXLSX.Utils.Xml;
 
@@ -97,6 +98,32 @@ namespace NanoXLSX.Extensions
         public PhoneticRun Copy()
         {
             return new PhoneticRun(this.Text, this.StartBase, this.EndBase);
+        }
+
+        /// <summary>
+        /// Equals method to compare two phonetic runs.
+        /// </summary>
+        /// <param name="obj">Other object to compare</param>
+        /// <returns>True, if other object is equal</returns>
+        public override bool Equals(object obj)
+        {
+            return obj is PhoneticRun run &&
+                   text == run.text &&
+                   StartBase == run.StartBase &&
+                   EndBase == run.EndBase;
+        }
+
+        /// <summary>
+        /// Hash code of the current object
+        /// </summary>
+        /// <returns>Hash code of the current object</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = -2139365225;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(text);
+            hashCode = hashCode * -1521134295 + StartBase.GetHashCode();
+            hashCode = hashCode * -1521134295 + EndBase.GetHashCode();
+            return hashCode;
         }
     }
 }
