@@ -224,7 +224,7 @@ namespace NanoXLSX
                 return siElement;
             }
 
-            foreach (Extensions.TextRun run in Runs)
+            foreach (TextRun run in Runs)
             {
                 XmlElement rElement = siElement.AddChildElement(R_TAG);
 
@@ -284,18 +284,10 @@ namespace NanoXLSX
         {
             XmlElement phoneticPrElement = XmlElement.CreateElement(PHONETIC_PR_TAG);
             phoneticPrElement.AddAttribute("fontId", ParserUtils.ToString(properties.FontId));
-
-            if (properties.Type != PhoneticRun.PhoneticType.FullwidthKatakana)
-            {
-                string typeValue = GetPhoneticTypeValue(properties.Type);
-                phoneticPrElement.AddAttribute("type", typeValue);
-            }
-
-            if (properties.Alignment != PhoneticRun.PhoneticAlignment.Left)
-            {
-                string alignmentValue = GetPhoneticAlignmentValue(properties.Alignment);
-                phoneticPrElement.AddAttribute("alignment", alignmentValue);
-            }
+            string typeValue = GetPhoneticTypeValue(properties.Type);
+            phoneticPrElement.AddAttribute("type", typeValue);
+            string alignmentValue = GetPhoneticAlignmentValue(properties.Alignment);
+            phoneticPrElement.AddAttribute("alignment", alignmentValue);
             return phoneticPrElement;
         }
 
@@ -387,12 +379,9 @@ namespace NanoXLSX
         /// </summary>
         /// <param name="text">Text content</param>
         /// <returns>XmlElement instance</returns>
+        /// \remark <remarks>Null or empty values must be removed in advance</remarks>
         private static XmlElement CreateTextElement(string text)
         {
-            if (string.IsNullOrEmpty(text))
-            {
-                return XmlElement.CreateElement(T_TAG);
-            }
             string value = XmlUtils.SanitizeXmlValue(text);
             value = ParserUtils.NormalizeNewLines(value);
             XmlElement element;
@@ -474,8 +463,6 @@ namespace NanoXLSX
             {
                 case PhoneticRun.PhoneticType.HalfwidthKatakana:
                     return "halfwidthKatakana";
-                case PhoneticRun.PhoneticType.FullwidthKatakana:
-                    return "fullwidthKatakana";
                 case PhoneticRun.PhoneticType.Hiragana:
                     return "Hiragana";
                 case PhoneticRun.PhoneticType.NoConversion:
@@ -496,8 +483,6 @@ namespace NanoXLSX
             {
                 case PhoneticRun.PhoneticAlignment.NoControl:
                     return "noControl";
-                case PhoneticRun.PhoneticAlignment.Left:
-                    return "left";
                 case PhoneticRun.PhoneticAlignment.Center:
                     return "center";
                 case PhoneticRun.PhoneticAlignment.Distributed:

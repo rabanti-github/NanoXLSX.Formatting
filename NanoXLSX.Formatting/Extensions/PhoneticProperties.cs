@@ -62,7 +62,7 @@ namespace NanoXLSX.Extensions
         /// <returns>True, if the other object is equal</returns>
         public override bool Equals(object obj)
         {
-            if (!(obj is PhoneticProperties properties)) {  return false; }
+            if (!(obj is PhoneticProperties properties)) { return false; }
             return ((FontReference == null && properties.FontReference == null) ||
                     (FontReference != null && FontReference.Equals(properties.FontReference))) &&
                    Type == properties.Type &&

@@ -1,11 +1,9 @@
 ﻿using NanoXLSX.Formatting.Test;
-using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using System;
 using Xunit;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace NanoXLSX.Tests
+namespace NanoXLSX.Formatting.Test.WriterReader
 {
     /// <summary>
     /// Tests where a written formatted text do not carry formatting information. They act like simple strings, but may be defined as runs.
@@ -79,12 +77,12 @@ namespace NanoXLSX.Tests
 
 
         [Theory(DisplayName = "Test of writing and reading FormattedText with multiple runs, without style")]
-        [InlineData("Simple ","text")]
-        [InlineData("Text with numbers ","123")]
-        [InlineData("Special chars: ","@#$%^&*()")]
-        [InlineData(" ","日本語")]
-        [InlineData(" ","\t")]
-        [InlineData("\t","\t")]
+        [InlineData("Simple ", "text")]
+        [InlineData("Text with numbers ", "123")]
+        [InlineData("Special chars: ", "@#$%^&*()")]
+        [InlineData(" ", "日本語")]
+        [InlineData(" ", "\t")]
+        [InlineData("\t", "\t")]
         public void WriteReadFormattedTextMultipleRunsNoStyleTest(string text1, string text2)
         {
             string expectedText = text1 + text2;
@@ -202,7 +200,7 @@ namespace NanoXLSX.Tests
             }
         }
 
-        [Fact (DisplayName = "Test of an empty formatted text object (should create an empty string)")]
+        [Fact(DisplayName = "Test of an empty formatted text object (should create an empty string)")]
         public void EmptyRunTest()
         {
             Workbook workbook = new Workbook("sheet1");

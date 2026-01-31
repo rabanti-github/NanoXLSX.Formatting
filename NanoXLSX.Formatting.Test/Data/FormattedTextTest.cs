@@ -4,7 +4,7 @@ using System;
 using Xunit;
 using FormatException = NanoXLSX.Exceptions.FormatException;
 
-namespace NanoXLSX.Tests
+namespace NanoXLSX.Formatting.Test.Data
 {
     public class FormattedTextTests
     {

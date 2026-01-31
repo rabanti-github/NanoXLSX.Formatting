@@ -6,7 +6,7 @@ namespace NanoXLSX.Formatting.Test.Data
 {
     public class PhoneticPropertiesTest
     {
-        [Fact(DisplayName = "Test of the constructor with font reference")]
+        [Fact(DisplayName = "Test of the constructor with dummy font reference")]
         public void ConstructorWithFontReferenceTest()
         {
             Font font = new Font();

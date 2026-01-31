@@ -4,9 +4,6 @@ using NanoXLSX.Styles;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NanoXLSX.Formatting.Test
 {
@@ -40,7 +37,8 @@ namespace NanoXLSX.Formatting.Test
             PlugInLoader.InjectPlugins(new System.Collections.Generic.List<System.Type>
             {
                  typeof(Internal.Readers.FormattedSharedStringsReader),
-                 typeof(Internal.Readers.SharedStringsReplacer)
+                 typeof(Internal.Readers.SharedStringsReplacer),
+                 typeof(Internal.FontIdResolver)
             });
         }
 

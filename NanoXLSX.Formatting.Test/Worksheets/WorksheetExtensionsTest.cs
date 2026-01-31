@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace NanoXLSX.Formatting.Test.Worksheets
+namespace NanoXLSX.Formatting.Test
 {
     public class WorksheetExtensionsTest
     {

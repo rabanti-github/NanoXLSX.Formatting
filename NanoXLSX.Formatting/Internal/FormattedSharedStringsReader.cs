@@ -627,8 +627,6 @@ namespace NanoXLSX.Internal.Readers
             {
                 case "halfwidthkatakana":
                     return PhoneticRun.PhoneticType.HalfwidthKatakana;
-                case "fullwidthkatakana":
-                    return PhoneticRun.PhoneticType.FullwidthKatakana;
                 case "hiragana":
                     return PhoneticRun.PhoneticType.Hiragana;
                 case "noconversion":
@@ -649,8 +647,6 @@ namespace NanoXLSX.Internal.Readers
             {
                 case "nocontrol":
                     return PhoneticRun.PhoneticAlignment.NoControl;
-                case "left":
-                    return PhoneticRun.PhoneticAlignment.Left;
                 case "center":
                     return PhoneticRun.PhoneticAlignment.Center;
                 case "distributed":

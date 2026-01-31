@@ -1,11 +1,9 @@
-﻿namespace NanoXLSX.Formatting.Test.Data
-{
-    using global::NanoXLSX.Extensions;
+﻿    using global::NanoXLSX.Extensions;
     using global::NanoXLSX.Styles;
     using Xunit;
-    using FormatException = Exceptions.FormatException;
+    using FormatException = NanoXLSX.Exceptions.FormatException;
 
-    namespace NanoXLSX.Tests
+    namespace NanoXLSX.Formatting.Test.Data
     {
         public class TextRunTests
         {
@@ -293,4 +291,3 @@
             }
         }
     }
-}

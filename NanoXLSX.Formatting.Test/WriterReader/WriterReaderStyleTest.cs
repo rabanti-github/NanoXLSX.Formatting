@@ -1,24 +1,20 @@
 ﻿using NanoXLSX.Colors;
 using NanoXLSX.Extensions;
 using NanoXLSX.Formatting.Test;
-using NanoXLSX.Registry;
 using NanoXLSX.Styles;
 using NanoXLSX.Themes;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.SymbolStore;
 using System.IO;
 using Xunit;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace NanoXLSX.Tests
+namespace NanoXLSX.Formatting.Test.WriterReader
 {
     // Ensure that these tests are executed sequentially, since static repository methods may be called 
     [Collection(nameof(SequentialCollection))]
     public class WriterReaderStyleTest : IDisposable
     {
 
-       public WriterReaderStyleTest()
+        public WriterReaderStyleTest()
         {
             TestUtils.InitializePlugIns();
         }
@@ -489,7 +485,7 @@ namespace NanoXLSX.Tests
             Assert.NotNull(loadedText.Runs[0].FontStyle);
             Assert.Equal(expectedColorValue, loadedText.Runs[0].FontStyle.ColorValue.Value.StringValue);
             Assert.True(TestUtils.IsEqual(tint, loadedText.Runs[0].FontStyle.ColorValue.Tint));
-            //Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+            //Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode()); // HashCodes differ due to double precision of tint value
         }
 
 
@@ -942,6 +938,101 @@ namespace NanoXLSX.Tests
             Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
             FormattedText loadedText = cell.Value as FormattedText;
             Assert.Equal(alignment, loadedText.PhoneticProperties.Alignment);
+        }
+
+        [Fact(DisplayName = "Test of writing and reading FormattedText with default phonetic properties")]
+        public void WriteReadFormattedTextDefaultPhoneticPropertiesTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font phoneticFont = new Font() { Name = "Meiryo UI" };
+            Style cellStyle = new Style() { CurrentFont = phoneticFont.CopyFont() };
+            originalText.AddRun("日本");
+            originalText.AddPhoneticRun("にほん", 0, 2);
+            // Use default values: FullwidthKatakana and Left
+            originalText.SetPhoneticProperties(phoneticFont);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0, cellStyle);
+            workbook.SaveAs(@"c:\purge-temp\phonetic_default_test.xlsx");
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText.PhoneticProperties);
+            Assert.Equal(PhoneticRun.PhoneticType.FullwidthKatakana, loadedText.PhoneticProperties.Type);
+            Assert.Equal(PhoneticRun.PhoneticAlignment.Left, loadedText.PhoneticProperties.Alignment);
+        }
+
+        [Fact(DisplayName = "Test of writing and reading FormattedText with NoControl alignment")]
+        public void WriteReadFormattedTextNoControlAlignmentTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font phoneticFont = new Font();
+            originalText.AddRun("日本");
+            originalText.AddPhoneticRun("にほん", 0, 2);
+            originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.FullwidthKatakana, PhoneticRun.PhoneticAlignment.NoControl);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.Equal(PhoneticRun.PhoneticAlignment.NoControl, loadedText.PhoneticProperties.Alignment);
+        }
+
+        [Fact(DisplayName = "Test of writing and reading FormattedText with Distributed alignment")]
+        public void WriteReadFormattedTextDistributedAlignmentTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font phoneticFont = new Font();
+            originalText.AddRun("日本");
+            originalText.AddPhoneticRun("にほん", 0, 2);
+            originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.FullwidthKatakana, PhoneticRun.PhoneticAlignment.Distributed);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.Equal(PhoneticRun.PhoneticAlignment.Distributed, loadedText.PhoneticProperties.Alignment);
+        }
+
+        [Fact(DisplayName = "Test of writing and reading FormattedText with HalfwidthKatakana and Left")]
+        public void WriteReadFormattedTextHalfwidthKatakanaLeftTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font phoneticFont = new Font();
+            originalText.AddRun("日本");
+            originalText.AddPhoneticRun("ニホン", 0, 2);
+            originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.HalfwidthKatakana, PhoneticRun.PhoneticAlignment.Left);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.Equal(PhoneticRun.PhoneticType.HalfwidthKatakana, loadedText.PhoneticProperties.Type);
+            Assert.Equal(PhoneticRun.PhoneticAlignment.Left, loadedText.PhoneticProperties.Alignment);
+        }
+
+        [Fact(DisplayName = "Test of writing and reading FormattedText with NoConversion type")]
+        public void WriteReadFormattedTextNoConversionTypeTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font phoneticFont = new Font();
+            originalText.AddRun("日本");
+            originalText.AddPhoneticRun("Japan", 0, 2);
+            originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.NoConversion, PhoneticRun.PhoneticAlignment.Center);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.Equal(PhoneticRun.PhoneticType.NoConversion, loadedText.PhoneticProperties.Type);
         }
 
         #endregion
