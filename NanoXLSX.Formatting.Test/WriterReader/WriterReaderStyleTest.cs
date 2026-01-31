@@ -1,7 +1,9 @@
-﻿using NanoXLSX.Extensions;
+﻿using NanoXLSX.Colors;
+using NanoXLSX.Extensions;
 using NanoXLSX.Formatting.Test;
 using NanoXLSX.Registry;
 using NanoXLSX.Styles;
+using NanoXLSX.Themes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.SymbolStore;
@@ -174,6 +176,368 @@ namespace NanoXLSX.Tests
             Assert.Equal(fontName, loadedText.Runs[0].FontStyle.Name);
             Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
         }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with charsets")]
+        [InlineData(Font.CharsetValue.ANSI)]
+        [InlineData(Font.CharsetValue.ApplicationDefined)]
+        [InlineData(Font.CharsetValue.Arabic)]
+        [InlineData(Font.CharsetValue.Baltic)]
+        [InlineData(Font.CharsetValue.Big5)]
+        [InlineData(Font.CharsetValue.EasternEuropean)]
+        [InlineData(Font.CharsetValue.GBK)]
+        [InlineData(Font.CharsetValue.Greek)]
+        [InlineData(Font.CharsetValue.Hangul)]
+        [InlineData(Font.CharsetValue.Hebrew)]
+        [InlineData(Font.CharsetValue.JIS)]
+        [InlineData(Font.CharsetValue.Johab)]
+        [InlineData(Font.CharsetValue.Macintosh)]
+        [InlineData(Font.CharsetValue.OEM)]
+        [InlineData(Font.CharsetValue.Russian)]
+        [InlineData(Font.CharsetValue.Symbols)]
+        [InlineData(Font.CharsetValue.Thai)]
+        [InlineData(Font.CharsetValue.Turkish)]
+        [InlineData(Font.CharsetValue.Vietnamese)]
+        [InlineData(Font.CharsetValue.Default)]
+        public void WriteReadFormattedTextCharsetTest(Font.CharsetValue charset)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.Charset = charset;
+            originalText.AddRun("Charset test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(charset, loadedText.Runs[0].FontStyle.Charset);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with font family")]
+        [InlineData(Font.FontFamilyValue.Decorative)]
+        [InlineData(Font.FontFamilyValue.Modern)]
+        [InlineData(Font.FontFamilyValue.Reserved1)]
+        [InlineData(Font.FontFamilyValue.Reserved2)]
+        [InlineData(Font.FontFamilyValue.Reserved3)]
+        [InlineData(Font.FontFamilyValue.Reserved4)]
+        [InlineData(Font.FontFamilyValue.Reserved5)]
+        [InlineData(Font.FontFamilyValue.Reserved6)]
+        [InlineData(Font.FontFamilyValue.Reserved7)]
+        [InlineData(Font.FontFamilyValue.Reserved8)]
+        [InlineData(Font.FontFamilyValue.Reserved9)]
+        [InlineData(Font.FontFamilyValue.Roman)]
+        [InlineData(Font.FontFamilyValue.Script)]
+        [InlineData(Font.FontFamilyValue.Swiss)]
+        [InlineData(Font.FontFamilyValue.NotApplicable)]
+        public void WriteReadFormattedTextFontFamilyTest(Font.FontFamilyValue fontFamily)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.Family = fontFamily;
+            originalText.AddRun("FontFamily test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(fontFamily, loadedText.Runs[0].FontStyle.Family);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with outline")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void WriteReadFormattedTextOutlineTest(bool outline)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.Outline = outline;
+            originalText.AddRun("Outline test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(outline, loadedText.Runs[0].FontStyle.Outline);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with shadow")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void WriteReadFormattedTextShadowTest(bool shadow)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.Shadow = shadow;
+            originalText.AddRun("Shadow test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(shadow, loadedText.Runs[0].FontStyle.Shadow);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with condense")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void WriteReadFormattedTextCondenseTest(bool condense)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.Condense = condense;
+            originalText.AddRun("Condense test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(condense, loadedText.Runs[0].FontStyle.Condense);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with extend")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void WriteReadFormattedTextExtendTest(bool extend)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.Extend = extend;
+            originalText.AddRun("Extend test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(extend, loadedText.Runs[0].FontStyle.Extend);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with font scheme")]
+        [InlineData(Font.SchemeValue.Major)]
+        [InlineData(Font.SchemeValue.Minor)] // None is omitted and and will lead to minor scheme
+        public void WriteReadFormattedTextFontSchemeTest(Font.SchemeValue fontScheme)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.Scheme = fontScheme;
+            originalText.AddRun("FontScheme test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(fontScheme, loadedText.Runs[0].FontStyle.Scheme);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with underline")]
+        [InlineData(Font.UnderlineValue.Double)]
+        [InlineData(Font.UnderlineValue.DoubleAccounting)]
+        [InlineData(Font.UnderlineValue.Single)]
+        [InlineData(Font.UnderlineValue.SingleAccounting)]
+        [InlineData(Font.UnderlineValue.None)]
+        public void WriteReadFormattedTextUnderlineTest(Font.UnderlineValue underline)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.Underline = underline;
+            originalText.AddRun("Underline test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(underline, loadedText.Runs[0].FontStyle.Underline);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with various (A)RGB color values")]
+        [InlineData("FFFFFFFF", "FFFFFFFF")]
+        [InlineData("FFFFFF", "FFFFFFFF")]
+        [InlineData("00000000", "00000000")]
+        [InlineData("000000", "FF000000")]
+        [InlineData("00AABBCC", "00AABBCC")]
+        [InlineData("ABC123FF", "ABC123FF")]
+        [InlineData("00AABB", "FF00AABB")]
+        [InlineData("ABC123", "FFABC123")]
+        public void WriteReadFormattedTextArgbColorValueTest(string givenColorValue, string expectedColorValue)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.ColorValue = givenColorValue; // Implicit conversion to argb
+            originalText.AddRun("Color Value test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(expectedColorValue, loadedText.Runs[0].FontStyle.ColorValue.GetArgbValue());
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with various indexed color values")]
+        [InlineData(IndexedColor.Value.Black, "FF000000")]
+        [InlineData(IndexedColor.Value.White, "FFFFFFFF")]
+        [InlineData(IndexedColor.Value.Red, "FFFF0000")]
+        [InlineData(IndexedColor.Value.Teal, "FF008080")]
+        public void WriteReadFormattedTextIndexedColorValueTest(IndexedColor.Value givenColorValue, string expectedColorValue)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.ColorValue = Color.CreateIndexed(givenColorValue);
+            originalText.AddRun("Color Value test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(expectedColorValue, loadedText.Runs[0].FontStyle.ColorValue.GetArgbValue());
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with various theme color values")]
+        [InlineData(Theme.ColorSchemeElement.Accent1, "4")]
+        [InlineData(Theme.ColorSchemeElement.Dark1, "0")]
+        [InlineData(Theme.ColorSchemeElement.Light1, "1")]
+        [InlineData(Theme.ColorSchemeElement.Hyperlink, "10")]
+        [InlineData(Theme.ColorSchemeElement.Dark2, "2")]
+        public void WriteReadFormattedTextThemeColorValueTest(Theme.ColorSchemeElement givenColorValue, string expectedColorValue)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.ColorValue = Color.CreateTheme(givenColorValue);
+            originalText.AddRun("Color Value test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(expectedColorValue, loadedText.Runs[0].FontStyle.ColorValue.Value.StringValue);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with various theme color values and tint")]
+        [InlineData(Theme.ColorSchemeElement.Accent1, -1d, "4")]
+        [InlineData(Theme.ColorSchemeElement.Dark1, 1d, "0")]
+        [InlineData(Theme.ColorSchemeElement.Light1, -0.5d, "1")]
+        [InlineData(Theme.ColorSchemeElement.Hyperlink, 0.5d, "10")]
+        [InlineData(Theme.ColorSchemeElement.Dark2, 0.23d, "2")]
+        [InlineData(Theme.ColorSchemeElement.Dark2, null, "2")]
+        public void WriteReadFormattedTextThemeColorValueTest2(Theme.ColorSchemeElement givenColorValue, double? tint, string expectedColorValue)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.ColorValue = Color.CreateTheme(givenColorValue, tint);
+            originalText.AddRun("Color Value test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(expectedColorValue, loadedText.Runs[0].FontStyle.ColorValue.Value.StringValue);
+            Assert.True(TestUtils.IsEqual(tint, loadedText.Runs[0].FontStyle.ColorValue.Tint));
+            //Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+
+        [Theory(DisplayName = "Test of writing and reading FormattedText with various system color values")]
+        [InlineData(SystemColor.Value.AppWorkspace, "appWorkspace")]
+        [InlineData(SystemColor.Value.Highlight, "highlight")]
+        [InlineData(SystemColor.Value.Window, "window")]
+        [InlineData(SystemColor.Value.WindowText, "windowText")]
+        [InlineData(SystemColor.Value.ButtonText, "btnText")] // See mapping in SystemColor class
+        public void WriteReadFormattedTextSystemColorValueTest(SystemColor.Value givenColorValue, string expectedColorValue)
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.ColorValue = Color.CreateSystem(givenColorValue);
+            originalText.AddRun("Color Value test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.Equal(expectedColorValue, loadedText.Runs[0].FontStyle.ColorValue.Value.StringValue);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
+        [Fact(DisplayName = "Test of writing and reading FormattedText with auto color values")]
+        public void WriteReadFormattedTextAutoColorValueTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font font = new Font();
+            font.ColorValue = Color.CreateAuto();
+            originalText.AddRun("Color Value test", font);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.NotNull(loadedText);
+            Assert.NotNull(loadedText.Runs[0].FontStyle);
+            Assert.True(loadedText.Runs[0].FontStyle.ColorValue.Auto);
+            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
+        }
+
 
         [Fact(DisplayName = "Test of writing and reading FormattedText with multiple font properties")]
         public void WriteReadFormattedTextMultipleFontPropertiesTest()
@@ -681,23 +1045,6 @@ namespace NanoXLSX.Tests
             stream.Position = 0;
             Workbook loadedWorkbook = WorkbookReader.Load(stream);
             return loadedWorkbook;
-        }
-
-        private FormattedText GetFormattedText(List<Tuple<string, Font>> runs)
-        {
-            FormattedText text = new FormattedText();
-            foreach(Tuple<string, Font> run in runs)
-            {
-                if (run.Item2 == null)
-                {
-                    text.AddRun(run.Item1);
-                }
-                else
-                {
-                    text.AddRun(run.Item1, run.Item2);
-                }
-            }
-            return text;
         }
 
         public void Dispose()

@@ -21,6 +21,19 @@ namespace NanoXLSX.Formatting.Test
             return loadedWorkbook;
         }
 
+        internal static bool IsEqual(double? a, double? b, double tolerance = 0.0001)
+        {
+            if (a == null && b == null)
+            {
+                return true;
+            }
+            else if (a == null || b == null)
+            {
+                return false;
+            }
+            return Math.Abs(a.Value - b.Value) <= tolerance;
+        }
+
         internal static void InitializePlugIns()
         {
             PlugInLoader.DisposePlugins();

@@ -357,17 +357,13 @@ namespace NanoXLSX
             {
                 rPrElement.AddChildElementWithAttribute("sz", "val", ParserUtils.ToString(fontStyle.Size));
             }
-            if (fontStyle.Underline != Font.UnderlineValue.None)
+            if (fontStyle.Underline != UnderlineValue.None && fontStyle.Underline != UnderlineValue.Single)
             {
-                string underlineValue = Font.GetUnderlineName(fontStyle.Underline);
-                if (fontStyle.Underline != Font.UnderlineValue.None)
-                {
-                    rPrElement.AddChildElementWithAttribute("u", "val", underlineValue);
-                }
-                else
-                {
-                    rPrElement.AddChildElement("u");
-                }
+                rPrElement.AddChildElementWithAttribute("u", "val", Font.GetUnderlineName(fontStyle.Underline));
+            }
+            else if (fontStyle.Underline == UnderlineValue.Single)
+            {
+                rPrElement.AddChildElement("u");
             }
             if (fontStyle.VerticalAlign != Font.VerticalTextAlignValue.None)
             {
