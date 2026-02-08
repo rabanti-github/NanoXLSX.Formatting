@@ -22,6 +22,18 @@
 		<FileVersion>3.0.0.0</FileVersion>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Remove="Resources\font_run.xlsx" />
+	  <None Remove="Resources\invalid_sharedStrings2.xlsx" />
+	  <None Remove="Resources\phonetic_run.xlsx" />
+	  <None Remove="Worksheets\WorksheetExtensionsTest.cs~RF2318e9b.TMP" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Resources\font_run.xlsx" />
+	  <EmbeddedResource Include="Resources\invalid_sharedStrings2.xlsx" />
+	  <EmbeddedResource Include="Resources\phonetic_properties.xlsx" />
+	  <EmbeddedResource Include="Resources\phonetic_run.xlsx" />
+	</ItemGroup>
+	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
 		<PackageReference Include="NanoXLSX.Core" Version="3.0.0-rc.6" />
 		<PackageReference Include="NanoXLSX.Reader" Version="3.0.0-rc.6" />

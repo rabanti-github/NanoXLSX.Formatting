@@ -1,6 +1,6 @@
 ﻿using NanoXLSX.Colors;
 using NanoXLSX.Extensions;
-using NanoXLSX.Formatting.Test;
+using NanoXLSX.Interfaces;
 using NanoXLSX.Styles;
 using NanoXLSX.Themes;
 using System;
@@ -347,7 +347,7 @@ namespace NanoXLSX.Formatting.Test.WriterReader
             font.Scheme = fontScheme;
             originalText.AddRun("FontScheme test", font);
             workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
-
+            workbook.SaveAs(@"C:\purge-temp\NanoXLSX.Formatting\fontscheme.xlsx");
             Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
 
             Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
@@ -610,13 +610,17 @@ namespace NanoXLSX.Formatting.Test.WriterReader
             Assert.Null(loadedText.Runs[0].FontStyle);
         }
 
-        [Fact(DisplayName = "Test of writing and reading FormattedText with superscript")]
-        public void WriteReadFormattedTextSuperscriptTest()
+        [Theory(DisplayName = "Test of writing and reading FormattedText with superscript")]
+        [InlineData(Font.VerticalTextAlignValue.Subscript)]
+        [InlineData(Font.VerticalTextAlignValue.Superscript)]
+        [InlineData(Font.VerticalTextAlignValue.Baseline)]
+        [InlineData(Font.VerticalTextAlignValue.None)]
+        public void WriteReadFormattedTextVerticalAlignTest(Font.VerticalTextAlignValue alignment)
         {
             Workbook workbook = new Workbook("sheet1");
             FormattedText originalText = new FormattedText();
             Font font = new Font();
-            font.VerticalAlign = Font.VerticalTextAlignValue.Superscript;
+            font.VerticalAlign = alignment;
             originalText.AddRun("x²", font);
             workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
 
@@ -625,26 +629,7 @@ namespace NanoXLSX.Formatting.Test.WriterReader
             Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
             FormattedText loadedText = cell.Value as FormattedText;
             Assert.NotNull(loadedText);
-            Assert.Equal(Font.VerticalTextAlignValue.Superscript, loadedText.Runs[0].FontStyle.VerticalAlign);
-            Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
-        }
-
-        [Fact(DisplayName = "Test of writing and reading FormattedText with subscript")]
-        public void WriteReadFormattedTextSubscriptTest()
-        {
-            Workbook workbook = new Workbook("sheet1");
-            FormattedText originalText = new FormattedText();
-            Font font = new Font();
-            font.VerticalAlign = Font.VerticalTextAlignValue.Subscript;
-            originalText.AddRun("H₂O", font);
-            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
-
-            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
-
-            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
-            FormattedText loadedText = cell.Value as FormattedText;
-            Assert.NotNull(loadedText);
-            Assert.Equal(Font.VerticalTextAlignValue.Subscript, loadedText.Runs[0].FontStyle.VerticalAlign);
+            Assert.Equal(alignment, loadedText.Runs[0].FontStyle.VerticalAlign);
             Assert.Equal(font.GetHashCode(), loadedText.Runs[0].FontStyle.GetHashCode());
         }
 
@@ -967,11 +952,12 @@ namespace NanoXLSX.Formatting.Test.WriterReader
         {
             Workbook workbook = new Workbook("sheet1");
             FormattedText originalText = new FormattedText();
-            Font phoneticFont = new Font();
+            Font phoneticFont = new Font() { Name = "Meiryo UI" };
+            Style cellStyle = new Style() { CurrentFont = phoneticFont.CopyFont() };
             originalText.AddRun("日本");
             originalText.AddPhoneticRun("にほん", 0, 2);
             originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.FullwidthKatakana, PhoneticRun.PhoneticAlignment.NoControl);
-            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0, cellStyle);
 
             Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
 
@@ -985,11 +971,12 @@ namespace NanoXLSX.Formatting.Test.WriterReader
         {
             Workbook workbook = new Workbook("sheet1");
             FormattedText originalText = new FormattedText();
-            Font phoneticFont = new Font();
+            Font phoneticFont = new Font() { Name = "Meiryo UI" };
+            Style cellStyle = new Style() { CurrentFont = phoneticFont.CopyFont() };
             originalText.AddRun("日本");
             originalText.AddPhoneticRun("にほん", 0, 2);
             originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.FullwidthKatakana, PhoneticRun.PhoneticAlignment.Distributed);
-            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0, cellStyle);
 
             Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
 
@@ -1003,11 +990,12 @@ namespace NanoXLSX.Formatting.Test.WriterReader
         {
             Workbook workbook = new Workbook("sheet1");
             FormattedText originalText = new FormattedText();
-            Font phoneticFont = new Font();
+            Font phoneticFont = new Font() { Name = "Meiryo UI" };
+            Style cellStyle = new Style() { CurrentFont = phoneticFont.CopyFont() };
             originalText.AddRun("日本");
             originalText.AddPhoneticRun("ニホン", 0, 2);
             originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.HalfwidthKatakana, PhoneticRun.PhoneticAlignment.Left);
-            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0, cellStyle);
 
             Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
 
@@ -1022,17 +1010,42 @@ namespace NanoXLSX.Formatting.Test.WriterReader
         {
             Workbook workbook = new Workbook("sheet1");
             FormattedText originalText = new FormattedText();
-            Font phoneticFont = new Font();
+            Font phoneticFont = new Font() { Name = "Meiryo UI" };
+            Style cellStyle = new Style() { CurrentFont = phoneticFont.CopyFont() };
             originalText.AddRun("日本");
             originalText.AddPhoneticRun("Japan", 0, 2);
             originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.NoConversion, PhoneticRun.PhoneticAlignment.Center);
-            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0, cellStyle);
 
             Workbook loadedWorkbook = SaveAndReadWorkbook(workbook);
 
             Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
             FormattedText loadedText = cell.Value as FormattedText;
             Assert.Equal(PhoneticRun.PhoneticType.NoConversion, loadedText.PhoneticProperties.Type);
+        }
+
+        [Fact(DisplayName = "Test of writing and reading FormattedText with reader options")]
+        public void WriteReadFormattedTextReaderOptionsTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            Font phoneticFont = new Font() { Name = "Meiryo UI" };
+            Style cellStyle = new Style() { CurrentFont = phoneticFont.CopyFont() };
+            ReaderOptions options = new ReaderOptions()
+            {
+                EnforcePhoneticCharacterImport = true,
+            };
+            originalText.AddRun("日本");
+            originalText.AddPhoneticRun("に", 0, 1);
+            originalText.AddPhoneticRun("ほん", 1, 2);
+            originalText.SetPhoneticProperties(phoneticFont, PhoneticRun.PhoneticType.Hiragana, PhoneticRun.PhoneticAlignment.Center);
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0, cellStyle);
+
+            Workbook loadedWorkbook = SaveAndReadWorkbook(workbook, options);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            FormattedText loadedText = cell.Value as FormattedText;
+            Assert.Equal(PhoneticRun.PhoneticType.Hiragana, loadedText.PhoneticProperties.Type);
         }
 
         #endregion
@@ -1129,12 +1142,21 @@ namespace NanoXLSX.Formatting.Test.WriterReader
 
         #endregion
 
-        private Workbook SaveAndReadWorkbook(Workbook workbook)
+        private Workbook SaveAndReadWorkbook(Workbook workbook, ReaderOptions options = null)
         {
             MemoryStream stream = new MemoryStream();
             workbook.SaveAsStream(stream, true);
             stream.Position = 0;
-            Workbook loadedWorkbook = WorkbookReader.Load(stream);
+            NanoXLSX.ReaderOptions opts = null;
+            if (options != null)
+            {
+                opts = new NanoXLSX.ReaderOptions
+                {
+                    EnforcePhoneticCharacterImport = options.EnforcePhoneticCharacterImport,
+                    EnforceEmptyValuesAsString = options.EnforceEmptyValuesAsString
+                };
+            }
+            Workbook loadedWorkbook = WorkbookReader.Load(stream, opts);
             return loadedWorkbook;
         }
 
@@ -1142,5 +1164,12 @@ namespace NanoXLSX.Formatting.Test.WriterReader
         {
             TestUtils.DisposePlugIns();
         }
+
+        public class ReaderOptions : ITextOptions
+        {
+            public bool EnforcePhoneticCharacterImport { get; set; }
+            public bool EnforceEmptyValuesAsString { get; set; }
+        }
+
     }
 }

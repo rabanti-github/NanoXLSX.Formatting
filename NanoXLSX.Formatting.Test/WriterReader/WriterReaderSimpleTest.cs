@@ -1,5 +1,4 @@
-﻿using NanoXLSX.Formatting.Test;
-using NanoXLSX.Styles;
+﻿using NanoXLSX.Styles;
 using System;
 using Xunit;
 
@@ -205,6 +204,22 @@ namespace NanoXLSX.Formatting.Test.WriterReader
         {
             Workbook workbook = new Workbook("sheet1");
             FormattedText originalText = new FormattedText();
+            workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
+            Workbook loadedWorkbook = TestUtils.SaveAndReadWorkbook(workbook);
+
+            Cell cell = loadedWorkbook.CurrentWorksheet.GetCell(0, 0);
+            Assert.Equal(Cell.CellType.String, cell.DataType);
+            Assert.IsType<string>(cell.Value);
+            Assert.Equal("", cell.Value as string);
+            Assert.Null(cell.CellStyle);
+        }
+
+        [Fact(DisplayName = "Test of an empty formatted text object but with phonetic info")]
+        public void EmptyRunWithWithPhoneticInfoTest()
+        {
+            Workbook workbook = new Workbook("sheet1");
+            FormattedText originalText = new FormattedText();
+            originalText.SetPhoneticProperties(null, Extensions.PhoneticRun.PhoneticType.Hiragana, Extensions.PhoneticRun.PhoneticAlignment.Distributed);
             workbook.CurrentWorksheet.AddFormattedTextCell(originalText, 0, 0);
             Workbook loadedWorkbook = TestUtils.SaveAndReadWorkbook(workbook);
 

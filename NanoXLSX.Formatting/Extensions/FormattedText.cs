@@ -53,6 +53,7 @@ namespace NanoXLSX
         #region privateFields
         private readonly List<TextRun> runs = new List<TextRun>();
         private readonly List<PhoneticRun> phoeticRuns = new List<PhoneticRun>();
+        private string overridePlainText = null;
         #endregion
 
         #region properties
@@ -78,7 +79,7 @@ namespace NanoXLSX
         /// <summary>
         /// Gets the plain text content by concatenating all runs.
         /// </summary>
-        public string PlainText => string.Concat(runs.Select(r => r.Text));
+        public string PlainText => overridePlainText != null ? overridePlainText : string.Concat(runs.Select(r => r.Text));
         #endregion
 
         #region methods
@@ -174,6 +175,7 @@ namespace NanoXLSX
             runs.Clear();
             phoeticRuns.Clear();
             PhoneticProperties = null;
+            overridePlainText = null;
         }
 
         /// <summary>
@@ -195,6 +197,7 @@ namespace NanoXLSX
             {
                 copy.PhoneticProperties = PhoneticProperties.Copy();
             }
+            copy.overridePlainText = overridePlainText;
             return copy;
         }
 
@@ -205,6 +208,15 @@ namespace NanoXLSX
         override public string ToString()
         {
             return PlainText;
+        }
+
+        /// <summary>
+        /// Internally used method to override the plain text representation.
+        /// </summary>
+        /// <param name="value">Value to display as plain text</param>
+        internal void OverridePlainText(string value)
+        {
+            this.overridePlainText = value;
         }
 
         #endregion
@@ -505,6 +517,7 @@ namespace NanoXLSX
             return runs.SequenceEqual(text.runs) &&
                    phoeticRuns.SequenceEqual(text.phoeticRuns) &&
                    WrapText == text.WrapText &&
+                   overridePlainText == text.overridePlainText &&
                    EqualityComparer<PhoneticProperties>.Default.Equals(PhoneticProperties, text.PhoneticProperties);
         }
 
@@ -524,6 +537,7 @@ namespace NanoXLSX
                 hashCode = hashCode * -1521134295 + (phoneticRun?.GetHashCode() ?? 0);
             }
             hashCode = hashCode * -1521134295 + WrapText.GetHashCode();
+            hashCode = hashCode * -1521134295 + (overridePlainText?.GetHashCode() ?? 0);
             hashCode = hashCode * -1521134295 + (PhoneticProperties?.GetHashCode() ?? 0);
             return hashCode;
         }

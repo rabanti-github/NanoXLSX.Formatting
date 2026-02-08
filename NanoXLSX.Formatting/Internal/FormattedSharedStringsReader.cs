@@ -131,6 +131,12 @@ namespace NanoXLSX.Internal.Readers
                                 if (capturePhoneticCharacters)
                                 {
                                     textValue = ProcessPhoneticCharacters(sb);
+                                    formattedText.OverridePlainText(textValue);
+                                }
+                                else if (formattedText != null && string.IsNullOrEmpty(formattedText.PlainText) && sb.ToString().Length > 0)
+                                {
+                                    textValue = sb.ToString();
+                                    formattedText.OverridePlainText(sb.ToString()); // Fallback to prevent data loss
                                 }
                                 else
                                 {
@@ -436,7 +442,6 @@ namespace NanoXLSX.Internal.Readers
                 if (childNode.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase))
                 {
                     text = childNode.InnerText;
-                    break;
                 }
             }
 
@@ -495,17 +500,6 @@ namespace NanoXLSX.Internal.Readers
         /// <param name="sb">StringBuilder reference</param>
         private void GetTextToken(XmlNode node, ref StringBuilder sb)
         {
-            if (node.LocalName.Equals("rPh", StringComparison.OrdinalIgnoreCase))
-            {
-                if (capturePhoneticCharacters && !string.IsNullOrEmpty(node.InnerText))
-                {
-                    string start = node.Attributes.GetNamedItem("sb").InnerText;
-                    string end = node.Attributes.GetNamedItem("eb").InnerText;
-                    phoneticsInfo.Add(new PhoneticInfo(node.InnerText, start, end));
-                }
-                return;
-            }
-
             if (node.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(node.InnerText))
             {
                 sb.Append(node.InnerText);
@@ -514,6 +508,10 @@ namespace NanoXLSX.Internal.Readers
             {
                 foreach (XmlNode childNode in node.ChildNodes)
                 {
+                    if (childNode.LocalName.Equals("rPh", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
                     GetTextToken(childNode, ref sb);
                 }
             }
@@ -526,10 +524,6 @@ namespace NanoXLSX.Internal.Readers
         /// <returns>Text with added phonetic characters (after particular characters, in brackets)</returns>
         private string ProcessPhoneticCharacters(StringBuilder sb)
         {
-            if (phoneticsInfo.Count == 0)
-            {
-                return sb.ToString();
-            }
             string text = sb.ToString();
             StringBuilder sb2 = new StringBuilder();
             int currentTextIndex = 0;
@@ -565,8 +559,6 @@ namespace NanoXLSX.Internal.Readers
         {
             switch (value.ToLowerInvariant())
             {
-                case "single":
-                    return Font.UnderlineValue.Single;
                 case "double":
                     return Font.UnderlineValue.Double;
                 case "singleaccounting":
@@ -574,7 +566,7 @@ namespace NanoXLSX.Internal.Readers
                 case "doubleaccounting":
                     return Font.UnderlineValue.DoubleAccounting;
                 default:
-                    return Font.UnderlineValue.None;
+                    return Font.UnderlineValue.Single;
             }
         }
 
@@ -587,14 +579,12 @@ namespace NanoXLSX.Internal.Readers
         {
             switch (value.ToLowerInvariant())
             {
-                case "baseline":
-                    return Font.VerticalTextAlignValue.Baseline;
                 case "superscript":
                     return Font.VerticalTextAlignValue.Superscript;
                 case "subscript":
                     return Font.VerticalTextAlignValue.Subscript;
                 default:
-                    return Font.VerticalTextAlignValue.None;
+                    return Font.VerticalTextAlignValue.Baseline;
             }
         }
 

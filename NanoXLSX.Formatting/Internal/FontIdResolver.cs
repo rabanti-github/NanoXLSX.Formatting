@@ -30,7 +30,7 @@ namespace NanoXLSX.Internal
         /// <summary>
         /// Current workbook
         /// </summary>
-        public Workbook Workbook { get ; set; }
+        public Workbook Workbook { get; set; }
 
         /// <summary>
         /// XML element representation (interface implementation). Not used in this class.
