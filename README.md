@@ -1,87 +1,59 @@
-![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX/refs/heads/master/Documentation/icons/NanoXLSX.png)
+﻿![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX.Formatting/refs/heads/master/Documentation/icons/NanoXLSXlib.png)
 
-# NanoXLSX
+# NanoXLSX.Formatting
 
-![NuGet Version](https://img.shields.io/nuget/v/NanoXLSX)
-![NuGet Downloads](https://img.shields.io/nuget/dt/NanoXLSX)
-![GitHub License](https://img.shields.io/github/license/rabanti-github/NanoXLSX)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_shield)
-
-## Pre-Release v3.x
-
-The pre-release of NanoXLSX is now available as [Nuget Package](https://www.nuget.org/packages/NanoXLSX/3.0.0-rc.4), version **3.0.0-rc.4**.
-Since there are breaking changes between NanoXLSX v2.x and v3.0.0-rc4, please see the **[Migration guide](MigrationGuide.md)**, to migrate applications from v2 to v3. Please feel free to open issues, in case of problems with the pre-release.
-
-There will be possibly further adaptions and additional pre-releases before the final release.
-
----
+![NuGet Version](https://img.shields.io/nuget/v/NanoXLSX.Formatting)
+![NuGet Downloads](https://img.shields.io/nuget/dt/NanoXLSX.Fomratting)
+![GitHub License](https://img.shields.io/github/license/rabanti-github/NanoXLSX.Formatting)
 
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
 
-* **Minimum of dependencies** (\*
-* No need for an installation of Microsoft Office
-* No need for Office interop libraries
-* No need for proprietary 3rd party libraries
-* No need for an installation of the Microsoft Open Office XML SDK (OOXML)
+---
+
+The **Formatting** package is responsible to enable NanoXLSX for the handling of **structured text** within a text cell (inline formatting).
+
+Currently supported:
+
+- Adding text runs (paragraphs) by a Builder or manually
+- Defining Font styles per run
+- Adding phonetic information (important for East Asian languages)
+- Reading and writing runs, phonetic information and inline Font styles 
+
+
+---
 
 Project website: [https://picoxlsx.rabanti.ch](https://picoxlsx.rabanti.ch)
 
-See the **[Change Log](https://github.com/rabanti-github/NanoXLSX/blob/master/Changelog.md)** for recent updates.
+See the **[Change Log](https://github.com/rabanti-github/NanoXLSX.Formatting/blob/master/Changelog.md)** for recent updates.
 
-## What's new in version 2.x
+## What's new in version 3.x
 
-There are some additional functions for workbooks and worksheets, as well as support of further data types.
-The biggest change is the full capable reader support for workbook, worksheet and style information. Also, all features are now fully unit tested. This means, that NanoXLSX is no longer in Beta status, but production ready. Some key features are:
-
-* Full reader support for styles, workbooks, worksheets and workbook metadata
-* Copy functions for worksheets
-* Advance import options for the reader
-* Several additional checks, exception handling and updated documentation
+This is the first release if this package. It was set to v 3.x, to be consistent with the NanoXLSX v3 ecosystem
 
 ## Road map
 
-Version 2.x of NanoXLSX was completely overhauled and a high number of (partially parametrized) unit tests with a code coverage of >99% were written to improve the quality of the library.
-However, it is not planned as a LTS version. The upcoming v3.x is supposed to introduce some important functions, like in-line cell formatting, better formula handling and additional worksheet features.
-Furthermore, it is planned to introduce more modern OOXML features like the SHA256 implementation of worksheet passwords.
-One of the main aspects of this upcoming version is a better modularization, as well as the consolidation with PicoXLSX to one single code base.
+Planned features:
 
-## Reader Support
-
-The reader of NanoXLSX follows the principle of "What You Can Write Is What You Can Read". Therefore, all information about workbooks, worksheets, cells and styles that can be written into an XLSX file by NanoXLSX, can also be read by it.
-There are some limitations:
-
-* A workbook or worksheet password cannot be recovered, only its hash
-* Information that is not supported by the library will be discarded
-* There are some approximations for floating point numbers. These values (e.g. pane split widths) may deviate from the originally written values
-* Numeric values are cast to the appropriate .NET types with best effort. There are import options available to enforce specific types
-* No support of other objects than spreadsheet data at the moment
-* Due to the potential high complexity, custom number format codes are currently not automatically escaped on writing or un-escaped on reading
+- Style builder for general cell styles
+- Assistant for valid custom format codes
+- Support for conditional cell formatting
 
 ## Requirements
 
-NanoXLSX is originally based on PicoXLSX. However, NanoXLSX is now in the development lead, whereas PicoXLSX is a subset of it. The library is currently on compatibility level with .NET version 4.5 and .NET Standard 2.0. Newer versions should of course work as well. Older versions, like .NET 3.5 have only limited support, since newer language features were used.
+[NanoXLSX.Formatting](https://www.nuget.org/packages/NanoXLSX.Formatting) is not intended as standalone package. It requires **[NanoXLSX.Core](https://www.nuget.org/packages/NanoXLSX.Core)**, and is normally part of the meta-package **[NanoXLSX](https://www.nuget.org/packages/NanoXLSX)**
 
-### .NET 4.5 or newer
+**You find all technical requirements in the main repository: [NanoXLSX](https://github.com/rabanti-github/NanoXLSX)**
 
-*)The only requirement to compile the library besides .NET (v4.5 or newer) is the assembly **WindowsBase**, as well as **System.IO.Compression**. These assemblies are **standard components in all Microsoft Windows systems** (except Windows RT systems). If your IDE of choice supports referencing assemblies from the Global Assembly Cache (**GAC**) of Windows, select WindowsBase and Compression from there. If you want so select the DLLs manually and Microsoft Visual Studio is installed on your system, the DLL of WindowsBase can be found most likely under "c:\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll", as well as System.IO.Compression under "c:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\System.IO.Compression.dll". Otherwise you find them in the GAC, under "c:\Windows\Microsoft.NET\assembly\GAC_MSIL\WindowsBase" and "c:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.IO.Compression"
+### General requirements
 
-The NuGet package **does not require dependencies**
-
-### .NET Standard
-
-.NET Standard v2.0 resolves the dependency System.IO.Compression automatically, using NuGet and does not rely anymore on WindowsBase in the development environment. In contrast to the .NET >=4.5 version, **no manually added dependencies necessary** (as assembly references) to compile the library.
-
-Please note that the demo project of the .NET Standard version will not work in Visual Studio 2017. To get the build working, unload the demo project of the .NET Standard version.
-
-### Documentation project
-
-If you want to compile the documentation project (folder: Documentation; project file: shfbproj), you need also the **[Sandcastle Help File Builder (SHFB)](https://github.com/EWSoftware/SHFB)**. It is also freely available. But you don't need the documentation project to build the NanoXLSX library.
-
-The .NET version of the documentation may vary, based on the installation. If v4.5 is not available, upgrade to target to a newer version, like v4.6
+- .NET 4.5 or newer / .NET Standard
+- NanoXLSX.Core as only dependency
 
 ### Utility dependencies
 
 The Test project and GitHub Actions may also require dependencies like unit testing frameworks or workflow steps. However, **none of these dependencies are essential to build the library**. They are just utilities. The test dependencies ensure efficient unit testing and code coverage. The GitHub Actions dependencies are used for the automatization of releases and API documentation
+
+
 
 ## Installation
 
@@ -90,70 +62,53 @@ The Test project and GitHub Actions may also require dependencies like unit test
 By package Manager (PM):
 
 ```sh
-Install-Package NanoXLSX
+Install-Package NanoXLSX.Formatting
 ```
 
 By .NET CLI:
 
 ```sh
-dotnet add package NanoXLSX
+dotnet add package NanoXLSX.Formatting
 ```
-
-### As DLL
-
-Simply place the NanoXLSX DLL into your .NET project and add a reference to it. Please keep in mind that the .NET version of your solution must match with the runtime version of the NanoXLSX DLL (currently compiled with 4.5 and .NET Standard 2.0).
-
-### As source files
-
-Place all .CS files from the NanoXLSX source folder and its sub-folders into your project. In case of the .NET >=4.5 version, the necessary dependencies have to be referenced as well.
 
 ## Usage
 
-### Quick Start (shortened syntax)
+### Quick Start (manual)
 
 ```c#
- Workbook workbook = new Workbook("myWorkbook.xlsx", "Sheet1");         // Create new workbook with a worksheet called Sheet1
- workbook.WS.Value("Some Data");                                        // Add cell A1
- workbook.WS.Formula("=A1");                                            // Add formula to cell B1
- workbook.WS.Down();                                                    // Go to row 2
- workbook.WS.Value(DateTime.Now, Style.BasicStyles.Bold);               // Add formatted value to cell A2
- workbook.Save();                                                       // Save the workbook as myWorkbook.xlsx
+Workbook workbook = new Workbook("sheet1");                          // Create new workbook
+FormattedText formattedText = new FormattedText();                   // Create new formatted text
+Font strikeFont = new Font() { Strike = true };                      // Create a new font style
+formattedText.AddRun("strike", strikeFont);                          // Add text and style as run to the formatted text
+formattedText.AddLineBreak();                                        // Add a line break after the first run
+Font boldFont = new Font() { Bold = true, Name = "Tahoma" };         // Create a second font
+formattedText.AddRun("bold", boldFont);                              // Add a second run to the formatted text
+workbook.CurrentWorksheet.AddFormattedTextCell(formattedText, "A1"); // Add formatted text to the worksheet
 ```
 
-### Quick Start (regular syntax)
+### Quick Start (builders)
 
 ```c#
- Workbook workbook = new Workbook("myWorkbook.xlsx", "Sheet1");         // Create new workbook with a worksheet called Sheet1
- workbook.CurrentWorksheet.AddNextCell("Some Data");                    // Add cell A1
- workbook.CurrentWorksheet.AddNextCell(42);                             // Add cell B1
- workbook.CurrentWorksheet.GoToNextRow();                               // Go to row 2
- workbook.CurrentWorksheet.AddNextCell(DateTime.Now);                   // Add cell A2
- workbook.Save();                                                       // Save the workbook as myWorkbook.xlsx
-```
-
-### Quick Start (read)
-
-```c#
- Workbook wb = Workbook.Load("basic.xlsx");                             // Read the workbook
- System.Console.WriteLine("contains worksheet name: " + wb.CurrentWorksheet.SheetName);
- foreach (KeyValuePair<string, Cell> cell in wb.CurrentWorksheet.Cells)
- {
-    System.Console.WriteLine("Cell address: " + cell.Key + ": content:'" + cell.Value.Value + "'");
- }
+Workbook workbook = new Workbook("sheet1");                            // Create new workbook
+InlineStyleBuilder inlineStyleBuilder = new InlineStyleBuilder()       // Create a new inline style builder
+    .Color("FFAABBCC")                                                 // Add properties to the builder
+    .Italic()
+    .Size(18);
+FormattedTextBuilder builder = new FormattedTextBuilder();             // Create a new formatted text builder
+builder.AddRun("朝日", inlineStyleBuilder.Build());                     // Add a text and style to the builder
+builder.AddPhoneticRun("あさひ", 0, 2);                                 // Add a phonetic run  to the builder
+builder.AddRun("Asahi", new Font() { VerticalAlign = Font.VerticalTextAlignValue.Superscript }); // Add another text and style to the builder
+workbook.CurrentWorksheet.AddFormattedTextCell(builder.Build(), 0, 0); // Create the formatted text and add it to the cell                                     // Save the workbook as myWorkbook.xlsx
 ```
 
 ## Further References
 
-See the full **API-Documentation** at: [https://rabanti-github.github.io/NanoXLSX/](https://rabanti-github.github.io/NanoXLSX/).
-
-The [demo project](https://github.com/rabanti-github/NanoXLSX/tree/master/Demo) contains 18 simple use cases. You can find also the full documentation in the [Documentation-Folder](https://github.com/rabanti-github/NanoXLSX/tree/master/docs) (html files or single chm file) or as C# documentation in the particular .CS files.
-
-Note: The demo project of the .NET Standard version is identical and only links to the .NET >=4.5 version files.
-
-See also: [Getting started in the Wiki](https://github.com/rabanti-github/NanoXLSX/wiki/Getting-started)
-
-Hint: You will find most certainly any function, and the way how to use it, in the [Unit Test Project](https://github.com/rabanti-github/NanoXLSX/tree/master/NanoXlsx%20Test)
+- See the full **package API-Documentation** at: [https://rabanti-github.github.io/NanoXLSX.Formatting/](https://rabanti-github.github.io/NanoXLSX.Formatting/).
+- See the full NanoXLSX **API-Documentation** at: [https://rabanti-github.github.io/NanoXLSX/](https://rabanti-github.github.io/NanoXLSX/).
 
 ## License
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Frabanti-github%2FNanoXLSX?ref=badge_large)
+NanoXLSX.Formatting is published under the **MIT** license.
+
+The project / package is developed with as much compliance to this license as only possible.
+Please visit the main repository [NanoXLSX](https://github.com/rabanti-github/NanoXLSX) for compliance a scan, provided by Fossa 
