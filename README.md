@@ -19,7 +19,6 @@ Currently supported:
 - Adding phonetic information (important for East Asian languages)
 - Reading and writing runs, phonetic information and inline Font styles 
 
-
 ---
 
 Project website: [https://picoxlsx.rabanti.ch](https://picoxlsx.rabanti.ch)
@@ -52,8 +51,6 @@ Planned features:
 ### Utility dependencies
 
 The Test project and GitHub Actions may also require dependencies like unit testing frameworks or workflow steps. However, **none of these dependencies are essential to build the library**. They are just utilities. The test dependencies ensure efficient unit testing and code coverage. The GitHub Actions dependencies are used for the automatization of releases and API documentation
-
-
 
 ## Installation
 
