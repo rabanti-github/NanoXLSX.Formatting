@@ -1,4 +1,4 @@
-﻿![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX.Formatting/refs/heads/master/NanoXLSX.Formatting/Documentation/icons/NanoXLSXlib.png)
+﻿![NanoXLSX](https://raw.githubusercontent.com/rabanti-github/NanoXLSX.Formatting/refs/heads/master/NanoXLSX.Formatting/Documentation/NanoXLSXlib.png)
 
 # NanoXLSX.Formatting
 
