@@ -3,7 +3,7 @@
 # NanoXLSX.Formatting
 
 ![NuGet Version](https://img.shields.io/nuget/v/NanoXLSX.Formatting)
-![NuGet Downloads](https://img.shields.io/nuget/dt/NanoXLSX.Fomratting)
+![NuGet Downloads](https://img.shields.io/nuget/dt/NanoXLSX.Formatting)
 ![GitHub License](https://img.shields.io/github/license/rabanti-github/NanoXLSX.Formatting)
 
 NanoXLSX is a small .NET library written in C#, to create and read Microsoft Excel files in the XLSX format (Microsoft Excel 2007 or newer) in an easy and native way
