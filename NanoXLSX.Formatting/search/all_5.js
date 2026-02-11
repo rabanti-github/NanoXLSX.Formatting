@@ -7,7 +7,5 @@ var searchData=
   ['fontstyle_4',['FontStyle',['../classNanoXLSX_1_1Extensions_1_1TextRun.html#a97f90b461077677dd855333ffb7e6b2a',1,'NanoXLSX::Extensions::TextRun']]],
   ['formattedtext_5',['FormattedText',['../classNanoXLSX_1_1FormattedText.html',1,'NanoXLSX']]],
   ['formattedtextbuilder_6',['FormattedTextBuilder',['../classNanoXLSX_1_1Extensions_1_1FormattedTextBuilder.html',1,'NanoXLSX::Extensions']]],
-  ['formatting_7',['Formatting',['../index.html',1,'NanoXLSX.Formatting'],['../index.html#autotoc_md0',1,'NanoXLSX.Formatting']]],
-  ['fullwidthkatakana_8',['FullwidthKatakana',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104a01dc564d1a16fc4d5c78e8fd710a6ea1',1,'NanoXLSX::Extensions::PhoneticRun']]],
-  ['further_20references_9',['Further References',['../index.html#autotoc_md4',1,'']]]
+  ['fullwidthkatakana_7',['FullwidthKatakana',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104a01dc564d1a16fc4d5c78e8fd710a6ea1',1,'NanoXLSX::Extensions::PhoneticRun']]]
 ];

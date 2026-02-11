@@ -25,12 +25,6 @@
 var NAVTREE =
 [
   [ "NanoXLSX.Formatting", "index.html", [
-    [ "NanoXLSX.Formatting", "index.html#autotoc_md0", [
-      [ "Description", "index.html#autotoc_md2", null ],
-      [ "Dependencies", "index.html#autotoc_md3", null ],
-      [ "Further References", "index.html#autotoc_md4", null ],
-      [ "Changes", "index.html#autotoc_md5", null ]
-    ] ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ]
     ] ],
