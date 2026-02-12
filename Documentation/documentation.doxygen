@@ -1359,7 +1359,7 @@ GENERATE_HTML          = YES
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
 @INCLUDE  = htmlOutput.doxygen
-#HTML_OUTPUT            =
+#HTML_OUTPUT            = ../docs/NanoXLSX.Formatting
 
 # The HTML_FILE_EXTENSION tag can be used to specify the file extension for each
 # generated HTML page (for example: .htm, .php, .asp).
