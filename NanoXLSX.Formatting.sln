@@ -16,6 +16,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NanoXLSX.Formatting.Test", "NanoXLSX.Formatting.Test\NanoXLSX.Formatting.Test.csproj", "{38ABD06F-C426-4519-9812-8719E5D6C3DB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\documentation.doxygen = Documentation\documentation.doxygen
+		Documentation\htmlOutput.doxygen = Documentation\htmlOutput.doxygen
+		Documentation\NanoXLSXlib.png = Documentation\NanoXLSXlib.png
+		Documentation\outputDirectory.doxygen = Documentation\outputDirectory.doxygen
+		Documentation\projectName.doxygen = Documentation\projectName.doxygen
+		Documentation\projectNumber.doxygen = Documentation\projectNumber.doxygen
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +43,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {9A5D6822-0E2F-4AEE-AD88-422A89EF688C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9054E300-C732-4F24-AE26-F95A0CDDA9D7}
