@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['runs_0',['Runs',['../classNanoXLSX_1_1FormattedText.html#a059c43704ec475995b65f9bbe418230b',1,'NanoXLSX::FormattedText']]]
+  ['text_0',['Text',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a2ddd5bf25d6eec9ebee2e2d24d197de2',1,'NanoXLSX.Extensions.PhoneticRun.Text'],['../classNanoXLSX_1_1Extensions_1_1TextRun.html#a091a5ffb865cdda7108edbdfe1b56a8b',1,'NanoXLSX.Extensions.TextRun.Text']]],
+  ['type_1',['Type',['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html#a0d4960454429916099af9fbd274155b4',1,'NanoXLSX::Extensions::PhoneticProperties']]]
 ];
