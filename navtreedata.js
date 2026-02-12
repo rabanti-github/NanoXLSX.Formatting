@@ -25,6 +25,27 @@
 var NAVTREE =
 [
   [ "NanoXLSX.Formatting", "index.html", [
+    [ "NanoXLSX.Formatting", "index.html#autotoc_md10", [
+      [ "What's new in version 3.x", "index.html#autotoc_md13", null ],
+      [ "Road map", "index.html#autotoc_md14", null ],
+      [ "Requirements", "index.html#autotoc_md15", [
+        [ "General requirements", "index.html#autotoc_md16", null ],
+        [ "Utility dependencies", "index.html#autotoc_md17", null ]
+      ] ],
+      [ "Installation", "index.html#autotoc_md18", [
+        [ "Using NuGet", "index.html#autotoc_md19", null ]
+      ] ],
+      [ "Usage", "index.html#autotoc_md20", [
+        [ "Quick Start (manual)", "index.html#autotoc_md21", null ],
+        [ "Quick Start (builders)", "index.html#autotoc_md22", null ]
+      ] ],
+      [ "Further References", "index.html#autotoc_md23", null ],
+      [ "License", "index.html#autotoc_md24", null ]
+    ] ],
+    [ "Change Log - NanoXLSX.Formatting", "md__2home_2runner_2work_2NanoXLSX_8Formatting_2NanoXLSX_8Formatting_2Changelog.html", [
+      [ "v3.0.0", "md__2home_2runner_2work_2NanoXLSX_8Formatting_2NanoXLSX_8Formatting_2Changelog.html#autotoc_md1", null ]
+    ] ],
+    [ "How to contribute to NanoXLSX", "md__2home_2runner_2work_2NanoXLSX_8Formatting_2NanoXLSX_8Formatting_2CONTRIBUTING.html", null ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ]
     ] ],
@@ -33,8 +54,8 @@ var NAVTREE =
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Properties", "functions_prop.html", null ]
@@ -45,7 +66,10 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"annotated.html"
+"annotated.html",
+"classNanoXLSX_1_1Formatting_1_1Test_1_1Builder_1_1InlineStyleBuilderTest.html#a1fec0388c48d1f193fa0f10b95f561b9",
+"classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticPropertiesTest.html#ad0a75813fefd18a2182d705672ebbaab",
+"classNanoXLSX_1_1Formatting_1_1Test_1_1WriterReader_1_1WriterReaderStyleTest.html#a0953100b05a10028709aa1ca8d31a45d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

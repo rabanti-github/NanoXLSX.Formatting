@@ -1,10 +1,8 @@
 var searchData=
 [
-  ['scheme_0',['Scheme',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#ad49ee020edf1b7a97db50886aa808560',1,'NanoXLSX::Extensions::InlineStyleBuilder']]],
-  ['setphoneticproperties_1',['SetPhoneticProperties',['../classNanoXLSX_1_1FormattedText.html#ae5b28fb24189a38531f23b7c8df0e91f',1,'NanoXLSX.FormattedText.SetPhoneticProperties()'],['../classNanoXLSX_1_1Extensions_1_1FormattedTextBuilder.html#a71438e8c0cf32e6a19fec28f0401b2c2',1,'NanoXLSX.Extensions.FormattedTextBuilder.SetPhoneticProperties()']]],
-  ['shadow_2',['Shadow',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#a684c8798012822182cacc581e8397713',1,'NanoXLSX::Extensions::InlineStyleBuilder']]],
-  ['size_3',['Size',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#ad60016ee871f7f77fcf49473916f50a7',1,'NanoXLSX::Extensions::InlineStyleBuilder']]],
-  ['strikethrough_4',['Strikethrough',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#a8f7ce5f5e29100b1fb8299b1f42b1b48',1,'NanoXLSX::Extensions::InlineStyleBuilder']]],
-  ['subscript_5',['Subscript',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#a151ca4ed27f666d7ccde89c302f79c08',1,'NanoXLSX::Extensions::InlineStyleBuilder']]],
-  ['superscript_6',['Superscript',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#acbf4df687e321feb2db948193f597974',1,'NanoXLSX::Extensions::InlineStyleBuilder']]]
+  ['methodchainingtest_0',['MethodChainingTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Builder_1_1InlineStyleBuilderTest.html#ab6dbba7d3b7203e1488e55991bdc3e64',1,'NanoXLSX::Formatting::Test::Builder::InlineStyleBuilderTest']]],
+  ['mixedmethodchainingtest_1',['MixedMethodChainingTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Builder_1_1FormattedTextBuilderTest.html#ac376eccdebf0bdc09d2597ec742893a4',1,'NanoXLSX::Formatting::Test::Builder::FormattedTextBuilderTest']]],
+  ['mixingbooleanpropertystatestest_2',['MixingBooleanPropertyStatesTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Builder_1_1InlineStyleBuilderTest.html#aedce92758e0d6c3cfa1f8962477b43d2',1,'NanoXLSX::Formatting::Test::Builder::InlineStyleBuilderTest']]],
+  ['modifyingpropertiesafterconstructiontest_3',['ModifyingPropertiesAfterConstructionTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticPropertiesTest.html#a9f97e72d7a9106f1aa2646f01c3206ad',1,'NanoXLSX::Formatting::Test::Data::PhoneticPropertiesTest']]],
+  ['multiplebuildcallsreturnsameinstancetest_4',['MultipleBuildCallsReturnSameInstanceTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Builder_1_1FormattedTextBuilderTest.html#ade2c0630575f00637f341a4c60dd59d8',1,'NanoXLSX::Formatting::Test::Builder::FormattedTextBuilderTest']]]
 ];

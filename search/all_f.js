@@ -1,7 +1,25 @@
 var searchData=
 [
-  ['text_0',['Text',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a2ddd5bf25d6eec9ebee2e2d24d197de2',1,'NanoXLSX.Extensions.PhoneticRun.Text'],['../classNanoXLSX_1_1Extensions_1_1TextRun.html#a091a5ffb865cdda7108edbdfe1b56a8b',1,'NanoXLSX.Extensions.TextRun.Text']]],
-  ['textrun_1',['TextRun',['../classNanoXLSX_1_1Extensions_1_1TextRun.html',1,'NanoXLSX.Extensions.TextRun'],['../classNanoXLSX_1_1Extensions_1_1TextRun.html#ac64bf8fb4806c0019bb52d948e63ac66',1,'NanoXLSX.Extensions.TextRun.TextRun()']]],
-  ['tostring_2',['ToString',['../classNanoXLSX_1_1FormattedText.html#a1118db05b4bc766d8af32db344b8e4e1',1,'NanoXLSX::FormattedText']]],
-  ['type_3',['Type',['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html#a0d4960454429916099af9fbd274155b4',1,'NanoXLSX::Extensions::PhoneticProperties']]]
+  ['phoneticalignment_0',['PhoneticAlignment',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a33f5df6fcbfe03020aa2fbb1e63b59d1',1,'NanoXLSX::Extensions::PhoneticRun']]],
+  ['phoneticalignmentenumvaluestest_1',['PhoneticAlignmentEnumValuesTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a0d6efd4b72debe60c4ffe3c378e69e39',1,'NanoXLSX::Formatting::Test::Data::PhoneticRunTest']]],
+  ['phoneticproperties_2',['PhoneticProperties',['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html',1,'NanoXLSX.Extensions.PhoneticProperties'],['../classNanoXLSX_1_1FormattedText.html#a4e661cf634367ddc446abb63f201a82b',1,'NanoXLSX.FormattedText.PhoneticProperties'],['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html#a0245274d73e8a109b55364ddf03651d8',1,'NanoXLSX.Extensions.PhoneticProperties.PhoneticProperties()']]],
+  ['phoneticpropertiespropertysetnulltest_3',['PhoneticPropertiesPropertySetNullTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1FormattedTextTests.html#a3616cb6afb6100937bf28faf0bceb58c',1,'NanoXLSX::Formatting::Test::Data::FormattedTextTests']]],
+  ['phoneticpropertiespropertytest_4',['PhoneticPropertiesPropertyTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1FormattedTextTests.html#af72e1df76f8a008f52434e56a2cba8f4',1,'NanoXLSX::Formatting::Test::Data::FormattedTextTests']]],
+  ['phoneticpropertiestest_5',['PhoneticPropertiesTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticPropertiesTest.html',1,'NanoXLSX::Formatting::Test::Data']]],
+  ['phoneticrun_6',['PhoneticRun',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html',1,'NanoXLSX.Extensions.PhoneticRun'],['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#ad6a8750ceab1c633ab5407dd0ae86186',1,'NanoXLSX.Extensions.PhoneticRun.PhoneticRun()']]],
+  ['phoneticruns_7',['PhoneticRuns',['../classNanoXLSX_1_1FormattedText.html#a97fa077c4b09f8db087799ff7fa1ec58',1,'NanoXLSX::FormattedText']]],
+  ['phoneticrunspropertyreturnsreadonlylisttest_8',['PhoneticRunsPropertyReturnsReadonlyListTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1FormattedTextTests.html#a5497ff771bad95944edf6ca667b85f3b',1,'NanoXLSX::Formatting::Test::Data::FormattedTextTests']]],
+  ['phoneticrunspropertytest_9',['PhoneticRunsPropertyTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1FormattedTextTests.html#a71b0a027b9eb9b884e8bfda531a3c58c',1,'NanoXLSX::Formatting::Test::Data::FormattedTextTests']]],
+  ['phoneticruntest_10',['PhoneticRunTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html',1,'NanoXLSX::Formatting::Test::Data']]],
+  ['phonetictype_11',['PhoneticType',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104',1,'NanoXLSX::Extensions::PhoneticRun']]],
+  ['phonetictypeenumvaluestest_12',['PhoneticTypeEnumValuesTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a389733b7b88eb3a871cbed3ab4a836c3',1,'NanoXLSX::Formatting::Test::Data::PhoneticRunTest']]],
+  ['plaintext_13',['PlainText',['../classNanoXLSX_1_1FormattedText.html#aa969a8d83d2518efa34803c44f0acd1e',1,'NanoXLSX::FormattedText']]],
+  ['plaintextpropertyemptytest_14',['PlainTextPropertyEmptyTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1FormattedTextTests.html#ad75aa4aa3b2bb6a799bfcd9e4c6aee8d',1,'NanoXLSX::Formatting::Test::Data::FormattedTextTests']]],
+  ['plaintextpropertymultiplerunstest_15',['PlainTextPropertyMultipleRunsTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1FormattedTextTests.html#abfd06977419abc56995697f89d1adc0c',1,'NanoXLSX::Formatting::Test::Data::FormattedTextTests']]],
+  ['plaintextpropertysingleruntest_16',['PlainTextPropertySingleRunTest',['../classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1FormattedTextTests.html#ae04fcc01b476004e3ca73efa82d45380',1,'NanoXLSX::Formatting::Test::Data::FormattedTextTests']]],
+  ['pr_17',['Creating a Pull Request (PR)',['../md__2home_2runner_2work_2NanoXLSX_8Formatting_2NanoXLSX_8Formatting_2CONTRIBUTING.html#autotoc_md8',1,'']]],
+  ['preamble_18',['Preamble',['../md__2home_2runner_2work_2NanoXLSX_8Formatting_2NanoXLSX_8Formatting_2CONTRIBUTING.html#autotoc_md4',1,'']]],
+  ['probably_20cannot_20be_20accepted_20or_20needs_20rework_19',['PRs that probably cannot be accepted or needs rework',['../md__2home_2runner_2work_2NanoXLSX_8Formatting_2NanoXLSX_8Formatting_2CONTRIBUTING.html#autotoc_md9',1,'']]],
+  ['prs_20that_20probably_20cannot_20be_20accepted_20or_20needs_20rework_20',['PRs that probably cannot be accepted or needs rework',['../md__2home_2runner_2work_2NanoXLSX_8Formatting_2NanoXLSX_8Formatting_2CONTRIBUTING.html#autotoc_md9',1,'']]],
+  ['pull_20request_20pr_21',['Creating a Pull Request (PR)',['../md__2home_2runner_2work_2NanoXLSX_8Formatting_2NanoXLSX_8Formatting_2CONTRIBUTING.html#autotoc_md8',1,'']]]
 ];

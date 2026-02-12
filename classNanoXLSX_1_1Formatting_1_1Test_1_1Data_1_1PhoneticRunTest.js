@@ -1,0 +1,26 @@
+var classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest =
+[
+    [ "ConstructorTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#ac91fd41a2f8dc8c28d409085215dfaef", null ],
+    [ "ConstructorWithEmptyTextFailingTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#af537e417005c7937a3fb2eebf0e8d32b", null ],
+    [ "ConstructorWithInvalidTextFailingTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a5c20681182c0142524b4546ecf5816fb", null ],
+    [ "ConstructorWithNullTextFailingTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#aa81bfc952f271d1e34c296a65e9c96ae", null ],
+    [ "ConstructorWithVariousParametersTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#ad07556496c6d8ef7207cc03f505ca82c", null ],
+    [ "CopyCreatesDeepCopyTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a5bed5b6362421da82efc55baf2fe7645", null ],
+    [ "CopyIndependenceTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#af9c3e229fa2f4f4c53ef241fc04e231d", null ],
+    [ "CopyTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#ac5189d8b34563ac9197ea1dcea2f8e1e", null ],
+    [ "CopyWithVariousValuesTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a8ed56ee038430b66d847d87fb5c86323", null ],
+    [ "EndBasePropertyGetterTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a7355277701da5793bcad23534178ad74", null ],
+    [ "EndBasePropertySetterTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#af493d5cc64b9962ac74d06b47d0ba0a7", null ],
+    [ "EqualsTestForEquality", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#acfe8d24a74a269ef838538be62e68a7f", null ],
+    [ "EqualsTestForInequality", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a74b9f3ca0f7a582100acdd2835d1180f", null ],
+    [ "EqualsTestForInequality2", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a30e98210d28b9def43168e781adb0de1", null ],
+    [ "GetHashCodeTestForEquality", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#abd50523e1de2c1cc3529bad15f5e363a", null ],
+    [ "GetHashCodeTestForInequality", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a953443d6f8e9a2fd761f2682544f5795", null ],
+    [ "PhoneticAlignmentEnumValuesTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a0d6efd4b72debe60c4ffe3c378e69e39", null ],
+    [ "PhoneticTypeEnumValuesTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a389733b7b88eb3a871cbed3ab4a836c3", null ],
+    [ "StartBasePropertyGetterTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a3d196a3ae0b8aa36f7303e9f1e371715", null ],
+    [ "StartBasePropertySetterTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#aa66c194c7eca90429d1752e86efc9536", null ],
+    [ "TextPropertyGetterTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a92cd534bb7b26bb0a2c789831bbcbe9b", null ],
+    [ "TextPropertySetterTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a04bd6089353d908811ec89bd12a4411a", null ],
+    [ "TextPropertySetterWithNullFailingTest", "classNanoXLSX_1_1Formatting_1_1Test_1_1Data_1_1PhoneticRunTest.html#a5e68fd91d6634d6938c46ab56cf7d929", null ]
+];
