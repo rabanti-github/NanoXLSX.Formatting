@@ -32,9 +32,8 @@ jobs:
 
       # Generate docs for NanoXLSX.Formatting
       - name: Generate NanoXLSX.Formatting docs
-        run: |
-          cd ./Documentation
-          doxygen documentation.doxygen
+        working-directory: ./Documentation
+        run: doxygen documentation.doxygen
 
       # Upload docs artifact
       - name: Upload docs artifact
