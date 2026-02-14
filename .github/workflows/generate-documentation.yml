@@ -35,11 +35,6 @@ jobs:
         working-directory: ./Documentation
         run: doxygen documentation.doxygen
 
-      - name: Verify Directory Structure
-        run: |
-          pwd
-          ls -R
-
       # Upload docs artifact
       - name: Upload docs artifact
         uses: actions/upload-artifact@v4
