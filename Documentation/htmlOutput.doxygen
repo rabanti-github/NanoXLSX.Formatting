@@ -1,1 +1,1 @@
-HTML_OUTPUT = ../../docs 
+HTML_OUTPUT = ../docs 
