@@ -1,5 +1,5 @@
-﻿/*
- * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way  
+/*
+ * NanoXLSX is a small .NET library to generate and read XLSX (Microsoft Excel 2007 or newer) files in an easy and native way
  * Copyright Raphael Stoeckli © 2026
  * This library is licensed under the MIT License.
  * You find a copy of the license in project folder or on: http://opensource.org/licenses/MIT
@@ -18,6 +18,7 @@ using NanoXLSX.Registry;
 using NanoXLSX.Registry.Attributes;
 using NanoXLSX.Styles;
 using NanoXLSX.Utils;
+using NanoXLSX.Utils.Xml;
 using IOException = NanoXLSX.Exceptions.IOException;
 
 namespace NanoXLSX.Internal.Readers
@@ -36,7 +37,7 @@ namespace NanoXLSX.Internal.Readers
         #region privateFields
         private bool capturePhoneticCharacters;
         private readonly List<PhoneticInfo> phoneticsInfo;
-        private MemoryStream stream;
+        private Stream stream;
         private Workbook workbook;
         #endregion
 
@@ -66,7 +67,7 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to a reader plug-in handler, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region constructors
@@ -85,11 +86,11 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Initialization method (interface implementation)
         /// </summary>
-        /// <param name="stream">MemoryStream to be read</param>
+        /// <param name="stream">Stream to be read</param>
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
         /// <param name="inlinePluginHandler">Inline plug-in handler</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.stream = stream;
             this.workbook = workbook;
@@ -110,53 +111,55 @@ namespace NanoXLSX.Internal.Readers
             {
                 using (stream) // Close after processing
                 {
-                    XmlDocument xr = new XmlDocument
-                    {
-                        XmlResolver = null
-                    };
                     bool hasFormattedText = false;
-                    using (XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings() { XmlResolver = null }))
+                    StringBuilder sb = new StringBuilder();
+                    using (XmlReader reader = XmlReader.Create(stream, XmlStreamUtils.CreateSettings()))
                     {
-                        xr.Load(reader);
-                        StringBuilder sb = new StringBuilder();
-                        foreach (XmlNode node in xr.DocumentElement.ChildNodes)
+                        while (reader.Read())
                         {
-                            if (node.LocalName.Equals("si", StringComparison.OrdinalIgnoreCase))
-                            {
-                                sb.Clear();
-                                phoneticsInfo.Clear();
+                            if (!XmlStreamUtils.IsElement(reader, "si"))
+                                continue;
 
-                                FormattedText formattedText = ProcessSharedStringItem(node, ref sb);
-                                string textValue;
-                                if (capturePhoneticCharacters)
-                                {
-                                    textValue = ProcessPhoneticCharacters(sb);
-                                    formattedText.OverridePlainText(textValue);
-                                }
-                                else if (formattedText != null && string.IsNullOrEmpty(formattedText.PlainText) && sb.ToString().Length > 0)
-                                {
-                                    textValue = sb.ToString();
-                                    formattedText.OverridePlainText(sb.ToString()); // Fallback to prevent data loss
-                                }
-                                else
-                                {
-                                    textValue = sb.ToString();
-                                }
-                                if (formattedText != null)
-                                {
-                                    string key = PlugInUUID.SharedStringsReader + textValue;
-                                    SharedStrings.Add(key);
-                                    FormattedTexts[key] = formattedText;
-                                    hasFormattedText = true;
-                                }
-                                else
-                                {
-                                    SharedStrings.Add(textValue);
-                                }
+                            sb.Clear();
+                            phoneticsInfo.Clear();
+
+                            FormattedText formattedText;
+                            using (XmlReader siReader = reader.ReadSubtree())
+                            {
+                                siReader.Read(); // consume the <si> open tag
+                                formattedText = ProcessSharedStringItem(siReader, ref sb);
+                            }
+
+                            string textValue;
+                            if (capturePhoneticCharacters)
+                            {
+                                textValue = ProcessPhoneticCharacters(sb);
+                                formattedText.OverridePlainText(textValue);
+                            }
+                            else if (formattedText != null && string.IsNullOrEmpty(formattedText.PlainText) && sb.Length > 0)
+                            {
+                                textValue = sb.ToString();
+                                formattedText.OverridePlainText(textValue); // Fallback to prevent data loss
+                            }
+                            else
+                            {
+                                textValue = sb.ToString();
+                            }
+
+                            if (formattedText != null)
+                            {
+                                string key = PlugInUUID.SharedStringsReader + textValue;
+                                SharedStrings.Add(key);
+                                FormattedTexts[key] = formattedText;
+                                hasFormattedText = true;
+                            }
+                            else
+                            {
+                                SharedStrings.Add(textValue);
                             }
                         }
-                        InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.SharedStringsInlineReader, Options, null);
                     }
+                    InlinePluginHandler?.Invoke(stream, Workbook, PlugInUUID.SharedStringsInlineReader, Options, null);
                     if (hasFormattedText)
                     {
                         Workbook.AuxiliaryData.SetData(PlugInUUID.SharedStringsReader, AUXILIARY_DATA_ID, FormattedTexts);
@@ -170,102 +173,100 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Processes a shared string item (&lt;si&gt;) node and creates FormattedText if it contains runs
+        /// Processes a shared string item (&lt;si&gt;) node and creates FormattedText if it contains runs or phonetic data
         /// </summary>
-        /// <param name="siNode">The si node</param>
+        /// <param name="siReader">XmlReader subtree positioned at the &lt;si&gt; open tag</param>
         /// <param name="sb">StringBuilder for plain text extraction</param>
-        /// <returns>FormattedText if the item has formatting, null otherwise</returns>
-        private FormattedText ProcessSharedStringItem(XmlNode siNode, ref StringBuilder sb)
+        /// <returns>FormattedText if the item has formatting or phonetic data, null for plain text</returns>
+        private FormattedText ProcessSharedStringItem(XmlReader siReader, ref StringBuilder sb)
         {
             bool hasRuns = false;
-            bool hasPhoneticRuns = false;
-            XmlNode phoneticPropertiesNode = null;
+            bool hasFormattedContent = false;
+            FormattedText formattedText = null;
 
-            // Check if this is a formatted text entry
-            foreach (XmlNode childNode in siNode.ChildNodes)
+            while (siReader.Read())
             {
-                if (childNode.LocalName.Equals("r", StringComparison.OrdinalIgnoreCase))
+                if (siReader.NodeType != XmlNodeType.Element)
+                    continue;
+
+                if (XmlStreamUtils.IsElement(siReader, "r"))
                 {
                     hasRuns = true;
-                }
-                else if (childNode.LocalName.Equals("rPh", StringComparison.OrdinalIgnoreCase))
-                {
-                    hasPhoneticRuns = true;
-                }
-                else if (childNode.LocalName.Equals("phoneticPr", StringComparison.OrdinalIgnoreCase))
-                {
-                    phoneticPropertiesNode = childNode;
-                }
-            }
-
-            if (!hasRuns && !hasPhoneticRuns && phoneticPropertiesNode == null)
-            {
-                // Simple text node, just extract plain text
-                GetTextToken(siNode, ref sb);
-                return null;
-            }
-
-            // Create FormattedText object
-            FormattedText formattedText = new FormattedText();
-
-            // Process text runs
-            if (hasRuns)
-            {
-                foreach (XmlNode childNode in siNode.ChildNodes)
-                {
-                    if (childNode.LocalName.Equals("r", StringComparison.OrdinalIgnoreCase))
+                    hasFormattedContent = true;
+                    if (formattedText == null)
+                        formattedText = new FormattedText();
+                    using (XmlReader runReader = siReader.ReadSubtree())
                     {
-                        ProcessTextRun(childNode, formattedText, ref sb);
+                        runReader.Read(); // consume the <r> open tag
+                        ProcessTextRun(runReader, formattedText, ref sb);
                     }
                 }
-            }
-            else
-            {
-                // No runs but has phonetic info - extract text as single run
-                GetTextToken(siNode, ref sb);
-            }
-
-            // Process phonetic runs
-            if (hasPhoneticRuns)
-            {
-                foreach (XmlNode childNode in siNode.ChildNodes)
+                else if (XmlStreamUtils.IsElement(siReader, "rPh"))
                 {
-                    if (childNode.LocalName.Equals("rPh", StringComparison.OrdinalIgnoreCase))
+                    hasFormattedContent = true;
+                    if (formattedText == null)
+                        formattedText = new FormattedText();
+                    using (XmlReader rPhReader = siReader.ReadSubtree())
                     {
-                        ProcessPhoneticRun(childNode, formattedText);
+                        rPhReader.Read(); // consume the <rPh> open tag
+                        ProcessPhoneticRun(rPhReader, formattedText);
                     }
+                }
+                else if (XmlStreamUtils.IsElement(siReader, "phoneticPr"))
+                {
+                    hasFormattedContent = true;
+                    if (formattedText == null)
+                        formattedText = new FormattedText();
+                    ProcessPhoneticProperties(siReader, formattedText);
+                    using (siReader.ReadSubtree()) { } // consume element; positions reader at end element
+                }
+                else if (XmlStreamUtils.IsElement(siReader, "t") && !hasRuns)
+                {
+                    // Plain text or text accompanying only phonetic runs (no rich-text runs)
+                    string text;
+                    using (XmlReader tReader = siReader.ReadSubtree())
+                    {
+                        tReader.Read(); // position at <t>
+                        text = tReader.ReadElementContentAsString();
+                    }
+                    sb.Append(text);
                 }
             }
 
-            // Process phonetic properties
-            if (phoneticPropertiesNode != null)
-            {
-                ProcessPhoneticProperties(phoneticPropertiesNode, formattedText);
-            }
-
-            return formattedText;
+            return hasFormattedContent ? formattedText : null;
         }
 
         /// <summary>
-        /// Processes a text run (&lt;r&gt;) node
+        /// Processes a text run (&lt;r&gt;) subtree
         /// </summary>
-        /// <param name="runNode">The run node</param>
+        /// <param name="runReader">XmlReader subtree positioned at the &lt;r&gt; open tag</param>
         /// <param name="formattedText">FormattedText to add the run to</param>
         /// <param name="sb">StringBuilder for plain text extraction</param>
-        private void ProcessTextRun(XmlNode runNode, FormattedText formattedText, ref StringBuilder sb)
+        private void ProcessTextRun(XmlReader runReader, FormattedText formattedText, ref StringBuilder sb)
         {
             Font fontStyle = null;
             string text = null;
 
-            foreach (XmlNode childNode in runNode.ChildNodes)
+            while (runReader.Read())
             {
-                if (childNode.LocalName.Equals("rPr", StringComparison.OrdinalIgnoreCase))
+                if (runReader.NodeType != XmlNodeType.Element)
+                    continue;
+
+                if (XmlStreamUtils.IsElement(runReader, "rPr"))
                 {
-                    fontStyle = ParseRunProperties(childNode);
+                    using (XmlReader rPrReader = runReader.ReadSubtree())
+                    {
+                        rPrReader.Read(); // consume the <rPr> open tag
+                        fontStyle = ParseRunProperties(rPrReader);
+                    }
                 }
-                else if (childNode.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase))
+                else if (XmlStreamUtils.IsElement(runReader, "t"))
                 {
-                    text = childNode.InnerText;
+                    using (XmlReader tReader = runReader.ReadSubtree())
+                    {
+                        tReader.Read(); // position at <t>
+                        text = tReader.ReadElementContentAsString();
+                    }
                     sb.Append(text);
                 }
             }
@@ -277,37 +278,36 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Parses run properties (&lt;rPr&gt;) and creates a Font object
+        /// Parses run properties (&lt;rPr&gt;) subtree and creates a Font object
         /// </summary>
-        /// <param name="rPrNode">The rPr node</param>
+        /// <param name="rPrReader">XmlReader subtree positioned at the &lt;rPr&gt; open tag</param>
         /// <returns>Font object with parsed properties</returns>
-        private Font ParseRunProperties(XmlNode rPrNode)
+        private Font ParseRunProperties(XmlReader rPrReader)
         {
             Font font = new Font();
 
-            foreach (XmlNode childNode in rPrNode.ChildNodes)
+            while (rPrReader.Read())
             {
-                string nodeName = childNode.LocalName;
+                if (rPrReader.NodeType != XmlNodeType.Element)
+                    continue;
+
+                string nodeName = rPrReader.LocalName;
 
                 if (nodeName.Equals("rFont", StringComparison.OrdinalIgnoreCase))
                 {
-                    font.Name = GetAttributeValue(childNode, "val");
+                    font.Name = rPrReader.GetAttribute("val");
                 }
                 else if (nodeName.Equals("charset", StringComparison.OrdinalIgnoreCase))
                 {
-                    string charsetValue = GetAttributeValue(childNode, "val");
-                    if (!string.IsNullOrEmpty(charsetValue))
-                    {
-                        font.Charset = (Font.CharsetValue)ParserUtils.ParseInt(charsetValue);
-                    }
+                    string val = rPrReader.GetAttribute("val");
+                    if (!string.IsNullOrEmpty(val))
+                        font.Charset = (Font.CharsetValue)ParserUtils.ParseInt(val);
                 }
                 else if (nodeName.Equals("family", StringComparison.OrdinalIgnoreCase))
                 {
-                    string familyValue = GetAttributeValue(childNode, "val");
-                    if (!string.IsNullOrEmpty(familyValue))
-                    {
-                        font.Family = (Font.FontFamilyValue)ParserUtils.ParseInt(familyValue);
-                    }
+                    string val = rPrReader.GetAttribute("val");
+                    if (!string.IsNullOrEmpty(val))
+                        font.Family = (Font.FontFamilyValue)ParserUtils.ParseInt(val);
                 }
                 else if (nodeName.Equals("b", StringComparison.OrdinalIgnoreCase))
                 {
@@ -339,43 +339,30 @@ namespace NanoXLSX.Internal.Readers
                 }
                 else if (nodeName.Equals("color", StringComparison.OrdinalIgnoreCase))
                 {
-                    font.ColorValue = ParseColor(childNode);
+                    font.ColorValue = ParseColor(rPrReader);
                 }
                 else if (nodeName.Equals("sz", StringComparison.OrdinalIgnoreCase))
                 {
-                    string sizeValue = GetAttributeValue(childNode, "val");
-                    if (!string.IsNullOrEmpty(sizeValue))
-                    {
-                        font.Size = ParserUtils.ParseFloat(sizeValue);
-                    }
+                    string val = rPrReader.GetAttribute("val");
+                    if (!string.IsNullOrEmpty(val))
+                        font.Size = ParserUtils.ParseFloat(val);
                 }
                 else if (nodeName.Equals("u", StringComparison.OrdinalIgnoreCase))
                 {
-                    string underlineValue = GetAttributeValue(childNode, "val");
-                    if (string.IsNullOrEmpty(underlineValue))
-                    {
-                        font.Underline = Font.UnderlineValue.Single;
-                    }
-                    else
-                    {
-                        font.Underline = ParseUnderlineValue(underlineValue);
-                    }
+                    string val = rPrReader.GetAttribute("val");
+                    font.Underline = string.IsNullOrEmpty(val) ? Font.UnderlineValue.Single : ParseUnderlineValue(val);
                 }
                 else if (nodeName.Equals("vertAlign", StringComparison.OrdinalIgnoreCase))
                 {
-                    string vertAlignValue = GetAttributeValue(childNode, "val");
-                    if (!string.IsNullOrEmpty(vertAlignValue))
-                    {
-                        font.VerticalAlign = ParseVerticalAlignValue(vertAlignValue);
-                    }
+                    string val = rPrReader.GetAttribute("val");
+                    if (!string.IsNullOrEmpty(val))
+                        font.VerticalAlign = ParseVerticalAlignValue(val);
                 }
                 else if (nodeName.Equals("scheme", StringComparison.OrdinalIgnoreCase))
                 {
-                    string schemeValue = GetAttributeValue(childNode, "val");
-                    if (!string.IsNullOrEmpty(schemeValue))
-                    {
-                        font.Scheme = ParseSchemeValue(schemeValue);
-                    }
+                    string val = rPrReader.GetAttribute("val");
+                    if (!string.IsNullOrEmpty(val))
+                        font.Scheme = ParseSchemeValue(val);
                 }
             }
 
@@ -383,65 +370,61 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Parses a color node and creates a Color object
+        /// Parses a color element and creates a Color object. Reader must be positioned on the &lt;color&gt; element.
         /// </summary>
-        /// <param name="colorNode">The color node</param>
-        /// <returns>Color object</returns>
-        private Color ParseColor(XmlNode colorNode)
+        /// <param name="reader">XmlReader positioned on the color element</param>
+        /// <returns>Color object, or null if no recognized color attribute is present</returns>
+        private Color ParseColor(XmlReader reader)
         {
-            string autoValue = GetAttributeValue(colorNode, "auto");
-            string indexedValue = GetAttributeValue(colorNode, "indexed");
-            string rgbValue = GetAttributeValue(colorNode, "rgb");
-            string themeValue = GetAttributeValue(colorNode, "theme");
-            string systemValue = GetAttributeValue(colorNode, "system");
-            string tintValue = GetAttributeValue(colorNode, "tint");
+            string autoValue = reader.GetAttribute("auto");
+            string indexedValue = reader.GetAttribute("indexed");
+            string rgbValue = reader.GetAttribute("rgb");
+            string themeValue = reader.GetAttribute("theme");
+            string systemValue = reader.GetAttribute("system");
+            string tintValue = reader.GetAttribute("tint");
 
-            Color color = null; //= new Color();
+            Color color = null;
 
             if (!string.IsNullOrEmpty(autoValue))
-            {
                 color = Color.CreateAuto();
-            }
             else if (!string.IsNullOrEmpty(indexedValue))
-            {
                 color = Color.CreateIndexed(ParserUtils.ParseInt(indexedValue));
-            }
             else if (!string.IsNullOrEmpty(rgbValue))
-            {
                 color = Color.CreateRgb(rgbValue);
-            }
             else if (!string.IsNullOrEmpty(themeValue))
-            {
                 color = Color.CreateTheme(ParserUtils.ParseInt(themeValue));
-            }
             else if (!string.IsNullOrEmpty(systemValue))
-            {
                 color = Color.CreateSystem(SystemColor.MapStringToValue(systemValue));
-            }
+
             if (color != null && !string.IsNullOrEmpty(tintValue))
-            {
                 color.Tint = ParserUtils.ParseFloat(tintValue);
-            }
 
             return color;
         }
 
         /// <summary>
-        /// Processes a phonetic run (&lt;rPh&gt;) node
+        /// Processes a phonetic run (&lt;rPh&gt;) subtree
         /// </summary>
-        /// <param name="rPhNode">The rPh node</param>
+        /// <param name="rPhReader">XmlReader subtree positioned at the &lt;rPh&gt; open tag</param>
         /// <param name="formattedText">FormattedText to add the phonetic run to</param>
-        private void ProcessPhoneticRun(XmlNode rPhNode, FormattedText formattedText)
+        private void ProcessPhoneticRun(XmlReader rPhReader, FormattedText formattedText)
         {
-            string startBase = GetAttributeValue(rPhNode, "sb");
-            string endBase = GetAttributeValue(rPhNode, "eb");
+            string startBase = rPhReader.GetAttribute("sb");
+            string endBase = rPhReader.GetAttribute("eb");
             string text = null;
 
-            foreach (XmlNode childNode in rPhNode.ChildNodes)
+            while (rPhReader.Read())
             {
-                if (childNode.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase))
+                if (rPhReader.NodeType != XmlNodeType.Element)
+                    continue;
+
+                if (XmlStreamUtils.IsElement(rPhReader, "t"))
                 {
-                    text = childNode.InnerText;
+                    using (XmlReader tReader = rPhReader.ReadSubtree())
+                    {
+                        tReader.Read(); // position at <t>
+                        text = tReader.ReadElementContentAsString();
+                    }
                 }
             }
 
@@ -451,7 +434,6 @@ namespace NanoXLSX.Internal.Readers
                 uint eb = (uint)ParserUtils.ParseInt(endBase);
                 formattedText.AddPhoneticRun(text, sb, eb);
 
-                // Also capture for plain text processing
                 if (capturePhoneticCharacters)
                 {
                     phoneticsInfo.Add(new PhoneticInfo(text, startBase, endBase));
@@ -460,61 +442,24 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Processes phonetic properties (&lt;phoneticPr&gt;) node
+        /// Processes phonetic properties (&lt;phoneticPr&gt;) from the current reader position
         /// </summary>
-        /// <param name="phoneticPrNode">The phoneticPr node</param>
+        /// <param name="reader">XmlReader positioned on the &lt;phoneticPr&gt; element</param>
         /// <param name="formattedText">FormattedText to set the properties on</param>
-        private void ProcessPhoneticProperties(XmlNode phoneticPrNode, FormattedText formattedText)
+        private void ProcessPhoneticProperties(XmlReader reader, FormattedText formattedText)
         {
-            string fontIdValue = GetAttributeValue(phoneticPrNode, "fontId");
-            string typeValue = GetAttributeValue(phoneticPrNode, "type");
-            string alignmentValue = GetAttributeValue(phoneticPrNode, "alignment");
-
-            // Create a basic font reference for phonetic properties
-            Font fontReference = new Font();
-            if (!string.IsNullOrEmpty(fontIdValue))
-            {
-                // Font ID is stored but not resolved here
-                // This is just a placeholder for the reference
-            }
+            string typeValue = reader.GetAttribute("type");
+            string alignmentValue = reader.GetAttribute("alignment");
 
             PhoneticRun.PhoneticType type = PhoneticRun.PhoneticType.FullwidthKatakana;
             if (!string.IsNullOrEmpty(typeValue))
-            {
                 type = ParsePhoneticType(typeValue);
-            }
 
             PhoneticRun.PhoneticAlignment alignment = PhoneticRun.PhoneticAlignment.Left;
             if (!string.IsNullOrEmpty(alignmentValue))
-            {
                 alignment = ParsePhoneticAlignment(alignmentValue);
-            }
 
-            formattedText.SetPhoneticProperties(fontReference, type, alignment);
-        }
-
-        /// <summary>
-        /// Function collects text tokens recursively in case of a split by formatting
-        /// </summary>
-        /// <param name="node">Root node to process</param>
-        /// <param name="sb">StringBuilder reference</param>
-        private void GetTextToken(XmlNode node, ref StringBuilder sb)
-        {
-            if (node.LocalName.Equals("t", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(node.InnerText))
-            {
-                sb.Append(node.InnerText);
-            }
-            if (node.HasChildNodes)
-            {
-                foreach (XmlNode childNode in node.ChildNodes)
-                {
-                    if (childNode.LocalName.Equals("rPh", StringComparison.OrdinalIgnoreCase))
-                    {
-                        continue;
-                    }
-                    GetTextToken(childNode, ref sb);
-                }
-            }
+            formattedText.SetPhoneticProperties(new Font(), type, alignment);
         }
 
         /// <summary>
@@ -539,22 +484,8 @@ namespace NanoXLSX.Internal.Readers
         }
 
         /// <summary>
-        /// Gets an attribute value from a node
-        /// </summary>
-        /// <param name="node">XML node</param>
-        /// <param name="attributeName">Attribute name</param>
-        /// <returns>Attribute value or null if not found</returns>
-        private string GetAttributeValue(XmlNode node, string attributeName)
-        {
-            XmlNode attribute = node.Attributes?.GetNamedItem(attributeName);
-            return attribute?.InnerText;
-        }
-
-        /// <summary>
         /// Parses underline value string to enum
         /// </summary>
-        /// <param name="value">String value</param>
-        /// <returns>UnderlineValue enum</returns>
         private Font.UnderlineValue ParseUnderlineValue(string value)
         {
             switch (value.ToLowerInvariant())
@@ -573,8 +504,6 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Parses vertical align value string to enum
         /// </summary>
-        /// <param name="value">String value</param>
-        /// <returns>VerticalTextAlignValue enum</returns>
         private Font.VerticalTextAlignValue ParseVerticalAlignValue(string value)
         {
             switch (value.ToLowerInvariant())
@@ -591,8 +520,6 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Parses scheme value string to enum
         /// </summary>
-        /// <param name="value">String value</param>
-        /// <returns>SchemeValue enum</returns>
         private Font.SchemeValue ParseSchemeValue(string value)
         {
             switch (value.ToLowerInvariant())
@@ -609,8 +536,6 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Parses phonetic type value string to enum
         /// </summary>
-        /// <param name="value">String value</param>
-        /// <returns>PhoneticType enum</returns>
         private PhoneticRun.PhoneticType ParsePhoneticType(string value)
         {
             switch (value.ToLowerInvariant())
@@ -629,8 +554,6 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Parses phonetic alignment value string to enum
         /// </summary>
-        /// <param name="value">String value</param>
-        /// <returns>PhoneticAlignment enum</returns>
         private PhoneticRun.PhoneticAlignment ParsePhoneticAlignment(string value)
         {
             switch (value.ToLowerInvariant())

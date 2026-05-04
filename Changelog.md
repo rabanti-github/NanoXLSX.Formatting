@@ -1,5 +1,16 @@
 # Change Log - NanoXLSX.Formatting
 
+## v3.1.0
+
+---
+Release Date: **04.05.2026** <sup>(DMY)</sup>
+
+- Version bump of NanoXLSX.Core to 3.1.0
+- Improved reader performance. Reading a workbook should now be up to 3 times faster
+- Updated test project from .Net 5.0 to .Net 8.0, Xunit 2.x to 3.x, and various test-relevant dependencies to the most recent versions.
+
+
+
 ## v3.0.0
 
 ---

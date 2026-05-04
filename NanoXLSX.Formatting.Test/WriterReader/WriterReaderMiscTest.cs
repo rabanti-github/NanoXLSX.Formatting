@@ -135,11 +135,11 @@ namespace NanoXLSX.Formatting.Test.WriterReader
         public class InlineSharedStringReader : IPluginInlineReader
         {
             private const string TEST_NODE = "t";
-            private MemoryStream stream;
+            private Stream stream;
             public Workbook Workbook { get; set; }
             public IOptions Options { get; set; }
             [ExcludeFromCodeCoverage]
-            public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+            public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
 
             public void Execute()
             {
@@ -148,7 +148,7 @@ namespace NanoXLSX.Formatting.Test.WriterReader
                 this.stream.Position = 0;
             }
 
-            public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, int? index = null)
+            public void Init(Stream stream, Workbook workbook, IOptions readerOptions, int? index = null)
             {
                 this.stream = stream;
                 this.stream.Position = 0;

@@ -37,6 +37,9 @@ Planned features:
 - Assistant for valid custom format codes
 - Support for conditional cell formatting
 
+## :robot: For AI Agents
+For AI agents and LLM tooling, a machine-readable [`llms.txt`](https://raw.githubusercontent.com/rabanti-github/NanoXLSX/refs/heads/master/llms.txt) is available in the main repository.
+
 ## Requirements
 
 [NanoXLSX.Formatting](https://www.nuget.org/packages/NanoXLSX.Formatting) is not intended as standalone package. It requires **[NanoXLSX.Core](https://www.nuget.org/packages/NanoXLSX.Core)**, and is normally part of the meta-package **[NanoXLSX](https://www.nuget.org/packages/NanoXLSX)**

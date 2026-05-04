@@ -30,18 +30,18 @@ namespace NanoXLSX.Internal.Readers
         /// <summary>
         /// Reference to a ReaderPlugInHandler, to be used for post operations in the <see cref="Execute"/> method
         /// </summary>
-        public Action<MemoryStream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
+        public Action<Stream, Workbook, string, IOptions, int?> InlinePluginHandler { get; set; }
         #endregion
 
         #region methods
         /// <summary>
         /// Initialization method (interface implementation)
         /// </summary>
-        /// <param name="stream">MemoryStream to be read</param>
+        /// <param name="stream">Stream to be read</param>
         /// <param name="workbook">Workbook reference</param>
         /// <param name="readerOptions">Reader options</param>
         /// <param name="inlinePluginHandler">Inline plug-in handler</param>
-        public void Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action<MemoryStream, Workbook, string, IOptions, int?> inlinePluginHandler)
+        public void Init(Stream stream, Workbook workbook, IOptions readerOptions, Action<Stream, Workbook, string, IOptions, int?> inlinePluginHandler)
         {
             this.Workbook = workbook;
             this.Options = readerOptions;
