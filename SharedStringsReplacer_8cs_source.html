@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="NanoXLSXlib.png"/></td>
   <td id="projectalign">
-   <div id="projectname">NanoXLSX.Formatting<span id="projectnumber">&#160;3.0.0</span>
+   <div id="projectname">NanoXLSX.Formatting<span id="projectnumber">&#160;3.1.0</span>
    </div>
   </td>
  </tr>
@@ -116,11 +116,11 @@ $(function(){initNavTree('SharedStringsReplacer_8cs_source.html','',''); });
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">        #region properties</span></div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keyword">public</span> IOptions Options { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="keyword">public</span> Workbook Workbook { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keyword">public</span> Action&lt;MemoryStream, Workbook, string, IOptions, int?&gt; InlinePluginHandler { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keyword">public</span> Action&lt;Stream, Workbook, string, IOptions, int?&gt; InlinePluginHandler { <span class="keyword">get</span>; <span class="keyword">set</span>; }</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">        #endregion</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">        #region methods</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keyword">public</span> <span class="keywordtype">void</span> Init(MemoryStream stream, Workbook workbook, IOptions readerOptions, Action&lt;MemoryStream, Workbook, string, IOptions, int?&gt; inlinePluginHandler)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keyword">public</span> <span class="keywordtype">void</span> Init(Stream stream, Workbook workbook, IOptions readerOptions, Action&lt;Stream, Workbook, string, IOptions, int?&gt; inlinePluginHandler)</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        {</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            this.Workbook = workbook;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            this.Options = readerOptions;</div>
@@ -153,7 +153,7 @@ $(function(){initNavTree('SharedStringsReplacer_8cs_source.html','',''); });
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">        #endregion</span></div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }</div>
 <div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>}</div>
-<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html">NanoXLSX.Internal.Readers</a></div><div class="ttdef"><b>Definition</b> <a href="FormattedSharedStringsReader_8cs_source.html#l00023">FormattedSharedStringsReader.cs:24</a></div></div>
+<div class="ttc" id="anamespaceNanoXLSX_1_1Internal_1_1Readers_html"><div class="ttname"><a href="namespaceNanoXLSX_1_1Internal_1_1Readers.html">NanoXLSX.Internal.Readers</a></div><div class="ttdef"><b>Definition</b> <a href="FormattedSharedStringsReader_8cs_source.html#l00024">FormattedSharedStringsReader.cs:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

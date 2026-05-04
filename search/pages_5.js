@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['in_20version_203_20x_0',['What&apos;s new in version 3.x',['../index.html#autotoc_md3',1,'']]],
-  ['installation_1',['Installation',['../index.html#autotoc_md8',1,'']]]
+  ['for_20ai_20agents_0',[':robot: For AI Agents',['../index.html#autotoc_md5',1,'']]],
+  ['formatting_1',['Formatting',['../index.html',1,'NanoXLSX.Formatting'],['../index.html#autotoc_md0',1,'NanoXLSX.Formatting']]],
+  ['further_20references_2',['Further References',['../index.html#autotoc_md14',1,'']]]
 ];

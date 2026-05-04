@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['builders_0',['Quick Start (builders)',['../index.html#autotoc_md12',1,'']]]
+  ['_3arobot_3a_20for_20ai_20agents_0',[':robot: For AI Agents',['../index.html#autotoc_md5',1,'']]]
 ];

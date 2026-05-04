@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['phoneticalignment_0',['PhoneticAlignment',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a33f5df6fcbfe03020aa2fbb1e63b59d1',1,'NanoXLSX::Extensions::PhoneticRun']]],
-  ['phoneticproperties_1',['PhoneticProperties',['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html',1,'NanoXLSX.Extensions.PhoneticProperties'],['../classNanoXLSX_1_1FormattedText.html#a4e661cf634367ddc446abb63f201a82b',1,'NanoXLSX.FormattedText.PhoneticProperties'],['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html#a0245274d73e8a109b55364ddf03651d8',1,'NanoXLSX.Extensions.PhoneticProperties.PhoneticProperties()']]],
-  ['phoneticrun_2',['PhoneticRun',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html',1,'NanoXLSX.Extensions.PhoneticRun'],['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#ad6a8750ceab1c633ab5407dd0ae86186',1,'NanoXLSX.Extensions.PhoneticRun.PhoneticRun()']]],
-  ['phoneticruns_3',['PhoneticRuns',['../classNanoXLSX_1_1FormattedText.html#a97fa077c4b09f8db087799ff7fa1ec58',1,'NanoXLSX::FormattedText']]],
-  ['phonetictype_4',['PhoneticType',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104',1,'NanoXLSX::Extensions::PhoneticRun']]],
-  ['plaintext_5',['PlainText',['../classNanoXLSX_1_1FormattedText.html#aa969a8d83d2518efa34803c44f0acd1e',1,'NanoXLSX::FormattedText']]]
+  ['operator_20formattedtext_0',['operator FormattedText',['../classNanoXLSX_1_1Extensions_1_1FormattedTextBuilder.html#ab9b1a41517de71808a0cecd727d2b6b2',1,'NanoXLSX::Extensions::FormattedTextBuilder']]],
+  ['outline_1',['Outline',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#acdae0b4262cbaaa4e01ab0addcd26243',1,'NanoXLSX::Extensions::InlineStyleBuilder']]]
 ];

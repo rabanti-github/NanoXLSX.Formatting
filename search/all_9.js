@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['in_20version_203_20x_0',['What&apos;s new in version 3.x',['../index.html#autotoc_md3',1,'']]],
-  ['inlinestylebuilder_1',['InlineStyleBuilder',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html',1,'NanoXLSX::Extensions']]],
-  ['installation_2',['Installation',['../index.html#autotoc_md8',1,'']]],
-  ['italic_3',['Italic',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#a65b9d59fda6bb4a223d47ea20239a315',1,'NanoXLSX::Extensions::InlineStyleBuilder']]]
+  ['halfwidthkatakana_0',['HalfwidthKatakana',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104a4270910e282ecd02933f17057ba851af',1,'NanoXLSX::Extensions::PhoneticRun']]],
+  ['hiragana_1',['Hiragana',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104a8a669786c77c822944af012803ce7ab5',1,'NanoXLSX::Extensions::PhoneticRun']]]
 ];

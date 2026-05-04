@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['halfwidthkatakana_0',['HalfwidthKatakana',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104a4270910e282ecd02933f17057ba851af',1,'NanoXLSX::Extensions::PhoneticRun']]],
-  ['hiragana_1',['Hiragana',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104a8a669786c77c822944af012803ce7ab5',1,'NanoXLSX::Extensions::PhoneticRun']]]
+  ['general_20requirements_0',['General requirements',['../index.html#autotoc_md7',1,'']]],
+  ['gethashcode_1',['GetHashCode',['../classNanoXLSX_1_1FormattedText.html#afee2701908a200ab833e908a906cc111',1,'NanoXLSX.FormattedText.GetHashCode()'],['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html#a80fd464ee7bd9cec2e9ae58cf603cf54',1,'NanoXLSX.Extensions.PhoneticProperties.GetHashCode()'],['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#ac15dd7610ecee052cf97b508d3d309b6',1,'NanoXLSX.Extensions.PhoneticRun.GetHashCode()'],['../classNanoXLSX_1_1Extensions_1_1TextRun.html#a6b1888ca1f30ecb33d5165d4d440a5fb',1,'NanoXLSX.Extensions.TextRun.GetHashCode()']]]
 ];

@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['references_0',['Further References',['../index.html#autotoc_md13',1,'']]],
-  ['requirements_1',['Requirements',['../index.html#autotoc_md5',1,'']]],
-  ['requirements_2',['General requirements',['../index.html#autotoc_md6',1,'']]],
-  ['road_20map_3',['Road map',['../index.html#autotoc_md4',1,'']]]
+  ['nanoxlsx_20formatting_0',['NanoXLSX Formatting',['../index.html',1,'NanoXLSX.Formatting'],['../index.html#autotoc_md0',1,'NanoXLSX.Formatting']]],
+  ['new_20in_20version_203_20x_1',['What&apos;s new in version 3.x',['../index.html#autotoc_md3',1,'']]],
+  ['nuget_2',['Using NuGet',['../index.html#autotoc_md10',1,'']]]
 ];

@@ -1,13 +1,6 @@
 var searchData=
 [
-  ['family_0',['Family',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#a7bae9539db0828c5da924fe954091587',1,'NanoXLSX::Extensions::InlineStyleBuilder']]],
-  ['fontid_1',['FontId',['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html#a406d650c793a3997bed01d2542b5d20c',1,'NanoXLSX::Extensions::PhoneticProperties']]],
-  ['fontname_2',['FontName',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#abe9578e5d192f2cba453a6f4d05eb417',1,'NanoXLSX::Extensions::InlineStyleBuilder']]],
-  ['fontreference_3',['FontReference',['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html#a4ad9862b42f75c78e32c0a2e9a6621fd',1,'NanoXLSX::Extensions::PhoneticProperties']]],
-  ['fontstyle_4',['FontStyle',['../classNanoXLSX_1_1Extensions_1_1TextRun.html#a97f90b461077677dd855333ffb7e6b2a',1,'NanoXLSX::Extensions::TextRun']]],
-  ['formattedtext_5',['FormattedText',['../classNanoXLSX_1_1FormattedText.html',1,'NanoXLSX']]],
-  ['formattedtextbuilder_6',['FormattedTextBuilder',['../classNanoXLSX_1_1Extensions_1_1FormattedTextBuilder.html',1,'NanoXLSX::Extensions']]],
-  ['formatting_7',['Formatting',['../index.html',1,'NanoXLSX.Formatting'],['../index.html#autotoc_md0',1,'NanoXLSX.Formatting']]],
-  ['fullwidthkatakana_8',['FullwidthKatakana',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a4860cfc57856d3e70a69201d53091104a01dc564d1a16fc4d5c78e8fd710a6ea1',1,'NanoXLSX::Extensions::PhoneticRun']]],
-  ['further_20references_9',['Further References',['../index.html#autotoc_md13',1,'']]]
+  ['endbase_0',['EndBase',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a9d5e348907e8ffc6b46c0ad055184492',1,'NanoXLSX::Extensions::PhoneticRun']]],
+  ['equals_1',['Equals',['../classNanoXLSX_1_1FormattedText.html#ac7d44c67e2d7d5584bb815a7edf15b2c',1,'NanoXLSX.FormattedText.Equals()'],['../classNanoXLSX_1_1Extensions_1_1PhoneticProperties.html#ad88086b75d14401ecdd85e700b03f905',1,'NanoXLSX.Extensions.PhoneticProperties.Equals()'],['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#ab7e7b5249530362cfce1b8a4ad064b10',1,'NanoXLSX.Extensions.PhoneticRun.Equals()'],['../classNanoXLSX_1_1Extensions_1_1TextRun.html#a25db1057024ebd412ff410edb3623364',1,'NanoXLSX.Extensions.TextRun.Equals()']]],
+  ['extend_2',['Extend',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#a001d27011c2827b207ea94c75c68dfba',1,'NanoXLSX::Extensions::InlineStyleBuilder']]]
 ];

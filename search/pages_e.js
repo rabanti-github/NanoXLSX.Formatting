@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['what_20s_20new_20in_20version_203_20x_0',['What&apos;s new in version 3.x',['../index.html#autotoc_md3',1,'']]]
+  ['usage_0',['Usage',['../index.html#autotoc_md11',1,'']]],
+  ['using_20nuget_1',['Using NuGet',['../index.html#autotoc_md10',1,'']]],
+  ['utility_20dependencies_2',['Utility dependencies',['../index.html#autotoc_md8',1,'']]]
 ];

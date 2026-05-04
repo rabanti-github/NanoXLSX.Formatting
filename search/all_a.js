@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['left_0',['Left',['../classNanoXLSX_1_1Extensions_1_1PhoneticRun.html#a33f5df6fcbfe03020aa2fbb1e63b59d1a945d5e233cf7d6240f6b783b36a374ff',1,'NanoXLSX::Extensions::PhoneticRun']]],
-  ['license_1',['License',['../index.html#autotoc_md14',1,'']]],
-  ['linebreakstyle_2',['LineBreakStyle',['../classNanoXLSX_1_1FormattedText.html#a85eb8bece0d02851293a26c4f892c0ae',1,'NanoXLSX::FormattedText']]]
+  ['in_20version_203_20x_0',['What&apos;s new in version 3.x',['../index.html#autotoc_md3',1,'']]],
+  ['inlinestylebuilder_1',['InlineStyleBuilder',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html',1,'NanoXLSX::Extensions']]],
+  ['installation_2',['Installation',['../index.html#autotoc_md9',1,'']]],
+  ['italic_3',['Italic',['../classNanoXLSX_1_1Extensions_1_1InlineStyleBuilder.html#a65b9d59fda6bb4a223d47ea20239a315',1,'NanoXLSX::Extensions::InlineStyleBuilder']]]
 ];

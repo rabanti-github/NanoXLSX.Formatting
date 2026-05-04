@@ -28,19 +28,20 @@ var NAVTREE =
     [ "NanoXLSX.Formatting", "index.html#autotoc_md0", [
       [ "What's new in version 3.x", "index.html#autotoc_md3", null ],
       [ "Road map", "index.html#autotoc_md4", null ],
-      [ "Requirements", "index.html#autotoc_md5", [
-        [ "General requirements", "index.html#autotoc_md6", null ],
-        [ "Utility dependencies", "index.html#autotoc_md7", null ]
+      [ ":robot: For AI Agents", "index.html#autotoc_md5", null ],
+      [ "Requirements", "index.html#autotoc_md6", [
+        [ "General requirements", "index.html#autotoc_md7", null ],
+        [ "Utility dependencies", "index.html#autotoc_md8", null ]
       ] ],
-      [ "Installation", "index.html#autotoc_md8", [
-        [ "Using NuGet", "index.html#autotoc_md9", null ]
+      [ "Installation", "index.html#autotoc_md9", [
+        [ "Using NuGet", "index.html#autotoc_md10", null ]
       ] ],
-      [ "Usage", "index.html#autotoc_md10", [
-        [ "Quick Start (manual)", "index.html#autotoc_md11", null ],
-        [ "Quick Start (builders)", "index.html#autotoc_md12", null ]
+      [ "Usage", "index.html#autotoc_md11", [
+        [ "Quick Start (manual)", "index.html#autotoc_md12", null ],
+        [ "Quick Start (builders)", "index.html#autotoc_md13", null ]
       ] ],
-      [ "Further References", "index.html#autotoc_md13", null ],
-      [ "License", "index.html#autotoc_md14", null ]
+      [ "Further References", "index.html#autotoc_md14", null ],
+      [ "License", "index.html#autotoc_md15", null ]
     ] ],
     [ "Packages", "namespaces.html", [
       [ "Package List", "namespaces.html", "namespaces_dup" ]
